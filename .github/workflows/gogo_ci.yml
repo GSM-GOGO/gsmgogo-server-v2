@@ -44,7 +44,7 @@ jobs:
         if: ${{ failure() }}
         with:
           title: CI 실패!
-          webhook: ${{ secrets.SMS_DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           image: ${{ secrets.CI_FAIL_IMAGE }}
           description: CI를 실패했습니다.
