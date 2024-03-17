@@ -10,6 +10,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    /* spring security */
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
     implementation group: 'net.minidev', name: 'json-smart', version: '2.5.0'
 }
 
