@@ -1,5 +1,6 @@
 package com.example.gsmgogoentity.domain.user.entity;
 
+import com.example.gsmgogoentity.domain.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,10 @@ public class User {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(name = "point")
     private Integer point;
