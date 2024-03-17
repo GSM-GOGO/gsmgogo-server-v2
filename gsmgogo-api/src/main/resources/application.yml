@@ -20,4 +20,8 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
 
+  jwt:
+    accessSecret: ${ACCESS_SECRET}
+    refreshSecret: ${REFRESH_SECRET}
+
 cookie-domain: localhost
