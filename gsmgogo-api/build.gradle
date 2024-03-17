@@ -16,6 +16,9 @@ dependencies {
     /* spring data jpa */
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    /* h2 */
+    runtimeOnly 'com.h2database:h2'
+
     implementation group: 'net.minidev', name: 'json-smart', version: '2.5.0'
 }
 
