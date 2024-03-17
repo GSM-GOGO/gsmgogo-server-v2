@@ -21,7 +21,9 @@ spring:
     property-naming-strategy: SNAKE_CASE
 
   jwt:
-    accessSecret: ${ACCESS_SECRET}
-    refreshSecret: ${REFRESH_SECRET}
+    secretKey: ${SECRETKEY}
+    refreshKey: ${REFRESHKEY}
+    accessExp: ${ACCESSEXP}
+    refreshExp: ${REFRESHEXP}
 
 cookie-domain: localhost
