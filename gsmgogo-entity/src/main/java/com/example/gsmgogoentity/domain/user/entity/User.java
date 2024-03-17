@@ -1,6 +1,7 @@
 package com.example.gsmgogoentity.domain.user.entity;
 
 import com.example.gsmgogoentity.domain.user.enums.Role;
+import com.example.gsmgogoentity.domain.user.enums.SchoolRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,10 @@ public class User {
 
     @Column(name = "user_email")
     private String userEmail;
+
+    @Column(name = "school_role")
+    @Enumerated(EnumType.STRING)
+    private SchoolRole schoolRole;
 
     @Column(name = "phone_number")
     private String phoneNumber;
