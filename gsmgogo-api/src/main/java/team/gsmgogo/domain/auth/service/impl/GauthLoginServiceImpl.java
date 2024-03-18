@@ -61,12 +61,14 @@ public class GauthLoginServiceImpl implements GauthLoginService {
             Integer grade = gauthUserDto.getGrade();
             Integer classNum = gauthUserDto.getClassNum();
             UserSchoolRole userSchoolRole = gauthUserDto.getRole();
+            String name = gauthUserDto.getName();
             String email = gauthUserDto.getEmail();
 
             UserEntity currentUser = userJpaRepository.findByUserEmail(gauthUserDto.getEmail()).orElse(null);
 
             if (currentUser == null) {
                 UserEntity newUser = UserEntity.builder()
+                        .userName(name)
                         .userEmail(email)
                         .userGrade(
                             switch (grade) {
