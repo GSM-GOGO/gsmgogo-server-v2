@@ -1,6 +1,10 @@
 bootJar { enabled = true }
 jar { enabled = true }
 
+ext {
+    set('springCloudVersion', "2023.0.0")
+}
+
 dependencies {
     implementation project(':gsmgogo-entity')
 
@@ -11,6 +15,9 @@ dependencies {
 
     /* spring security */
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    /* feign */
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
     /* jwt */
     compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
@@ -24,6 +31,12 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
 
     implementation group: 'net.minidev', name: 'json-smart', version: '2.5.0'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 tasks.named('test') {
