@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import team.gsmgogo.domain.auth.service.GauthLoginService;
+import team.gsmgogo.global.feign.dto.GauthTokenDto;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -36,8 +37,9 @@ public class AuthController {
     }
 
     @GetMapping("/callback")
-    public void callback(@RequestParam("code") String code) throws URISyntaxException {
-        gauthLoginService.execute(code);
+    public void callback(@RequestParam("code") String code)  {
+        GauthTokenDto gauthTokenDto = gauthLoginService.execute(code);
+        System.out.println("gauthTokenDto.getAccessToken() = " + gauthTokenDto.getAccessToken());
 
     }
 

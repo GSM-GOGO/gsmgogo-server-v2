@@ -8,8 +8,7 @@ import lombok.Getter;
 public enum UserSchoolRole {
 
     ROLE_STUDENT("ROLE_STUDENT"),
-    ROLE_TEACHER("ROLE_TEACHER"),
-    ROLE_GRADUATE("ROLE_GRADUATE");
+    ROLE_TEACHER("ROLE_TEACHER");
 
     private final String role;
 }
