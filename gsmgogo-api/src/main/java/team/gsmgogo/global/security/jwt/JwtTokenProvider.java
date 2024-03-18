@@ -36,25 +36,25 @@ public class JwtTokenProvider {
     private static final String ACCESS_KEY = "access_token";
     private static final String REFRESH_KEY = "refresh_token";
 
-    public TokenResponse getToken(String email) {
-        String accessToken = generateAccessToken(email, accessExp);
-        String refreshToken = generateRefrshToken(email, refreshExp);
+    public TokenResponse getToken(String userSeq) {
+        String accessToken = generateAccessToken(userSeq, accessExp);
+        String refreshToken = generateRefrshToken(userSeq, refreshExp);
 
         return new TokenResponse(accessToken, refreshToken);
     }
 
-    private String generateAccessToken(String email, long expiration) {
+    private String generateAccessToken(String userSeq, long expiration) {
         return Jwts.builder().signWith(SignatureAlgorithm.HS256, secretKey)
-                .setSubject(email)
+                .setSubject(userSeq)
                 .setHeaderParam("typ", ACCESS_KEY)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .compact();
     }
 
-    private String generateRefrshToken(String email, long expiration) {
+    private String generateRefrshToken(String userSeq, long expiration) {
         return Jwts.builder().signWith(SignatureAlgorithm.HS256, refreshKey)
-                .setSubject(email)
+                .setSubject(userSeq)
                 .setHeaderParam("typ", REFRESH_KEY)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
