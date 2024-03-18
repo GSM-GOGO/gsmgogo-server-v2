@@ -1,8 +1,14 @@
-bootJar { enabled = false }
+bootJar { enabled = true }
 jar { enabled = true }
 
 dependencies {
     implementation project(':gsmgogo-entity')
+
+    /* spring app */
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    /* h2 */
+    runtimeOnly 'com.h2database:h2'
 
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

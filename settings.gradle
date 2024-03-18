@@ -1,4 +1,4 @@
 rootProject.name = 'gsm-gogo-v2'
-include('gsmgogo-api')
-include('gsmgogo-entity')
-include('gsmgogo-batch')
+include 'gsmgogo-batch'
+include 'gsmgogo-api'
+include 'gsmgogo-entity'
