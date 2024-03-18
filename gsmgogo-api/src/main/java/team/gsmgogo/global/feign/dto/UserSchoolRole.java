@@ -7,8 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum UserSchoolRole {
 
-    STUDENT("ROLE_STUDENT"),
-    TEACHER("ROLE_TEACHER");
+    ROLE_STUDENT("ROLE_STUDENT"),
+    ROLE_TEACHER("ROLE_TEACHER"),
+    ROLE_GRADUATE("ROLE_GRADUATE");
 
     private final String role;
 }

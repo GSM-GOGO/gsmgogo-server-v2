@@ -1,5 +1,7 @@
 package team.gsmgogo.domain.auth.service;
 
+import java.net.URISyntaxException;
+
 public interface GauthLoginService {
-    public void execute(String code);
+    void execute(String code) throws URISyntaxException;
 }

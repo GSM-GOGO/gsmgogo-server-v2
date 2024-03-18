@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import team.gsmgogo.domain.auth.service.GauthLoginService;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -15,6 +16,14 @@ import java.net.URISyntaxException;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
+    private final GauthLoginService gauthLoginService;
+
+    @Value("${gauth.clientId}")
+    private String clientId;
+
+    @Value("${gauth.redirectUrl}")
+    private String redirectUri;
 
 
     @GetMapping("/login")
@@ -28,7 +37,7 @@ public class AuthController {
 
     @GetMapping("/callback")
     public void callback(@RequestParam("code") String code) throws URISyntaxException {
-
+        gauthLoginService.execute(code);
 
     }
 

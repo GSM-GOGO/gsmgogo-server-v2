@@ -7,5 +7,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GauthTokenDto {
     private String accessToken;
-    private String refreshToken;
 }
