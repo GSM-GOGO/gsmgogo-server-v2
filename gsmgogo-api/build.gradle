@@ -30,6 +30,10 @@ dependencies {
     /* h2 */
     runtimeOnly 'com.h2database:h2'
 
+    /* redis */
+    implementation("org.springframework.session:spring-session-data-redis")
+    implementation 'io.lettuce:lettuce-core:6.2.3.RELEASE'
+
     implementation group: 'net.minidev', name: 'json-smart', version: '2.5.0'
 }
 

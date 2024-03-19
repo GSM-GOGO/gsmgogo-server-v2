@@ -23,6 +23,11 @@ spring:
     accessExp: ${ACCESSEXP}
     refreshExp: ${REFRESHEXP}
 
+  data:
+    redis:
+      host: ${HOST}
+      port: ${PORT}
+
 gauth:
   clientId: ${CLIENTID}
   clientSecret: ${CLIENTSECRET}
