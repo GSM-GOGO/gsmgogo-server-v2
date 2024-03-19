@@ -38,7 +38,6 @@ public class AuthController {
     @Value("${spring.jwt.refreshExp}")
     public Long refreshExp;
 
-
     @GetMapping("/login")
     public void login(HttpServletResponse response) throws IOException {
         String loginUrl = "https://gauth.co.kr/login?" +

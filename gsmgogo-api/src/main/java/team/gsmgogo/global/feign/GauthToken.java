@@ -12,13 +12,8 @@ import team.gsmgogo.global.feign.dto.GauthUserDto;
 
 import java.net.URI;
 
-@FeignClient(name = "GauthClient", configuration = GauthFeignConfig.class)
-public interface GauthClient {
-
+@FeignClient(name = "GauthToken", configuration = GauthFeignConfig.class, url = "https://server.gauth.co.kr/oauth/token")
+public interface GauthToken {
     @PostMapping
-    GauthTokenDto getToken(URI baseUrl, @RequestBody GauthTokenRequest gauthTokenRequest);
-
-    @GetMapping
-    GauthUserDto getInfo(URI baseUrl, @RequestHeader("Authorization") String accessToken);
-
+    GauthTokenDto getToken(@RequestBody GauthTokenRequest gauthTokenRequest);
 }
