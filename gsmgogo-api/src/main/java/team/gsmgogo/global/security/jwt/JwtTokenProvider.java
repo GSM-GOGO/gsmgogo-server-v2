@@ -33,28 +33,28 @@ public class JwtTokenProvider {
     @Value("${spring.jwt.refreshExp}")
     public Long refreshExp;
 
-    private static final String ACCESS_KEY = "access_token";
-    private static final String REFRESH_KEY = "refresh_token";
+    public static final String ACCESS_KEY = "accessToken";
+    public static final String REFRESH_KEY = "refreshToken";
 
-    public TokenResponse getToken(String userSeq) {
-        String accessToken = generateAccessToken(userSeq, accessExp);
-        String refreshToken = generateRefrshToken(userSeq, refreshExp);
+    public TokenResponse getToken(Long userId) {
+        String accessToken = generateAccessToken(userId, accessExp);
+        String refreshToken = generateRefrshToken(userId, refreshExp);
 
         return new TokenResponse(accessToken, refreshToken);
     }
 
-    private String generateAccessToken(String userSeq, long expiration) {
+    private String generateAccessToken(Long userId, long expiration) {
         return Jwts.builder().signWith(SignatureAlgorithm.HS256, secretKey)
-                .setSubject(userSeq)
+                .setSubject(String.valueOf(userId))
                 .setHeaderParam("typ", ACCESS_KEY)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .compact();
     }
 
-    private String generateRefrshToken(String userSeq, long expiration) {
+    private String generateRefrshToken(Long userId, long expiration) {
         return Jwts.builder().signWith(SignatureAlgorithm.HS256, refreshKey)
-                .setSubject(userSeq)
+                .setSubject(String.valueOf(userId))
                 .setHeaderParam("typ", REFRESH_KEY)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
@@ -67,6 +67,10 @@ public class JwtTokenProvider {
 
     public String resolveRefreshToken(HttpServletRequest request) {
         return cookieManager.getCookieValue(request, REFRESH_KEY);
+    }
+
+    public String getRefreshTokenUserId(String token){
+        return getTokenBody(token).get("sub", String.class);
     }
 
     public UsernamePasswordAuthenticationToken authorization(String token) {

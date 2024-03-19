@@ -18,8 +18,8 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_seq")
-    private Long userSeq;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "user_name")
     private String userName;
