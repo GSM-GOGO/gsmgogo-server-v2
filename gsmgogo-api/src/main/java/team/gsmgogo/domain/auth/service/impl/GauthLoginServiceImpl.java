@@ -77,7 +77,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
                             case 1 -> GradeEnum.ONE;
                             case 2 -> GradeEnum.TWO;
                             case 3 -> GradeEnum.THREE;
-                            default -> throw new ExpectedException("유저 엔티티 저장을 위한 매핑중 발생한 오류입니다", HttpStatus.INTERNAL_SERVER_ERROR);
+                            default -> throw new ExpectedException("유저의 학년을 엔티티와 매핑시키는 도중 발생한 오류입니다.", HttpStatus.INTERNAL_SERVER_ERROR);
                         }
                     )
                     .userClass(
@@ -86,7 +86,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
                             case 2 -> ClassEnum.TWO;
                             case 3 -> ClassEnum.THREE;
                             case 4 -> ClassEnum.FOUR;
-                            default -> throw new ExpectedException("유저 엔티티 저장을 위한 매핑중 발생한 오류입니다", HttpStatus.INTERNAL_SERVER_ERROR);
+                            default -> throw new ExpectedException("유저의 반을 엔티티와 매핑시키는 도중 발생한 오류입니다.", HttpStatus.INTERNAL_SERVER_ERROR);
                         }
                     )
                     .schoolRole(
