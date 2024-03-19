@@ -40,7 +40,6 @@ public class TokenReissueServiceImpl implements TokenReissueService {
             throw new ExpectedException("리프레시 토큰이 유효하지 않습니다.", HttpStatus.NOT_FOUND);
         }
 
-
         currentRefreshToken.updateRefreshToken(newToken.getRefreshToken());
         refreshTokenJpaRepository.save(currentRefreshToken);
 

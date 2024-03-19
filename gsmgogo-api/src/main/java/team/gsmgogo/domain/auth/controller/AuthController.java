@@ -16,7 +16,6 @@ import team.gsmgogo.domain.auth.service.GauthLoginService;
 import team.gsmgogo.domain.auth.service.TokenReissueService;
 import team.gsmgogo.global.manager.CookieManager;
 import team.gsmgogo.global.security.jwt.JwtTokenProvider;
-import team.gsmgogo.global.security.jwt.dto.TokenResponse;
 
 import java.io.IOException;
 
