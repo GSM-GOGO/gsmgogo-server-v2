@@ -6,5 +6,5 @@ import team.gsmgogo.domain.auth.entity.RefreshTokenRedisEntity;
 import java.util.Optional;
 
 public interface RefreshTokenJpaRepository extends CrudRepository<RefreshTokenRedisEntity, Long> {
-    Optional<RefreshTokenRedisEntity> findByUserSeq(Long userSeq);
+    Optional<RefreshTokenRedisEntity> findByUserId(Long userId);
 }

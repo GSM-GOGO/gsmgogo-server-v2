@@ -66,7 +66,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
         UserEntity currentUser = userJpaRepository.findByUserEmail(gauthUserDto.getEmail()).orElse(null);
 
         boolean isSignedUp = true;
-        long userSeq;
+        long userId;
 
         if (currentUser == null) {
             UserEntity newUser = UserEntity.builder()
@@ -99,20 +99,20 @@ public class GauthLoginServiceImpl implements GauthLoginService {
                     .role(Role.USER)
                     .point(30000).build();
 
-            userSeq = userJpaRepository.save(newUser).getUserSeq();
+            userId = userJpaRepository.save(newUser).getUserId();
 
             isSignedUp = false;
         } else if (currentUser.getPhoneNumber().isEmpty()) {
             isSignedUp = false;
-            userSeq = currentUser.getUserSeq();
+            userId = currentUser.getUserId();
         } else {
-            userSeq = currentUser.getUserSeq();
+            userId = currentUser.getUserId();
         }
 
-        TokenResponse token = tokenProvider.getToken(userSeq);
+        TokenResponse token = tokenProvider.getToken(userId);
 
         RefreshTokenRedisEntity refreshToken = RefreshTokenRedisEntity.builder()
-                .userSeq(userSeq)
+                .userId(userId)
                 .refreshToken(token.getRefreshToken())
                 .expiredAt(refreshExp).build();
 
