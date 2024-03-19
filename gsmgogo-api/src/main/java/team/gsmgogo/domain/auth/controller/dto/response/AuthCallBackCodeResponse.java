@@ -1,4 +1,4 @@
-package team.gsmgogo.global.feign.dto;
+package team.gsmgogo.domain.auth.controller.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GauthTokenDto {
-    private String accessToken;
+public class AuthCallBackCodeResponse {
+    private Boolean isSignup;
 }

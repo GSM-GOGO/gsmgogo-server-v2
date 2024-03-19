@@ -33,8 +33,8 @@ public class JwtTokenProvider {
     @Value("${spring.jwt.refreshExp}")
     public Long refreshExp;
 
-    private static final String ACCESS_KEY = "access_token";
-    private static final String REFRESH_KEY = "refresh_token";
+    public static final String ACCESS_KEY = "accessToken";
+    public static final String REFRESH_KEY = "refreshToken";
 
     public TokenResponse getToken(String userSeq) {
         String accessToken = generateAccessToken(userSeq, accessExp);

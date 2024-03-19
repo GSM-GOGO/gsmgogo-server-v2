@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.gsmgogo.domain.auth.controller.dto.response.TokenDto;
 import team.gsmgogo.domain.auth.service.GauthLoginService;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
@@ -22,8 +23,6 @@ import team.gsmgogo.global.security.jwt.JwtTokenProvider;
 import team.gsmgogo.global.security.jwt.dto.TokenResponse;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -44,17 +43,15 @@ public class GauthLoginServiceImpl implements GauthLoginService {
 
     @Override
     @Transactional
-    public GauthTokenDto execute(String code) {
+    public TokenDto execute(String code) {
 
         try {
-
             GauthTokenDto gauthTokenDto = gauthClient.getToken(new URI("https://server.gauth.co.kr/oauth/token"), GauthTokenRequest.builder()
                     .code(code)
                     .clientId(clientId)
                     .clientSecret(clientSecret)
                     .redirectUri(redirectUri)
                     .build());
-
 
             GauthUserDto gauthUserDto = gauthClient.getInfo(new URI("https://open.gauth.co.kr/user"), "Bearer " + gauthTokenDto.getAccessToken());
 
@@ -65,6 +62,8 @@ public class GauthLoginServiceImpl implements GauthLoginService {
             String email = gauthUserDto.getEmail();
 
             UserEntity currentUser = userJpaRepository.findByUserEmail(gauthUserDto.getEmail()).orElse(null);
+
+            boolean isSignedUp = true;
 
             if (currentUser == null) {
                 UserEntity newUser = UserEntity.builder()
@@ -98,16 +97,18 @@ public class GauthLoginServiceImpl implements GauthLoginService {
                         .point(30000).build();
 
                 userJpaRepository.save(newUser);
+
+                isSignedUp = false;
+            } else if (currentUser.getPhoneNumber().isEmpty()) {
+                isSignedUp = false;
             }
 
             TokenResponse token = tokenProvider.getToken(email);
-
-            return new GauthTokenDto(token.getAccessToken(), token.getRefreshToken());
+            return new TokenDto(token.getAccessToken(), token.getRefreshToken(), isSignedUp);
 
         } catch (Exception e) {
             throw new ExpectedException("Gauth 외부 API 호출중 에러가 발생했어요!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
 
     }
 
