@@ -36,25 +36,25 @@ public class JwtTokenProvider {
     public static final String ACCESS_KEY = "accessToken";
     public static final String REFRESH_KEY = "refreshToken";
 
-    public TokenResponse getToken(String userSeq) {
+    public TokenResponse getToken(Long userSeq) {
         String accessToken = generateAccessToken(userSeq, accessExp);
         String refreshToken = generateRefrshToken(userSeq, refreshExp);
 
         return new TokenResponse(accessToken, refreshToken);
     }
 
-    private String generateAccessToken(String userSeq, long expiration) {
+    private String generateAccessToken(Long userSeq, long expiration) {
         return Jwts.builder().signWith(SignatureAlgorithm.HS256, secretKey)
-                .setSubject(userSeq)
+                .setSubject(String.valueOf(userSeq))
                 .setHeaderParam("typ", ACCESS_KEY)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .compact();
     }
 
-    private String generateRefrshToken(String userSeq, long expiration) {
+    private String generateRefrshToken(Long userSeq, long expiration) {
         return Jwts.builder().signWith(SignatureAlgorithm.HS256, refreshKey)
-                .setSubject(userSeq)
+                .setSubject(String.valueOf(userSeq))
                 .setHeaderParam("typ", REFRESH_KEY)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
@@ -67,6 +67,10 @@ public class JwtTokenProvider {
 
     public String resolveRefreshToken(HttpServletRequest request) {
         return cookieManager.getCookieValue(request, REFRESH_KEY);
+    }
+
+    public String getRefreshTokenUserSeq(String token){
+        return getTokenBody(token).get("sub", String.class);
     }
 
     public UsernamePasswordAuthenticationToken authorization(String token) {

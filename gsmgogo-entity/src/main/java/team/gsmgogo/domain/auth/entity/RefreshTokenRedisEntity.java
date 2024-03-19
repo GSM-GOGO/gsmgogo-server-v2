@@ -14,8 +14,8 @@ import org.springframework.data.redis.core.index.Indexed;
 @Builder
 public class RefreshTokenRedisEntity {
     @Id
-    @Column(name = "user_email")
-    private String userEmail;
+    @Column(name = "user_seq")
+    private Long userSeq;
 
     @Indexed
     @Column(name = "refresh_token")
@@ -24,4 +24,9 @@ public class RefreshTokenRedisEntity {
     @TimeToLive
     @Column(name = "expired_at")
     private Long expiredAt;
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
 }
