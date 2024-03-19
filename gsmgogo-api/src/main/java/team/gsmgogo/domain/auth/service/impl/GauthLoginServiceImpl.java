@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.auth.controller.dto.response.TokenDto;
+import team.gsmgogo.domain.auth.entity.RefreshTokenRedisEntity;
+import team.gsmgogo.domain.auth.repository.RefreshTokenJpaRepository;
 import team.gsmgogo.domain.auth.service.GauthLoginService;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
@@ -31,7 +33,10 @@ public class GauthLoginServiceImpl implements GauthLoginService {
     private final GauthClient gauthClient;
     private final UserJpaRepository userJpaRepository;
     private final JwtTokenProvider tokenProvider;
+    private final RefreshTokenJpaRepository refreshTokenJpaRepository;
 
+    @Value("${spring.jwt.refreshExp}")
+    private Long refreshExp;
     @Value("${gauth.clientId}")
     private String clientId;
     @Value("${gauth.clientSecret}")
@@ -106,7 +111,15 @@ public class GauthLoginServiceImpl implements GauthLoginService {
             }
 
             TokenResponse token = tokenProvider.getToken(email);
-            return new TokenDto(token.getAccessToken(), token.getRefreshToken(), isSignedUp);
+
+            RefreshTokenRedisEntity refreshToken = RefreshTokenRedisEntity.builder()
+                    .userEmail(email)
+                    .refreshToken(token.getRefreshToken())
+                    .expiredAt(refreshExp).build();
+
+            String savedRefreshToken = refreshTokenJpaRepository.save(refreshToken).getRefreshToken();
+
+            return new TokenDto(token.getAccessToken(), savedRefreshToken, isSignedUp);
 
         } catch (Exception e) {
             throw new ExpectedException("Gauth 외부 API 호출중 에러가 발생했어요!", HttpStatus.INTERNAL_SERVER_ERROR);
