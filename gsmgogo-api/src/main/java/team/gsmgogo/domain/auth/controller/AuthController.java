@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import team.gsmgogo.domain.auth.controller.dto.response.AuthCallBackCodeResponse;
 import team.gsmgogo.domain.auth.controller.dto.response.TokenDto;
 import team.gsmgogo.domain.auth.service.GauthLoginService;
-import team.gsmgogo.global.facade.UserFacade;
 import team.gsmgogo.global.manager.CookieManager;
 import team.gsmgogo.global.security.jwt.JwtTokenProvider;
 
@@ -24,7 +23,6 @@ public class AuthController {
 
     private final GauthLoginService gauthLoginService;
     private final CookieManager cookieManager;
-    private final UserFacade userFacade;
 
     @Value("${gauth.clientId}")
     private String clientId;

@@ -34,26 +34,28 @@ public class GauthLoginServiceImpl implements GauthLoginService {
 
     @Value("${gauth.clientId}")
     private String clientId;
-
     @Value("${gauth.clientSecret}")
     private String clientSecret;
-
     @Value("${gauth.redirectUrl}")
     private String redirectUri;
+    @Value("${gauth.authUrl}")
+    public String authUrl;
+    @Value("${gauth.userApiUrl}")
+    public String userApiUrl;
 
     @Override
     @Transactional
     public TokenDto execute(String code) {
 
         try {
-            GauthTokenDto gauthTokenDto = gauthClient.getToken(new URI("https://server.gauth.co.kr/oauth/token"), GauthTokenRequest.builder()
+            GauthTokenDto gauthTokenDto = gauthClient.getToken(new URI(authUrl), GauthTokenRequest.builder()
                     .code(code)
                     .clientId(clientId)
                     .clientSecret(clientSecret)
                     .redirectUri(redirectUri)
                     .build());
 
-            GauthUserDto gauthUserDto = gauthClient.getInfo(new URI("https://open.gauth.co.kr/user"), "Bearer " + gauthTokenDto.getAccessToken());
+            GauthUserDto gauthUserDto = gauthClient.getInfo(new URI(userApiUrl), "Bearer " + gauthTokenDto.getAccessToken());
 
             Integer grade = gauthUserDto.getGrade();
             Integer classNum = gauthUserDto.getClassNum();

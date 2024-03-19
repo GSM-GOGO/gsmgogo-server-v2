@@ -22,4 +22,5 @@ public class UserFacade {
         return userJpaRepository.findByUserEmail(email)
                 .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
     }
+
 }
