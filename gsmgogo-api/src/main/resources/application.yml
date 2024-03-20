@@ -18,21 +18,26 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
 
   jwt:
-    secretKey: ${SECRETKEY}
-    refreshKey: ${REFRESHKEY}
-    accessExp: ${ACCESSEXP}
-    refreshExp: ${REFRESHEXP}
+    secretKey: ${SECRET_KEY}
+    refreshKey: ${REFRESH_KEY}
+    accessExp: ${ACCESS_EXP}
+    refreshExp: ${REFRESH_EXP}
 
   data:
     redis:
-      host: ${HOST}
-      port: ${PORT}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
 
 gauth:
-  clientId: ${CLIENTID}
-  clientSecret: ${CLIENTSECRET}
-  redirectUrl: ${REDIRECTURL}
-  authUrl: ${AUTHURL}
-  userApiUrl: ${USERAPIURL}
+  clientId: ${CLIENT_ID}
+  clientSecret: ${CLIENT_SECRET}
+  redirectUrl: ${REDIRECT_URL}
+  authUrl: ${AUTH_URL}
+  userApiUrl: ${USER_API_URL}
 
 cookie-domain: localhost
+
+message:
+  apiKey: ${API_KEY}
+  apiSecretKey: ${API_SECRET_KEY}
+  send: ${SEND_NUMBER}
