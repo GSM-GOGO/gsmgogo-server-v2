@@ -18,6 +18,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtProvider;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.equals("/auth/refresh");
+    }
+
+    @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
         String token = jwtProvider.resolveAccessToken(request);

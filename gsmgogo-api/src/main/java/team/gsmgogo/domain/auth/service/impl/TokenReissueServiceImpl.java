@@ -31,7 +31,7 @@ public class TokenReissueServiceImpl implements TokenReissueService {
         long userId = Long.parseLong(tokenProvider.getRefreshTokenUserId(refreshToken));
         UserEntity user = userJpaRepository.findByUserId(userId)
                 .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
-        RefreshTokenRedisEntity currentRefreshToken = refreshTokenJpaRepository.findByUserId(user.getUserId())
+        RefreshTokenRedisEntity currentRefreshToken = refreshTokenJpaRepository.findById(user.getUserId())
                 .orElseThrow(() -> new ExpectedException("리프레시 토큰이 유효하지 않습니다.", HttpStatus.NOT_FOUND));
 
         TokenResponse newToken = tokenProvider.getToken(userId);
