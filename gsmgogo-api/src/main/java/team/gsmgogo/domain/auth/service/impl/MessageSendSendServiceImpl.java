@@ -10,14 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.auth.entity.VerifyCodeRedisEntity;
 import team.gsmgogo.domain.auth.repository.VerifyCodeJpaRepository;
 import team.gsmgogo.domain.auth.service.MessageSendService;
-import team.gsmgogo.global.security.SecurityAdapter;
+import team.gsmgogo.global.facade.UserFacade;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
 public class MessageSendSendServiceImpl implements MessageSendService {
-    private final SecurityAdapter securityAdapter;
+    private final UserFacade userFacade;
     private final DefaultMessageService messageService;
     private final VerifyCodeJpaRepository verifyCodeJpaRepository;
 
@@ -27,7 +27,7 @@ public class MessageSendSendServiceImpl implements MessageSendService {
     @Override
     @Transactional
     public void execute(Long code) {
-        Long id = securityAdapter.getCurrentUserId();
+        Long id = userFacade.getCurrentUser().getUserId();
         String generatedCode = generateCode();
 
         Message message = new Message();
