@@ -1,8 +1,8 @@
 package team.gsmgogo.global.config;
 
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import team.gsmgogo.global.security.jwt.JwtTokenProvider;
-import team.gsmgogo.global.security.jwt.filter.JwtTokenFilter;
+import team.gsmgogo.global.security.jwt.TokenProvider;
+import team.gsmgogo.global.security.jwt.filter.TokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Bean
     public WebSecurityCustomizer configure() {
@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
         );
 
-        http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         http.cors(AbstractHttpConfigurer::disable);
 

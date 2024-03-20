@@ -22,7 +22,7 @@ import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class TokenProvider {
 
     private final AuthDetailsService authDetailsService;
     private final CookieManager cookieManager;

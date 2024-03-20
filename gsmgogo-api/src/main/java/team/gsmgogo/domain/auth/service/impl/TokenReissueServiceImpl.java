@@ -10,7 +10,7 @@ import team.gsmgogo.domain.auth.service.TokenReissueService;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
-import team.gsmgogo.global.security.jwt.JwtTokenProvider;
+import team.gsmgogo.global.security.jwt.TokenProvider;
 import team.gsmgogo.global.security.jwt.dto.TokenResponse;
 
 @Service
@@ -19,7 +19,7 @@ public class TokenReissueServiceImpl implements TokenReissueService {
 
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final UserJpaRepository userJpaRepository;
-    private final JwtTokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Override
     public ReissueTokenDto execute(String refreshToken) {
