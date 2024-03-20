@@ -1,13 +1,10 @@
 package team.gsmgogo.global.security.jwt;
 
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.*;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.manager.CookieManager;
 import team.gsmgogo.global.security.jwt.dto.TokenResponse;
 import team.gsmgogo.global.security.principle.AuthDetailsService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,8 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
 
 @Component
@@ -39,11 +34,6 @@ public class TokenProvider {
     public static final String ACCESS_KEY = "accessToken";
     public static final String REFRESH_KEY = "refreshToken";
 
-    private Key getSignInKey(String secretKey){
-        byte[] bytes = secretKey.getBytes(StandardCharsets.UTF_8);
-        return Keys.hmacShaKeyFor(bytes);
-    }
-
     public TokenResponse getToken(Long userId) {
         String accessToken = generateAccessToken(userId, accessExp);
         String refreshToken = generateRefrshToken(userId, refreshExp);
@@ -52,11 +42,8 @@ public class TokenProvider {
     }
 
     private String generateAccessToken(Long userId, long expiration) {
-        final Claims claims = Jwts.claims();
-        claims.put("userId", Long.toString(userId));
-
         return Jwts.builder().signWith(SignatureAlgorithm.HS256, secretKey)
-                .setClaims(claims)
+                .setSubject(String.valueOf(userId))
                 .setHeaderParam("typ", ACCESS_KEY)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
@@ -64,11 +51,8 @@ public class TokenProvider {
     }
 
     private String generateRefrshToken(Long userId, long expiration) {
-        final Claims claims = Jwts.claims();
-        claims.put("userId", Long.toString(userId));
-
         return Jwts.builder().signWith(SignatureAlgorithm.HS256, refreshKey)
-                .setClaims(claims)
+                .setSubject(String.valueOf(userId))
                 .setHeaderParam("typ", REFRESH_KEY)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
@@ -84,12 +68,12 @@ public class TokenProvider {
     }
 
     public String getRefreshTokenUserId(String token){
-        return getTokenBody(token, refreshKey).get("userId", String.class);
+        return getTokenBody(token, refreshKey).get("sub", String.class);
     }
 
     public UsernamePasswordAuthenticationToken authorization(String token) {
         UserDetails userDetails = authDetailsService.loadUserByUsername(getTokenSubject(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     private String getTokenSubject(String subject) {
@@ -99,12 +83,16 @@ public class TokenProvider {
     private Claims getTokenBody(String token, String secret) {
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(getSignInKey(secret))
+                    .setSigningKey(secret)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+        } catch (ExpiredJwtException e) {
+            throw new ExpectedException("토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED);
+        } catch (JwtException e) {
+            throw new ExpectedException("검증되지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            throw new ExpectedException("유효하지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED);
+            throw new ExpectedException("토큰 예외입니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

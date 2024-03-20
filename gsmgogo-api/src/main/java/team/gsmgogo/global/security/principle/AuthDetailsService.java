@@ -17,8 +17,8 @@ public class AuthDetailsService implements UserDetailsService {
     private final UserJpaRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUserEmail(userEmail)
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findByUserId(Long.valueOf(userId))
                 .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
 
         return new AuthDetails(user);
