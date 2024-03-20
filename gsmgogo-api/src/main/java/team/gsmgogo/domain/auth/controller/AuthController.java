@@ -10,6 +10,7 @@ import team.gsmgogo.domain.auth.controller.dto.request.AuthSendCodeRequest;
 import team.gsmgogo.domain.auth.controller.dto.response.AuthCallBackCodeResponse;
 import team.gsmgogo.domain.auth.controller.dto.response.ReissueTokenDto;
 import team.gsmgogo.domain.auth.controller.dto.response.TokenDto;
+import team.gsmgogo.domain.auth.service.CheckVerifyCodeService;
 import team.gsmgogo.domain.auth.service.GauthLoginService;
 import team.gsmgogo.domain.auth.service.MessageSendService;
 import team.gsmgogo.domain.auth.service.TokenReissueService;
@@ -23,6 +24,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthController {
     private final MessageSendService messageSendService;
+    private final CheckVerifyCodeService checkVerifyCodeService;
     private final GauthLoginService gauthLoginService;
     private final TokenReissueService tokenReissueService;
     private final CookieManager cookieManager;
@@ -65,6 +67,12 @@ public class AuthController {
     @PostMapping("/sms")
     public ResponseEntity<Void> sendCodeMessage(@RequestBody AuthSendCodeRequest request){
         messageSendService.execute(Long.getLong(request.getPhoneNumber()));
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<Void> checkVerifyCode(@RequestParam("code") String verifyCode){
+        checkVerifyCodeService.execute(verifyCode);
         return ResponseEntity.ok().build();
     }
 }
