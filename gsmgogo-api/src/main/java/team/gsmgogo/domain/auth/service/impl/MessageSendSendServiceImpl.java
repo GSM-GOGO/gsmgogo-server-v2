@@ -33,7 +33,7 @@ public class MessageSendSendServiceImpl implements MessageSendService {
         Message message = new Message();
         message.setFrom(sendNumber);
         message.setTo(code.toString());
-        message.setText("GOGO 인증번호: " + generatedCode);
+        message.setText("GSM GOGO v2 [ " + generatedCode + "]를 입력해주세요!");
 
         messageService.sendOne(new SingleMessageSendingRequest(message));
 
