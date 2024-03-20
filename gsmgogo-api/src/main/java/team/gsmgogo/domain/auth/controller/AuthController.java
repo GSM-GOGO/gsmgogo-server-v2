@@ -15,7 +15,7 @@ import team.gsmgogo.domain.auth.controller.dto.response.TokenDto;
 import team.gsmgogo.domain.auth.service.GauthLoginService;
 import team.gsmgogo.domain.auth.service.TokenReissueService;
 import team.gsmgogo.global.manager.CookieManager;
-import team.gsmgogo.global.security.jwt.JwtTokenProvider;
+import team.gsmgogo.global.security.jwt.TokenProvider;
 
 import java.io.IOException;
 
@@ -49,17 +49,17 @@ public class AuthController {
     @GetMapping("/callback")
     public ResponseEntity<AuthCallBackCodeResponse> callback(@RequestParam("code") String code, HttpServletResponse response) {
         TokenDto tokenDto = gauthLoginService.execute(code);
-        cookieManager.addTokenCookie(response, JwtTokenProvider.ACCESS_KEY, tokenDto.getAccessToken(), accessExp, true);
-        cookieManager.addTokenCookie(response, JwtTokenProvider.REFRESH_KEY, tokenDto.getRefreshToken(), refreshExp, true);
+        cookieManager.addTokenCookie(response, TokenProvider.ACCESS_KEY, tokenDto.getAccessToken(), accessExp, true);
+        cookieManager.addTokenCookie(response, TokenProvider.REFRESH_KEY, tokenDto.getRefreshToken(), refreshExp, true);
         return ResponseEntity.ok(new AuthCallBackCodeResponse(tokenDto.getIsSignup()));
     }
 
     @GetMapping("/refresh")
     public ResponseEntity<Void> refresh(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = cookieManager.getCookieValue(request, JwtTokenProvider.REFRESH_KEY);
+        String refreshToken = cookieManager.getCookieValue(request, TokenProvider.REFRESH_KEY);
         ReissueTokenDto reissueTokenDto = tokenReissueService.execute(refreshToken);
-        cookieManager.addTokenCookie(response, JwtTokenProvider.ACCESS_KEY, reissueTokenDto.getAccessToken(), accessExp, true);
-        cookieManager.addTokenCookie(response, JwtTokenProvider.REFRESH_KEY, reissueTokenDto.getRefreshToken(), refreshExp, true);
+        cookieManager.addTokenCookie(response, TokenProvider.ACCESS_KEY, reissueTokenDto.getAccessToken(), accessExp, true);
+        cookieManager.addTokenCookie(response, TokenProvider.REFRESH_KEY, reissueTokenDto.getRefreshToken(), refreshExp, true);
         return ResponseEntity.ok().build();
     }
 

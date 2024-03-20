@@ -1,12 +1,10 @@
 package team.gsmgogo.global.security.jwt;
 
+import io.jsonwebtoken.*;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.manager.CookieManager;
 import team.gsmgogo.global.security.jwt.dto.TokenResponse;
 import team.gsmgogo.global.security.principle.AuthDetailsService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +17,7 @@ import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class TokenProvider {
 
     private final AuthDetailsService authDetailsService;
     private final CookieManager cookieManager;
@@ -70,24 +68,31 @@ public class JwtTokenProvider {
     }
 
     public String getRefreshTokenUserId(String token){
-        return getTokenBody(token).get("sub", String.class);
+        return getTokenBody(token, refreshKey).get("sub", String.class);
     }
 
     public UsernamePasswordAuthenticationToken authorization(String token) {
         UserDetails userDetails = authDetailsService.loadUserByUsername(getTokenSubject(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     private String getTokenSubject(String subject) {
-        return getTokenBody(subject).getSubject();
+        return getTokenBody(subject, secretKey).getSubject();
     }
 
-    private Claims getTokenBody(String token) {
+    private Claims getTokenBody(String token, String secret) {
         try {
-            return Jwts.parser().setSigningKey(secretKey)
-                    .parseClaimsJws(token).getBody();
+            return Jwts.parserBuilder()
+                    .setSigningKey(secret)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            throw new ExpectedException("토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED);
+        } catch (JwtException e) {
+            throw new ExpectedException("검증되지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            throw new ExpectedException("유효하지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED);
+            throw new ExpectedException("토큰 예외입니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

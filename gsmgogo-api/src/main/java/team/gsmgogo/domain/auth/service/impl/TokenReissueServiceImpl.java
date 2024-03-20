@@ -10,7 +10,7 @@ import team.gsmgogo.domain.auth.service.TokenReissueService;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
-import team.gsmgogo.global.security.jwt.JwtTokenProvider;
+import team.gsmgogo.global.security.jwt.TokenProvider;
 import team.gsmgogo.global.security.jwt.dto.TokenResponse;
 
 @Service
@@ -19,7 +19,7 @@ public class TokenReissueServiceImpl implements TokenReissueService {
 
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final UserJpaRepository userJpaRepository;
-    private final JwtTokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Override
     public ReissueTokenDto execute(String refreshToken) {
@@ -28,10 +28,10 @@ public class TokenReissueServiceImpl implements TokenReissueService {
             throw new ExpectedException("리프레시 토큰을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
 
-        long userId = Long.parseLong(tokenProvider.getRefreshTokenUserId(refreshToken));
+        Long userId = Long.valueOf(tokenProvider.getRefreshTokenUserId(refreshToken));
         UserEntity user = userJpaRepository.findByUserId(userId)
                 .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
-        RefreshTokenRedisEntity currentRefreshToken = refreshTokenJpaRepository.findByUserId(user.getUserId())
+        RefreshTokenRedisEntity currentRefreshToken = refreshTokenJpaRepository.findById(user.getUserId())
                 .orElseThrow(() -> new ExpectedException("리프레시 토큰이 유효하지 않습니다.", HttpStatus.NOT_FOUND));
 
         TokenResponse newToken = tokenProvider.getToken(userId);

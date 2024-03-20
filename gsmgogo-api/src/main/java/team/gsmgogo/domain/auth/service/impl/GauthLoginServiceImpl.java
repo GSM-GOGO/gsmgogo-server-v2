@@ -22,7 +22,7 @@ import team.gsmgogo.global.feign.dto.GauthTokenDto;
 import team.gsmgogo.global.feign.dto.GauthTokenRequest;
 import team.gsmgogo.global.feign.dto.GauthUserDto;
 import team.gsmgogo.global.feign.dto.UserSchoolRole;
-import team.gsmgogo.global.security.jwt.JwtTokenProvider;
+import team.gsmgogo.global.security.jwt.TokenProvider;
 import team.gsmgogo.global.security.jwt.dto.TokenResponse;
 
 @Service
@@ -32,7 +32,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
     private final GauthToken gauthToken;
     private final GauthInfo gauthInfo;
     private final UserJpaRepository userJpaRepository;
-    private final JwtTokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
 
     @Value("${spring.jwt.refreshExp}")
@@ -63,7 +63,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
         String name = gauthUserDto.getName();
         String email = gauthUserDto.getEmail();
 
-        UserEntity currentUser = userJpaRepository.findByUserEmail(gauthUserDto.getEmail()).orElse(null);
+        UserEntity currentUser = userJpaRepository.findByUserEmail(email).orElse(null);
 
         boolean isSignedUp = true;
         long userId;
@@ -102,7 +102,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
             userId = userJpaRepository.save(newUser).getUserId();
 
             isSignedUp = false;
-        } else if (currentUser.getPhoneNumber().isEmpty()) {
+        } else if (currentUser.getPhoneNumber() == null) {
             isSignedUp = false;
             userId = currentUser.getUserId();
         } else {
