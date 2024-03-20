@@ -5,14 +5,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import team.gsmgogo.domain.auth.controller.dto.request.AuthSendCodeRequest;
 import team.gsmgogo.domain.auth.controller.dto.response.AuthCallBackCodeResponse;
 import team.gsmgogo.domain.auth.controller.dto.response.ReissueTokenDto;
 import team.gsmgogo.domain.auth.controller.dto.response.TokenDto;
 import team.gsmgogo.domain.auth.service.GauthLoginService;
+import team.gsmgogo.domain.auth.service.MessageSendService;
 import team.gsmgogo.domain.auth.service.TokenReissueService;
 import team.gsmgogo.global.manager.CookieManager;
 import team.gsmgogo.global.security.jwt.TokenProvider;
@@ -23,7 +22,7 @@ import java.io.IOException;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-
+    private final MessageSendService messageSendService;
     private final GauthLoginService gauthLoginService;
     private final TokenReissueService tokenReissueService;
     private final CookieManager cookieManager;
@@ -63,4 +62,9 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/sms")
+    public ResponseEntity<Void> sendCodeMessage(@RequestBody AuthSendCodeRequest request){
+        messageSendService.execute(Long.getLong(request.getPhoneNumber()));
+        return ResponseEntity.ok().build();
+    }
 }
