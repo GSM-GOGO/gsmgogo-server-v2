@@ -63,7 +63,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
         String name = gauthUserDto.getName();
         String email = gauthUserDto.getEmail();
 
-        UserEntity currentUser = userJpaRepository.findByUserEmail(gauthUserDto.getEmail()).orElse(null);
+        UserEntity currentUser = userJpaRepository.findByUserEmail(email).orElse(null);
 
         boolean isSignedUp = true;
         long userId;
@@ -102,7 +102,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
             userId = userJpaRepository.save(newUser).getUserId();
 
             isSignedUp = false;
-        } else if (currentUser.getPhoneNumber().isEmpty()) {
+        } else if (currentUser.getPhoneNumber() == null) {
             isSignedUp = false;
             userId = currentUser.getUserId();
         } else {
