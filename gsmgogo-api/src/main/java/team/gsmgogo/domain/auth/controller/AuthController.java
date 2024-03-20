@@ -63,7 +63,8 @@ public class AuthController {
     }
 
     @PostMapping("/sms")
-    public void sendCodeMessage(@RequestBody AuthSendCodeRequest request){
-        messageSendService.execute(request.getPhoneNumber());
+    public ResponseEntity<Void> sendCodeMessage(@RequestBody AuthSendCodeRequest request){
+        messageSendService.execute(Long.getLong(request.getPhoneNumber()));
+        return ResponseEntity.ok().build();
     }
 }

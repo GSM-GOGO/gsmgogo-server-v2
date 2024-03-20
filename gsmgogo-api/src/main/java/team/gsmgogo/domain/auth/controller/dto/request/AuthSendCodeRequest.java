@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthSendCodeRequest {
     @JsonProperty(value = "phone_number")
-    private Long phoneNumber;
+    private String phoneNumber;
 }
