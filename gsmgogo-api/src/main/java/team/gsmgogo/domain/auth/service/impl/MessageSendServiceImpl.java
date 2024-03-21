@@ -20,7 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
-public class MessageSendSendServiceImpl implements MessageSendService {
+public class MessageSendServiceImpl implements MessageSendService {
     private final UserFacade userFacade;
     private final DefaultMessageService messageService;
     private final VerifyCodeJpaRepository verifyCodeJpaRepository;
