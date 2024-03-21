@@ -8,6 +8,7 @@ import team.gsmgogo.domain.auth.entity.VerifyCodeRedisEntity;
 import team.gsmgogo.domain.auth.repository.VerifyCodeJpaRepository;
 import team.gsmgogo.domain.auth.service.CheckVerifyCodeService;
 import team.gsmgogo.domain.user.entity.UserEntity;
+import team.gsmgogo.domain.user.enums.IsVerify;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
@@ -28,11 +29,11 @@ public class CheckVerifyCodeServiceImpl implements CheckVerifyCodeService {
         VerifyCodeRedisEntity verifyCode = verifyCodeJpaRepository.findByUserId(id)
             .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
 
-        if (!verifyCode.getCode().equals(code)){
+        if(!verifyCode.getCode().equals(code)){
             throw new ExpectedException("인증 코드가 같지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        user.setVerify(true);
+        user.setVerify(IsVerify.Enabled);
         userJpaRepository.save(user);
     }
 }

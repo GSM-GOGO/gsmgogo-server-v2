@@ -1,10 +1,7 @@
 package team.gsmgogo.domain.user.entity;
 
 import org.hibernate.annotations.ColumnDefault;
-import team.gsmgogo.domain.user.enums.ClassEnum;
-import team.gsmgogo.domain.user.enums.GradeEnum;
-import team.gsmgogo.domain.user.enums.Role;
-import team.gsmgogo.domain.user.enums.SchoolRole;
+import team.gsmgogo.domain.user.enums.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -52,13 +49,15 @@ public class UserEntity {
 
     @ColumnDefault("false")
     @Column(name = "is_verify", columnDefinition = "TINYINT(1)")
-    private boolean isVerify;
+    private IsVerify isVerify;
 
-    @Column(name = "verify_count")
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Long verifyCount;
 
-    public void setVerify(boolean verify) {
-        isVerify = verify;
+    public void setVerify(IsVerify isVerify) {
+        this.isVerify = isVerify;
     }
 
     public void plusCount(){
