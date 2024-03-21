@@ -47,13 +47,12 @@ public class UserEntity {
     @Column(name = "point")
     private Integer point;
 
-    @ColumnDefault("false")
-    @Column(name = "is_verify", columnDefinition = "TINYINT(1)")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "is_verify", nullable = false)
     private IsVerify isVerify;
 
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Column(name = "verify_count")
     private Long verifyCount;
 
     public void setVerify(IsVerify isVerify) {
