@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.index.Indexed;
 @Builder
 public class VerifyCodeRedisEntity {
     @Id
+    @Indexed
     @Column(name = "user_id")
     private Long userId;
 

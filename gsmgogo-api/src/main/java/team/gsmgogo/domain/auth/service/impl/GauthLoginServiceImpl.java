@@ -10,10 +10,7 @@ import team.gsmgogo.domain.auth.entity.RefreshTokenRedisEntity;
 import team.gsmgogo.domain.auth.repository.RefreshTokenJpaRepository;
 import team.gsmgogo.domain.auth.service.GauthLoginService;
 import team.gsmgogo.domain.user.entity.UserEntity;
-import team.gsmgogo.domain.user.enums.ClassEnum;
-import team.gsmgogo.domain.user.enums.GradeEnum;
-import team.gsmgogo.domain.user.enums.Role;
-import team.gsmgogo.domain.user.enums.SchoolRole;
+import team.gsmgogo.domain.user.enums.*;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.feign.GauthInfo;
@@ -70,6 +67,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
 
         if (currentUser == null) {
             UserEntity newUser = UserEntity.builder()
+                    .isVerify(IsVerify.Disabled)
                     .userName(name)
                     .userEmail(email)
                     .userGrade(

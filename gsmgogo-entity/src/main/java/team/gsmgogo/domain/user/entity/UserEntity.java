@@ -1,9 +1,7 @@
 package team.gsmgogo.domain.user.entity;
 
-import team.gsmgogo.domain.user.enums.ClassEnum;
-import team.gsmgogo.domain.user.enums.GradeEnum;
-import team.gsmgogo.domain.user.enums.Role;
-import team.gsmgogo.domain.user.enums.SchoolRole;
+import org.hibernate.annotations.ColumnDefault;
+import team.gsmgogo.domain.user.enums.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -49,4 +47,19 @@ public class UserEntity {
     @Column(name = "point")
     private Integer point;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "is_verify", nullable = false)
+    private IsVerify isVerify;
+
+
+    @Column(name = "verify_count")
+    private Long verifyCount;
+
+    public void setVerify(IsVerify isVerify) {
+        this.isVerify = isVerify;
+    }
+
+    public void plusCount(){
+        verifyCount += 1;
+    }
 }
