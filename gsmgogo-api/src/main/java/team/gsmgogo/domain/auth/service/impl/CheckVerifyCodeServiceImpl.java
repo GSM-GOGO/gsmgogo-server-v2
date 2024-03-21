@@ -21,7 +21,7 @@ public class CheckVerifyCodeServiceImpl implements CheckVerifyCodeService {
     public void execute(String code) {
         Long id = userFacade.getCurrentUser().getUserId();
 
-        VerifyCodeRedisEntity verifyCode = verifyCodeJpaRepository.findById(id)
+        VerifyCodeRedisEntity verifyCode = verifyCodeJpaRepository.findByUserId(id)
             .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
 
         if (!verifyCode.getCode().equals(code)){
