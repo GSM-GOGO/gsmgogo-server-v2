@@ -41,7 +41,7 @@ public class MessageSendSendServiceImpl implements MessageSendService {
         Message message = new Message();
         message.setFrom(sendNumber);
         message.setTo(code.toString());
-        message.setText("GSM GOGO v2 [ " + generatedCode + "]를 입력해주세요!");
+        message.setText("GSM GOGO v2 [" + generatedCode + "]를 입력해주세요!");
 
         messageService.sendOne(new SingleMessageSendingRequest(message));
 
@@ -55,6 +55,22 @@ public class MessageSendSendServiceImpl implements MessageSendService {
 
         verifyCodeJpaRepository.save(verifyCode);
         userJpaRepository.save(user);
+    }
+
+    @Override
+    public String test(Long code) {
+        Long id = userFacade.getCurrentUser().getUserId();
+        String generatedCode = generateCode();
+
+        VerifyCodeRedisEntity verifyCode = VerifyCodeRedisEntity.builder()
+                .userId(id)
+                .code(generatedCode)
+                .expiredAt(600000L)
+                .build();
+
+        verifyCodeJpaRepository.save(verifyCode);
+
+        return "GSM GOGO v2 [" + generatedCode + "]를 입력해주세요!";
     }
 
     private String generateCode(){
