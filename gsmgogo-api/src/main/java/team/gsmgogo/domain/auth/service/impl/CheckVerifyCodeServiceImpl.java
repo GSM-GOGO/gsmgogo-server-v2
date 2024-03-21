@@ -21,10 +21,10 @@ public class CheckVerifyCodeServiceImpl implements CheckVerifyCodeService {
     public void execute(String code) {
         Long id = userFacade.getCurrentUser().getUserId();
 
-        VerifyCodeRedisEntity verifyCode = verifyCodeJpaRepository.findByUserId(id)
+        VerifyCodeRedisEntity verifyCode = verifyCodeJpaRepository.findById(id)
             .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
 
-        if(!verifyCode.getCode().equals(code)){
+        if (!verifyCode.getCode().equals(code)){
             throw new ExpectedException("인증 코드가 같지 않습니다.", HttpStatus.BAD_REQUEST);
         }
     }

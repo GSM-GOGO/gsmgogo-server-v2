@@ -14,12 +14,12 @@ public class UserFacade {
     private final UserJpaRepository userJpaRepository;
 
     public UserEntity getCurrentUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return getUserByEmail(email);
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return getUserByEmail(userId);
     }
 
-    public UserEntity getUserByEmail(String email) {
-        return userJpaRepository.findByUserEmail(email)
+    public UserEntity getUserByEmail(String userId) {
+        return userJpaRepository.findByUserId(Long.valueOf(userId))
                 .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
     }
 
