@@ -1,5 +1,6 @@
 package team.gsmgogo.domain.user.entity;
 
+import org.hibernate.annotations.ColumnDefault;
 import team.gsmgogo.domain.user.enums.ClassEnum;
 import team.gsmgogo.domain.user.enums.GradeEnum;
 import team.gsmgogo.domain.user.enums.Role;
@@ -49,4 +50,18 @@ public class UserEntity {
     @Column(name = "point")
     private Integer point;
 
+    @ColumnDefault("false")
+    @Column(name = "is_verify", columnDefinition = "TINYINT(1)")
+    private boolean isVerify;
+
+    @Column(name = "verify_count")
+    private Long verifyCount;
+
+    public void setVerify(boolean verify) {
+        isVerify = verify;
+    }
+
+    public void plusCount(){
+        verifyCount += 1;
+    }
 }
