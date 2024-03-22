@@ -66,13 +66,13 @@ public class AuthController {
 
     @PostMapping("/sms")
     public ResponseEntity<Void> sendCodeMessage(@RequestBody AuthSendCodeRequest request){
-        messageSendService.execute(Long.valueOf(request.getPhoneNumber()));
+        messageSendService.execute(request.getPhoneNumber());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/sms/test")
     public ResponseEntity<String> sendCodeMessageTest(@RequestBody AuthSendCodeRequest request){
-        return ResponseEntity.ok(messageSendService.test(Long.valueOf(request.getPhoneNumber())));
+        return ResponseEntity.ok(messageSendService.test(request.getPhoneNumber()));
     }
 
     @PostMapping("/verify")

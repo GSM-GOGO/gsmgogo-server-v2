@@ -12,6 +12,7 @@ import team.gsmgogo.domain.auth.entity.VerifyCodeRedisEntity;
 import team.gsmgogo.domain.auth.repository.VerifyCodeJpaRepository;
 import team.gsmgogo.domain.auth.service.MessageSendService;
 import team.gsmgogo.domain.user.entity.UserEntity;
+import team.gsmgogo.domain.user.enums.IsVerify;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
@@ -31,16 +32,17 @@ public class MessageSendServiceImpl implements MessageSendService {
 
     @Override
     @Transactional
-    public void execute(Long code) {
+    public void execute(String phoneNumber) {
         UserEntity user = userFacade.getCurrentUser();
 
+        if(user.getIsVerify() == IsVerify.Enabled) throw new ExpectedException("이미 인증된 전화번호가 존재합니다.", HttpStatus.BAD_REQUEST);
         if(user.getVerifyCount() >= 5) throw new ExpectedException("하루에 인증은 5번만 할 수 있습니다.", HttpStatus.NO_CONTENT);
 
         String generatedCode = generateCode();
 
         Message message = new Message();
         message.setFrom(sendNumber);
-        message.setTo(code.toString());
+        message.setTo(phoneNumber);
         message.setText("GSM GOGO v2 [" + generatedCode + "]를 입력해주세요!");
 
         messageService.sendOne(new SingleMessageSendingRequest(message));
@@ -52,13 +54,14 @@ public class MessageSendServiceImpl implements MessageSendService {
             .build();
 
         user.plusCount();
+        user.setPhoneNumber(phoneNumber);
 
         verifyCodeJpaRepository.save(verifyCode);
         userJpaRepository.save(user);
     }
 
     @Override
-    public String test(Long code) {
+    public String test(String phoneNumber) {
         Long id = userFacade.getCurrentUser().getUserId();
         String generatedCode = generateCode();
 
