@@ -9,11 +9,11 @@ repositories {
 }
 
 bootJar {
-    mainClass = 'com.example.GsmgogoApiApplication'
+    mainClass = 'team.gsmgogo.GsmgogoApiApplication'
 }
 
 allprojects {
-    group = 'org.example'
+    group = 'team.gsmgogo'
     version = '0.0.1-SNAPSHOT'
     sourceCompatibility = '17'
 
