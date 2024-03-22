@@ -59,6 +59,10 @@ public class UserEntity {
         this.isVerify = isVerify;
     }
 
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public void plusCount(){
         verifyCount += 1;
     }
