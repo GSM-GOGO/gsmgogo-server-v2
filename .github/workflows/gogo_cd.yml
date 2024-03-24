@@ -24,4 +24,4 @@ jobs:
             git pull origin main
             docker stop gogo-server
             docker build -t gsmgogo/gsmgogo-server .
-            docker run -d -it -rm --env-file ./.env --name gogo-server gsmgogo/gsmgogo-server
+            docker run -d -it --env-file ./.env --name gogo-server gsmgogo/gsmgogo-server
