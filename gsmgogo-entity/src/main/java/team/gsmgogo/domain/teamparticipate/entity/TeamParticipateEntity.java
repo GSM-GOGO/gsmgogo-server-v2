@@ -18,7 +18,7 @@ public class TeamParticipateEntity {
     @Column(name = "team_participate_id")
     private Long teamParticipateId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn(name = "user_id")
     private UserEntity user;
 
