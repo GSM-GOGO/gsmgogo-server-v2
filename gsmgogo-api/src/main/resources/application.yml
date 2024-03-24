@@ -42,6 +42,3 @@ message:
   apiKey: ${API_KEY}
   apiSecretKey: ${API_SECRET_KEY}
   send: ${SEND_NUMBER}
-
-server:
-  port: 8090
