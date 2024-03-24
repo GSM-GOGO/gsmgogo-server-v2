@@ -4,9 +4,6 @@ jar { enabled = true }
 dependencies {
     implementation project(':gsmgogo-entity')
 
-    /* spring app */
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-
     /* h2 */
     runtimeOnly 'com.h2database:h2'
 
