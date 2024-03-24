@@ -21,7 +21,7 @@ public class CheckVerifyCodeServiceImpl implements CheckVerifyCodeService {
     private final UserJpaRepository userJpaRepository;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public void execute(String code) {
         UserEntity user = userFacade.getCurrentUser();
         Long id = user.getUserId();

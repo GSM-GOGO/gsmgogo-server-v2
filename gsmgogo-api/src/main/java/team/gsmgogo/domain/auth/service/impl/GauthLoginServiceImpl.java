@@ -95,15 +95,16 @@ public class GauthLoginServiceImpl implements GauthLoginService {
 
                     )
                     .role(Role.USER)
+                    .verifyCount(0L)
                     .point(30000).build();
 
             userId = userJpaRepository.save(newUser).getUserId();
 
             isSignedUp = false;
-        } else if (currentUser.getPhoneNumber() == null) {
-            isSignedUp = false;
+        } else if (currentUser.getIsVerify() == IsVerify.Enabled) {
             userId = currentUser.getUserId();
         } else {
+            isSignedUp = false;
             userId = currentUser.getUserId();
         }
 

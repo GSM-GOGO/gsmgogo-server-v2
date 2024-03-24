@@ -49,7 +49,7 @@ public class UserEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "is_verify", nullable = false)
-    private IsVerify isVerify;
+    private IsVerify isVerify = IsVerify.Disabled;
 
 
     @Column(name = "verify_count")
