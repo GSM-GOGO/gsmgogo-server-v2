@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  deploy_aws:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
