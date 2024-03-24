@@ -1,11 +1,9 @@
 bootJar {
     enabled = true
-    from(sourceSets.main.output)
 }
 
 jar {
     enabled = true
-    from(sourceSets.main.output)
 }
 
 ext {
