@@ -19,10 +19,10 @@ public class FollowEntity {
     private Long follwoId;
 
     @OneToOne
-    @Column(name = "team_id")
+    @PrimaryKeyJoinColumn(name = "team_id")
     private TeamEntity team;
 
     @OneToOne
-    @Column(name = "user_id")
+    @PrimaryKeyJoinColumn(name = "user_id")
     private UserEntity user;
 }
