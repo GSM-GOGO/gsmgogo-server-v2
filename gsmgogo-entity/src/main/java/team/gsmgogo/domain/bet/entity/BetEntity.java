@@ -20,15 +20,15 @@ public class BetEntity {
     private Long betId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn(name = "bet_user_id")
+    @JoinColumn(name = "bet_user_id")
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn(name = "bet_match_id")
+    @JoinColumn(name = "bet_match_id")
     private MatchEntity match;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn(name = "bet_win")
+    @JoinColumn(name = "bet_win")
     private TeamEntity team;
 
     @Column(name = "bet_point")
