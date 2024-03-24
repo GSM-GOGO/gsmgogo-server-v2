@@ -16,6 +16,7 @@ import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,12 +47,17 @@ public class TeamSaveServiceImpl implements TeamSaveService {
 
         TeamEntity savedTeam = teamJpaRepository.save(newTeam);
 
-//        List<TeamParticipateEntity> participates = request.getParticipates()
-//                .stream().map(user -> TeamParticipateEntity.builder()
-//                        .user(userJpaRepository.findByUserId(user.getUserId())
-//                                .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND)))
-//                        .
-//                )
+        List<TeamParticipateEntity> participates = request.getParticipates()
+                .stream().map(user -> TeamParticipateEntity.builder()
+                        .team(savedTeam)
+                        .user(userJpaRepository.findByUserId(user.getUserId())
+                                .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND)))
+                        .positionX(user.getPositionX())
+                        .positionY(user.getPositionY())
+                        .build()
+                ).toList();
+
+        teamParticipateJpaRepository.saveAll(participates);
 
     }
 }
