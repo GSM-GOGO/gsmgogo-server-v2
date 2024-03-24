@@ -5,9 +5,6 @@ import lombok.*;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.user.entity.UserEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "team_participate")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,9 +18,9 @@ public class TeamParticipateEntity {
     @Column(name = "team_participate_id")
     private Long teamParticipateId;
 
-    @OneToMany
+    @OneToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn(name = "user_id")
-    private List<UserEntity> user = new ArrayList<>();
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn(name = "team_id")
