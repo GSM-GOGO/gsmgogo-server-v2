@@ -1,5 +1,12 @@
-bootJar { enabled = true }
-jar { enabled = true }
+bootJar {
+    enabled = true
+    from(sourceSets.main.output)
+}
+
+jar {
+    enabled = true
+    from(sourceSets.main.output)
+}
 
 ext {
     set('springCloudVersion', "2023.0.0")
