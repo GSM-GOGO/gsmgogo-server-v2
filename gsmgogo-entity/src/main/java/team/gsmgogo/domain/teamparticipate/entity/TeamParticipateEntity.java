@@ -19,11 +19,11 @@ public class TeamParticipateEntity {
     private Long teamParticipateId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id")
     private TeamEntity team;
 
     @Column(name = "position_x")
