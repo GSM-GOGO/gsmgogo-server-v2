@@ -25,7 +25,7 @@ public class TeamParticipateEntity {
     @PrimaryKeyJoinColumn(name = "user_id")
     private List<UserEntity> user = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn(name = "team_id")
     private TeamEntity team;
 
