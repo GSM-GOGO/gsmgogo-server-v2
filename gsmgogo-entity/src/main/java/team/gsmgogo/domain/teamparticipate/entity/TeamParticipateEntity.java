@@ -19,10 +19,14 @@ public class TeamParticipateEntity {
     private Long teamParticipateId;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @ManyToOne(fetch = FetchType.LAZY)
 =======
     @OneToOne(fetch = FetchType.LAZY)
 >>>>>>> b1f4447 (Update TeamParticipate PrimaryJoinColumn -> JoinColumn)
+=======
+    @ManyToOne(fetch = FetchType.LAZY)
+>>>>>>> 67e0ad0 (Update UserEntity relational mapping)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
