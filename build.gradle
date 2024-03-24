@@ -9,7 +9,7 @@ repositories {
 }
 
 bootJar {
-    mainClass = 'team.gsmgogo.GsmgogoApiApplication'
+    mainClassName = 'team.gsmgogo.GsmgogoApiApplication'
 }
 
 allprojects {
