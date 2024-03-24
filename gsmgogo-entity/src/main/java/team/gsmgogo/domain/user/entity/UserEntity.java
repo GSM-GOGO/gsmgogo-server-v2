@@ -1,9 +1,13 @@
 package team.gsmgogo.domain.user.entity;
 
 import org.hibernate.annotations.ColumnDefault;
+import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
 import team.gsmgogo.domain.user.enums.*;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -54,6 +58,9 @@ public class UserEntity {
 
     @Column(name = "verify_count")
     private Long verifyCount;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TeamParticipateEntity> teamParticipates = new ArrayList<>();
 
     public void setVerify(IsVerify isVerify) {
         this.isVerify = isVerify;
