@@ -18,7 +18,7 @@ public class FollowEntity {
     @Column(name = "follow_id")
     private Long follwoId;
 
-    @OneToOne
+    @ManyToOne
     @PrimaryKeyJoinColumn(name = "team_id")
     private TeamEntity team;
 

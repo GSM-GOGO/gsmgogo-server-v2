@@ -5,6 +5,9 @@ import lombok.*;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.user.entity.UserEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "team_participate")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -12,17 +15,17 @@ import team.gsmgogo.domain.user.entity.UserEntity;
 @Builder
 @Getter
 @ToString
-public class TeamParticipate {
+public class TeamParticipateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_participate_id")
     private Long teamParticipateId;
 
-    @OneToOne
+    @OneToMany
     @PrimaryKeyJoinColumn(name = "user_id")
-    private UserEntity user;
+    private List<UserEntity> user = new ArrayList<>();
 
-    @OneToOne
+    @ManyToOne
     @PrimaryKeyJoinColumn(name = "team_id")
     private TeamEntity team;
 
