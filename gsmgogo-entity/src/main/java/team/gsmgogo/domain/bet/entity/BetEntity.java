@@ -7,7 +7,7 @@ import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.user.entity.UserEntity;
 
 @Entity
-@Table(name = "team_participate")
+@Table(name = "bet")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
