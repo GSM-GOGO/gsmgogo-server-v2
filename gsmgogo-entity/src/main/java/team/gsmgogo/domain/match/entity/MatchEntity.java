@@ -24,11 +24,11 @@ public class MatchEntity {
     private Long matchId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn(name = "team_a")
+    @JoinColumn(name = "team_a")
     private TeamEntity teamA;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn(name = "team_b")
+    @JoinColumn(name = "team_b")
     private TeamEntity teamB;
 
     @Column(name = "team_a_bet")
