@@ -8,8 +8,8 @@ repositories {
     mavenCentral()
 }
 
-bootJar {
-    mainClassName = 'team.gsmgogo.GsmgogoApiApplication'
+springBoot {
+    mainClass = 'team.gsmgogo.GsmgogoApiApplication'
 }
 
 allprojects {
