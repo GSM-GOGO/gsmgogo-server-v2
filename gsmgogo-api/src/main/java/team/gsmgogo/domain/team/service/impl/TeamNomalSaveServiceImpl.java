@@ -15,8 +15,12 @@ import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+// TODO 일반경기 확정되면 인원수 체크하는 로직 추가
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +38,16 @@ public class TeamNomalSaveServiceImpl implements TeamNomalSaveService {
         if (teamJpaRepository.existsByTeamGradeAndTeamClassAndTeamType
                 (currentUser.getUserGrade(), currentUser.getUserClass(), TeamType.NOMAL))
             throw new ExpectedException("이미 등록된 팀이 있습니다.", HttpStatus.BAD_REQUEST);
+
+        Set<Long> chackDublicate = new HashSet<>();
+
+        request.forEach(
+                participate -> {
+                    if (!chackDublicate.add(participate.getUserId())) {
+                        throw new ExpectedException("참가 인원이 중복되서는 안됩니다.", HttpStatus.BAD_REQUEST);
+                    }
+                }
+        );
 
         TeamEntity newTeam = TeamEntity.builder()
                 .teamClass(currentUser.getUserClass())

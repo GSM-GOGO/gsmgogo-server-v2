@@ -15,7 +15,10 @@ import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +37,16 @@ public class TeamSaveServiceImpl implements TeamSaveService {
         if (teamJpaRepository.existsByTeamGradeAndTeamClassAndTeamType
                 (currentUser.getUserGrade(), currentUser.getUserClass(), request.getTeamType()))
             throw new ExpectedException("이미 등록된 팀이 있습니다.", HttpStatus.BAD_REQUEST);
+
+        Set<Long> chackDublicate = new HashSet<>();
+
+        request.getParticipates().forEach(
+                participate -> {
+                    if (!chackDublicate.add(participate.getUserId())) {
+                        throw new ExpectedException("참가 인원이 중복되서는 안됩니다.", HttpStatus.BAD_REQUEST);
+                    }
+                }
+        );
 
         TeamEntity newTeam = TeamEntity.builder()
                 .teamName(request.getTeamName())
