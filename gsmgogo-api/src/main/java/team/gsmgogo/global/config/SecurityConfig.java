@@ -1,5 +1,6 @@
 package team.gsmgogo.global.config;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import team.gsmgogo.global.security.jwt.TokenProvider;
 import team.gsmgogo.global.security.jwt.filter.TokenFilter;
@@ -39,6 +40,9 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
+                        .requestMatchers(HttpMethod.POST, "/team").hasAuthority("LEADER")
+                        .requestMatchers(HttpMethod.POST, "/team/nomal").hasAuthority("LEADER")
+                        .requestMatchers(HttpMethod.DELETE, "/team").hasAuthority("LEADER")
                         .anyRequest().permitAll()
         );
 
