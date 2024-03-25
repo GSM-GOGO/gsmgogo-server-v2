@@ -6,10 +6,8 @@ import team.gsmgogo.domain.nomalteamparticipate.enums.NomalTeamType;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.user.entity.UserEntity;
 
-import java.util.List;
-
 @Entity
-@Table(name = "team")
+@Table(name = "nomal_team_participate")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder

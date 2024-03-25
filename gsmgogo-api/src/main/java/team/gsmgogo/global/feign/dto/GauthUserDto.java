@@ -12,6 +12,7 @@ public class GauthUserDto {
     private String name;
     private Integer grade;
     private Integer classNum;
+    private Integer num;
     @Enumerated(EnumType.STRING)
     private UserSchoolRole role;
 }

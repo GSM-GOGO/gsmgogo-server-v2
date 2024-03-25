@@ -1,6 +1,7 @@
 package team.gsmgogo.domain.user.entity;
 
 import org.hibernate.annotations.ColumnDefault;
+import team.gsmgogo.domain.nomalteamparticipate.entity.NomalTeamParticipateEntity;
 import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
 import team.gsmgogo.domain.user.enums.*;
 import jakarta.persistence.*;
@@ -37,6 +38,9 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private ClassEnum userClass;
 
+    @Column(name = "user_num")
+    private Integer userNum;
+
     @Column(name = "school_role")
     @Enumerated(EnumType.STRING)
     private SchoolRole schoolRole;
@@ -61,6 +65,9 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamParticipateEntity> teamParticipates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<NomalTeamParticipateEntity> nomalTeamParticipateEntities = new ArrayList<>();
 
     public void setVerify(IsVerify isVerify) {
         this.isVerify = isVerify;
