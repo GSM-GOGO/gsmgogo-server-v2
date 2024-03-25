@@ -17,7 +17,7 @@ jobs:
         with:
           host: ${{ secrets.REMOTE_IP }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
-          username: ${{ secrets.REMOTE_USER }}
+          username: ${{ secrets.REMOTE_USERNAME }}
           password: ${{ secrets.REMOTE_PASSWORD }}
           script: |
             cd /home/ubuntu/GSM-GOGO-Server
