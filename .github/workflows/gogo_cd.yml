@@ -11,18 +11,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
+        
       - name: excuting remote ssh commands
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.REMOTE_IP }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
-          username: ${{ secrets.REMOTE_USER }}
+          username: ${{ secrets.REMOTE_USERNAME }}
           password: ${{ secrets.REMOTE_PASSWORD }}
           script: |
             cd /home/ubuntu/GSM-GOGO-Server
             git pull origin main
+            ./gradlew bootJar
             docker stop gogo-server
-            docker build -t gsmgogo/gsmgogo-server .
+            docker rm gogo-server
+            sudo docker build -t gsmgogo/gsmgogo-server .
             docker run -d -it --env-file ./.env -p 10001:8080 --name gogo-server gsmgogo/gsmgogo-server
-            
