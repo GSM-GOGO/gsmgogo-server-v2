@@ -22,7 +22,7 @@ jobs:
           script: |
             cd /home/ubuntu/GSM-GOGO-Server
             git pull origin main
-            ./gradlew bootJar
+            ./gradlew build
             docker stop gogo-server
             docker rm gogo-server
             sudo docker build -t gsmgogo/gsmgogo-server .
