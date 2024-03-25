@@ -23,7 +23,7 @@ public class TeamEntity {
     @Column(name = "team_id")
     private Long teamId;
 
-    @Column(name = "team_name")
+    @Column(name = "team_name", length = 7)
     private String teamName;
 
     @Enumerated(EnumType.STRING)

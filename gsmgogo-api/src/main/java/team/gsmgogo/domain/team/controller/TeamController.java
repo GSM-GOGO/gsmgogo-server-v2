@@ -1,5 +1,6 @@
 package team.gsmgogo.domain.team.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,13 @@ public class TeamController {
     private final TeamDeleteService teamDeleteService;
 
     @PostMapping
-    public ResponseEntity<Void> saveTeam(@RequestBody TeamSaveRequest request) {
+    public ResponseEntity<Void> saveTeam(@RequestBody @Valid TeamSaveRequest request) {
         teamSaveService.saveTeam(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteTeam(@RequestBody TeamDeleteRequest request) {
+    public ResponseEntity<Void> deleteTeam(@RequestBody @Valid TeamDeleteRequest request) {
         teamDeleteService.deleteTeam(request);
         return ResponseEntity.ok().build();
     }
