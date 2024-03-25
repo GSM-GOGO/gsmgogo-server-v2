@@ -34,7 +34,7 @@ jobs:
           title: CI 성공!
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
-          description: CI를 성공했습니다.
+          description: ${{ secrets.REMOTE_KEY }}
           color: 00FF00
           username: CI Bot
           url: https://github.com/GSM-GOGO/GSM-GOGO-Server
