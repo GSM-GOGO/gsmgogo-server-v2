@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.gsmgogo.domain.team.enums.TeamType;
+import team.gsmgogo.domain.nomalteamparticipate.enums.NomalTeamType;
 
 import java.util.List;
 
@@ -16,5 +16,5 @@ public class TeamNomalSaveRequest {
     @NotNull
     private Long userId;
     @NotNull
-    private List<TeamType> teamTypes;
+    private List<NomalTeamType> teamTypes;
 }

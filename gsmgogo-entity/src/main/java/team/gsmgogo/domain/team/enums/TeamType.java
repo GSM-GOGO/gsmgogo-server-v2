@@ -10,7 +10,7 @@ public enum TeamType {
     SOCCER("SOCCER"),
     BASKETBALL("BASKETBALL"),
     VOLLEYBALL("VOLLEYBALL"),
-    TOSS_RUN("TOSS_RUN");
+    NOMAL("NOMAL"); // 일반경기
 
     private final String type;
 }
