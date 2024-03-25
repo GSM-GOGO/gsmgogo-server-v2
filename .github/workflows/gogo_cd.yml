@@ -23,6 +23,7 @@ jobs:
             cd /home/ubuntu/GSM-GOGO-Server
             git pull origin main
             docker stop gogo-server
+            docker rm gogo-server
             docker build -t gsmgogo/gsmgogo-server .
             docker run -d -it --env-file ./.env -p 10001:8080 --name gogo-server gsmgogo/gsmgogo-server
             
