@@ -3,6 +3,7 @@ package team.gsmgogo.domain.team.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import team.gsmgogo.domain.team.controller.dto.request.TeamDeleteRequest;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.team.service.TeamDeleteService;
@@ -18,8 +19,8 @@ public class TeamDeleteServiceImpl implements TeamDeleteService {
     private final UserFacade userFacade;
 
     @Override
-    public void deleteTeam(Long teamId) {
-        TeamEntity team = teamJpaRepository.findByTeamId(teamId)
+    public void deleteTeam(TeamDeleteRequest request) {
+        TeamEntity team = teamJpaRepository.findByTeamId(request.getTeamId())
                 .orElseThrow(() -> new ExpectedException("팀을 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
 
         UserEntity currentUser = userFacade.getCurrentUser();
