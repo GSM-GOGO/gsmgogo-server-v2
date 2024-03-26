@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.gsmgogo.domain.auth.controller.dto.request.AuthSendCodeRequest;
 import team.gsmgogo.domain.auth.controller.dto.response.AuthCallBackCodeResponse;
+import team.gsmgogo.domain.auth.controller.dto.response.AuthLoginUrlResponse;
 import team.gsmgogo.domain.auth.controller.dto.response.ReissueTokenDto;
 import team.gsmgogo.domain.auth.controller.dto.response.TokenDto;
 import team.gsmgogo.domain.auth.service.CheckVerifyCodeService;
@@ -39,12 +40,12 @@ public class AuthController {
     public Long refreshExp;
 
     @GetMapping("/login")
-    public void login(HttpServletResponse response) throws IOException {
+    public ResponseEntity<AuthLoginUrlResponse> login(HttpServletResponse response) throws IOException {
         String loginUrl = "https://gauth.co.kr/login?" +
                 "client_id=" + clientId + "&" +
                 "redirect_uri=" + redirectUri;
 
-        response.sendRedirect(loginUrl);
+        return ResponseEntity.ok(new AuthLoginUrlResponse(loginUrl));
     }
 
     @GetMapping("/callback")
