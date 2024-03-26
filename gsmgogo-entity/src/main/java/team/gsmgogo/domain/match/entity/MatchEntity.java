@@ -46,6 +46,7 @@ public class MatchEntity {
     @Column(name = "is_end")
     private Boolean isEnd;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "team_a_grade")
     private GradeEnum teamAGrade;
 
@@ -53,6 +54,7 @@ public class MatchEntity {
     @Column(name = "team_a_class_type")
     private TeamClassType teamAClassType;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "team_b_grade")
     private GradeEnum teamBGrade;
 
