@@ -48,4 +48,3 @@ server:
     session:
       cookie:
         same-site: none
-        secure: true
