@@ -17,6 +17,7 @@ public class CookieManager {
         cookie.setMaxAge(Math.toIntExact(maxAge) / 1000);
         cookie.setHttpOnly(httpOnly);
         cookie.setDomain(cookieDomain);
+        cookie.setSecure(true);
         cookie.setPath("/");
         response.addCookie(cookie);
     }
