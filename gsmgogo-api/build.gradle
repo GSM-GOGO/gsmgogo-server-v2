@@ -42,6 +42,9 @@ dependencies {
     implementation("org.springframework.session:spring-session-data-redis")
     implementation 'io.lettuce:lettuce-core:6.2.3.RELEASE'
 
+    /* validation */
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
     implementation group: 'net.minidev', name: 'json-smart', version: '2.5.0'
 }
 

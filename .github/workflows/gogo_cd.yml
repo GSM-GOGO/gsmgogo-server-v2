@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
+        
       - name: excuting remote ssh commands
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -28,4 +28,3 @@ jobs:
             docker rm gogo-server
             docker build -t gsmgogo/gsmgogo-server .
             docker run -d -it --env-file ./.env -p 10001:8080 --name gogo-server gsmgogo/gsmgogo-server
-            
