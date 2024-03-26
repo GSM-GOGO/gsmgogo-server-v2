@@ -2,7 +2,7 @@ package team.gsmgogo.domain.team.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import team.gsmgogo.domain.nomalteamparticipate.entity.NomalTeamParticipateEntity;
+import team.gsmgogo.domain.normalteamparticipate.entity.NormalTeamParticipateEntity;
 import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
@@ -49,5 +49,5 @@ public class TeamEntity {
     private List<TeamParticipateEntity> teamParticipates = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<NomalTeamParticipateEntity> nomalTeamParticipateEntities = new ArrayList<>();
+    private List<NormalTeamParticipateEntity> normalTeamParticipateEntities = new ArrayList<>();
 }

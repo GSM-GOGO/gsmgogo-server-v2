@@ -47,7 +47,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers(HttpMethod.POST, "/team").hasAuthority("LEADER")
-                        .requestMatchers(HttpMethod.POST, "/team/nomal").hasAuthority("LEADER")
+                        .requestMatchers(HttpMethod.POST, "/team/normal").hasAuthority("LEADER")
                         .requestMatchers(HttpMethod.DELETE, "/team").hasAuthority("LEADER")
                         .anyRequest().permitAll()
         );

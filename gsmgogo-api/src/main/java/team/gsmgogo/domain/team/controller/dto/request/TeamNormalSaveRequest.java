@@ -5,16 +5,16 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.gsmgogo.domain.nomalteamparticipate.enums.NomalTeamType;
+import team.gsmgogo.domain.normalteamparticipate.enums.NormalTeamType;
 
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TeamNomalSaveRequest {
+public class TeamNormalSaveRequest {
     @NotNull
     private Long userId;
     @NotNull
-    private List<NomalTeamType> teamTypes;
+    private List<NormalTeamType> teamTypes;
 }

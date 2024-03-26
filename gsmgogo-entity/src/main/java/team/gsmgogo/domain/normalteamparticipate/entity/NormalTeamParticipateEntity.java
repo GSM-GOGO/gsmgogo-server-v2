@@ -1,23 +1,23 @@
-package team.gsmgogo.domain.nomalteamparticipate.entity;
+package team.gsmgogo.domain.normalteamparticipate.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import team.gsmgogo.domain.nomalteamparticipate.enums.NomalTeamType;
+import team.gsmgogo.domain.normalteamparticipate.enums.NormalTeamType;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.user.entity.UserEntity;
 
 @Entity
-@Table(name = "nomal_team_participate")
+@Table(name = "normal_team_participate")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Getter
 @ToString
-public class NomalTeamParticipateEntity {
+public class NormalTeamParticipateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "nomal_team_participate_id")
-    private Long nomalTeamParticipateId;
+    @Column(name = "normal_team_participate_id")
+    private Long normalTeamParticipateId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -28,6 +28,6 @@ public class NomalTeamParticipateEntity {
     private TeamEntity team;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "nomal_team_type")
-    private NomalTeamType nomalTeamType;
+    @Column(name = "normal_team_type")
+    private NormalTeamType normalTeamType;
 }
