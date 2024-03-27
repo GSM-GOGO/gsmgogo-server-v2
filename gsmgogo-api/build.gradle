@@ -12,7 +12,6 @@ ext {
 
 dependencies {
     implementation project(':gsmgogo-entity')
-    implementation project(':gsmgogo-batch')
 
     /* spring app */
     implementation 'org.springframework.boot:spring-boot-starter-web'
