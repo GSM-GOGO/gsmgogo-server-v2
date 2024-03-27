@@ -42,9 +42,3 @@ message:
   apiKey: ${API_KEY}
   apiSecretKey: ${API_SECRET_KEY}
   send: ${SEND_NUMBER}
-
-server:
-  servlet:
-    session:
-      cookie:
-        same-site: none

@@ -2,10 +2,8 @@ package team.gsmgogo.global.security.jwt;
 
 import io.jsonwebtoken.*;
 import team.gsmgogo.global.exception.error.ExpectedException;
-import team.gsmgogo.global.manager.CookieManager;
 import team.gsmgogo.global.security.jwt.dto.TokenResponse;
 import team.gsmgogo.global.security.principle.AuthDetailsService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,6 @@ import java.util.Date;
 public class TokenProvider {
 
     private final AuthDetailsService authDetailsService;
-    private final CookieManager cookieManager;
 
     @Value("${spring.jwt.secretKey}")
     private String secretKey;
@@ -57,14 +54,6 @@ public class TokenProvider {
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .compact();
-    }
-
-    public String resolveAccessToken(HttpServletRequest request) {
-        return cookieManager.getCookieValue(request, ACCESS_KEY);
-    }
-
-    public String resolveRefreshToken(HttpServletRequest request) {
-        return cookieManager.getCookieValue(request, REFRESH_KEY);
     }
 
     public String getRefreshTokenUserId(String token){
