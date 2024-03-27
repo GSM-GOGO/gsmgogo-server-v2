@@ -5,14 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team.gsmgogo.domain.team.controller.dto.request.TeamBadmintonSaveRequest;
-import team.gsmgogo.domain.team.controller.dto.request.TeamDeleteRequest;
-import team.gsmgogo.domain.team.controller.dto.request.TeamNormalSaveRequest;
-import team.gsmgogo.domain.team.controller.dto.request.TeamSaveRequest;
-import team.gsmgogo.domain.team.service.TeamBadmintonSaveService;
-import team.gsmgogo.domain.team.service.TeamDeleteService;
-import team.gsmgogo.domain.team.service.TeamNormalSaveService;
-import team.gsmgogo.domain.team.service.TeamSaveService;
+import team.gsmgogo.domain.team.controller.dto.request.*;
+import team.gsmgogo.domain.team.service.*;
 
 import java.util.List;
 
@@ -25,6 +19,7 @@ public class TeamController {
     private final TeamNormalSaveService teamNormalSaveService;
     private final TeamDeleteService teamDeleteService;
     private final TeamBadmintonSaveService teamBadmintonSaveService;
+    private final TeamFollowService teamFollowService;
 
     @PostMapping
     public ResponseEntity<Void> saveTeam(@RequestBody @Valid TeamSaveRequest request) {
@@ -48,6 +43,12 @@ public class TeamController {
     public ResponseEntity<Void> saveTeamBadminton(@RequestBody @Valid TeamBadmintonSaveRequest request) {
         teamBadmintonSaveService.saveBadmintonTeam(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/follow")
+    public ResponseEntity<Void> followTeam(@RequestBody @Valid TeamFollowRequest request) {
+        teamFollowService.followTeam(request);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
