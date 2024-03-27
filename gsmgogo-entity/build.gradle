@@ -10,6 +10,9 @@ dependencies {
 	implementation("org.springframework.session:spring-session-data-redis")
 	implementation 'io.lettuce:lettuce-core:6.2.3.RELEASE'
 
+	/* mysql */
+	implementation 'com.mysql:mysql-connector-j:8.3.0'
+
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
