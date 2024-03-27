@@ -1,5 +1,5 @@
-bootJar { enabled = true }
-jar { enabled = true }
+bootJar { enabled = false }
+jar { enabled = false }
 
 dependencies {
     implementation project(':gsmgogo-entity')
