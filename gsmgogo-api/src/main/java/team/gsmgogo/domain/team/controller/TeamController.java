@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.gsmgogo.domain.team.controller.dto.request.*;
+import team.gsmgogo.domain.team.controller.dto.response.TeamListResponse;
+import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.team.service.*;
 
 import java.util.List;
@@ -20,6 +22,13 @@ public class TeamController {
     private final TeamDeleteService teamDeleteService;
     private final TeamBadmintonSaveService teamBadmintonSaveService;
     private final TeamFollowService teamFollowService;
+    private final TeamGetService teamGetService;
+
+    @GetMapping
+    public ResponseEntity<TeamListResponse> getTeamList(@RequestParam(name = "type") String type){
+        TeamListResponse teamListResponse = teamGetService.getTeam(TeamType.valueOf(type));
+        return ResponseEntity.ok(teamListResponse);
+    }
 
     @PostMapping
     public ResponseEntity<Void> saveTeam(@RequestBody @Valid TeamSaveRequest request) {

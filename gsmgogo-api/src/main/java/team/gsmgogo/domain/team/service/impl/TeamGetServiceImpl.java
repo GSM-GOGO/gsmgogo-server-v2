@@ -2,9 +2,8 @@ package team.gsmgogo.domain.team.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import team.gsmgogo.domain.follow.entity.FollowEntity;
 import team.gsmgogo.domain.follow.repository.FollowJpaRepository;
-import team.gsmgogo.domain.team.controller.dto.response.TeamGetResponse;
+import team.gsmgogo.domain.team.controller.dto.response.TeamListResponse;
 import team.gsmgogo.domain.team.controller.dto.response.TeamInfoDto;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.enums.TeamType;
@@ -23,11 +22,11 @@ public class TeamGetServiceImpl implements TeamGetService {
     private final UserFacade userFacade;
 
     @Override
-    public TeamGetResponse getTeam(TeamType teamType) {
+    public TeamListResponse getTeam(TeamType teamType) {
         UserEntity user = userFacade.getCurrentUser();
         List<TeamEntity> teamEntityList = teamJpaRepository.findByTeamType(teamType);
 
-        return new TeamGetResponse(
+        return new TeamListResponse(
             teamEntityList.stream().map(teamEntity -> new TeamInfoDto(
                 teamEntity.getTeamId(),
                 teamEntity.getTeamName(),

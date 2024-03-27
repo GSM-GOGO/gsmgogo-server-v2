@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TeamGetResponse {
+public class TeamListResponse {
     private List<TeamInfoDto> teamInfoDtoList;
 }
