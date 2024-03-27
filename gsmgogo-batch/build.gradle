@@ -4,9 +4,6 @@ jar { enabled = false }
 dependencies {
     implementation project(':gsmgogo-entity')
 
-    /* h2 */
-    runtimeOnly 'com.h2database:h2'
-
     /* spring boot */
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

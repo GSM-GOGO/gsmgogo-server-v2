@@ -36,9 +36,6 @@ dependencies {
     /* cool sms */
     implementation 'net.nurigo:sdk:4.3.0'
 
-    /* h2 */
-    runtimeOnly 'com.h2database:h2'
-
     /* redis */
     implementation("org.springframework.session:spring-session-data-redis")
     implementation 'io.lettuce:lettuce-core:6.2.3.RELEASE'
