@@ -3,6 +3,7 @@ package team.gsmgogo.domain.team.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.team.controller.dto.request.TeamBadmintonSaveRequest;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.enums.BadmintonRank;
@@ -33,6 +34,7 @@ public class TeamBadmintonSaveServiceImpl implements TeamBadmintonSaveService {
     private final UserFacade userFacade;
 
     @Override
+    @Transactional
     public void saveBadmintonTeam(TeamBadmintonSaveRequest request) {
         UserEntity currentUser = userFacade.getCurrentUser();
 

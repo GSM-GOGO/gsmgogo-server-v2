@@ -1,7 +1,7 @@
 package team.gsmgogo.domain.team.service;
 
-import team.gsmgogo.domain.team.controller.dto.request.TeamBadmintonSaveRequest;
+import team.gsmgogo.domain.team.controller.dto.request.TeamFollowRequest;
 
 public interface TeamFollowService {
-    void followTeam(TeamBadmintonSaveRequest request);
+    void followTeam(TeamFollowRequest request);
 }
