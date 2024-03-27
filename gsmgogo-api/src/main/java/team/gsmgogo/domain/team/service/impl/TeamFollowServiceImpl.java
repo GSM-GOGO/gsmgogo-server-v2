@@ -33,6 +33,7 @@ public class TeamFollowServiceImpl implements TeamFollowService {
         FollowEntity follow = FollowEntity.builder()
                 .team(teamJpaRepository.findByTeamId(request.getTeamId())
                         .orElseThrow(() -> new ExpectedException("팀을 찾을 수 없습니다.", HttpStatus.NOT_FOUND)))
+                .user(currentUser)
                 .build();
 
         followJpaRepository.save(follow);
