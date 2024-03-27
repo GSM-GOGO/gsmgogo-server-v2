@@ -65,7 +65,7 @@ public class TeamBadmintonSaveServiceImpl implements TeamBadmintonSaveService {
         BadmintonRank rank = null;
 
         if (
-            participateA.getGender() == Gender.MALE && participateB.getGender() == Gender.MALE ||
+            participateA.getGender() == Gender.MALE && participateB.getGender() == Gender.MALE &&
             participateA.getUserGrade() == GradeEnum.ONE && participateB.getUserGrade() == GradeEnum.ONE
         ) {
             rank = BadmintonRank.C;
@@ -74,7 +74,7 @@ public class TeamBadmintonSaveServiceImpl implements TeamBadmintonSaveService {
         ) {
             rank = BadmintonRank.D;
         } else if (
-                participateA.getGender() == Gender.MALE && participateB.getGender() == Gender.MALE ||
+                participateA.getGender() == Gender.MALE && participateB.getGender() == Gender.MALE &&
                 (participateA.getUserGrade() == GradeEnum.TWO || participateA.getUserGrade() == GradeEnum.THREE)
                         &&
                 (participateB.getUserGrade() == GradeEnum.TWO || participateB.getUserGrade() == GradeEnum.THREE)
