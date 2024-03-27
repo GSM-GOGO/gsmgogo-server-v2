@@ -15,8 +15,6 @@ import team.gsmgogo.domain.auth.service.CheckVerifyCodeService;
 import team.gsmgogo.domain.auth.service.GauthLoginService;
 import team.gsmgogo.domain.auth.service.MessageSendService;
 import team.gsmgogo.domain.auth.service.TokenReissueService;
-import team.gsmgogo.global.manager.CookieManager;
-import team.gsmgogo.global.security.jwt.TokenProvider;
 
 import java.io.IOException;
 
@@ -28,7 +26,6 @@ public class AuthController {
     private final CheckVerifyCodeService checkVerifyCodeService;
     private final GauthLoginService gauthLoginService;
     private final TokenReissueService tokenReissueService;
-    private final CookieManager cookieManager;
 
     @Value("${gauth.clientId}")
     private String clientId;
@@ -51,17 +48,17 @@ public class AuthController {
     @GetMapping("/callback")
     public ResponseEntity<AuthCallBackCodeResponse> callback(@RequestParam("code") String code, HttpServletResponse response) {
         TokenDto tokenDto = gauthLoginService.execute(code);
-        cookieManager.addTokenCookie(response, TokenProvider.ACCESS_KEY, tokenDto.getAccessToken(), accessExp, true);
-        cookieManager.addTokenCookie(response, TokenProvider.REFRESH_KEY, tokenDto.getRefreshToken(), refreshExp, true);
+        response.addHeader("Authorization", tokenDto.getAccessToken());
+        response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
         return ResponseEntity.ok(new AuthCallBackCodeResponse(tokenDto.getIsSignup()));
     }
 
     @GetMapping("/refresh")
     public ResponseEntity<Void> refresh(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = cookieManager.getCookieValue(request, TokenProvider.REFRESH_KEY);
+        String refreshToken = request.getHeader("Refresh-Token");
         ReissueTokenDto reissueTokenDto = tokenReissueService.execute(refreshToken);
-        cookieManager.addTokenCookie(response, TokenProvider.ACCESS_KEY, reissueTokenDto.getAccessToken(), accessExp, true);
-        cookieManager.addTokenCookie(response, TokenProvider.REFRESH_KEY, reissueTokenDto.getRefreshToken(), refreshExp, true);
+        response.addHeader("Authorization", reissueTokenDto.getAccessToken());
+        response.addHeader("Refresh-Token", reissueTokenDto.getRefreshToken());
         return ResponseEntity.ok().build();
     }
 
