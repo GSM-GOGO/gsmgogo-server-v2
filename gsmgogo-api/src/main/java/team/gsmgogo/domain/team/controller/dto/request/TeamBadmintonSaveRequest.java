@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.gsmgogo.domain.team.enums.TeamType;
 
 import java.util.List;
 

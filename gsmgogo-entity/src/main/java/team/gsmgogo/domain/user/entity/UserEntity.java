@@ -40,6 +40,10 @@ public class UserEntity {
     @Column(name = "user_num")
     private Integer userNum;
 
+    @Column(name = "user_gender")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     @Column(name = "school_role")
     @Enumerated(EnumType.STRING)
     private SchoolRole schoolRole;
