@@ -1,13 +1,10 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:gogodb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    url: ${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
   jpa:
     hibernate:
       ddl-auto: create
@@ -15,8 +12,7 @@ spring:
       hibernate:
         format_sql: true
         use_sql_comments: true
-    database-platform: org.hibernate.dialect.H2Dialect
-
+    database-platform: org.hibernate.dialect.MySQLDialect
 
   jwt:
     secretKey: ${SECRET_KEY}
@@ -28,6 +24,10 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
+
+  batch:
+    job:
+      enabled: false
 
 gauth:
   clientId: ${CLIENT_ID}
