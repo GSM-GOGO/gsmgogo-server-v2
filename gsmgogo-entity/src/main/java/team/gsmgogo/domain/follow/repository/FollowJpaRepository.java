@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface FollowJpaRepository extends JpaRepository<FollowEntity, Long> {
     boolean existsByUserAndTeam(UserEntity user, TeamEntity team);
+
+    boolean existsByUser(UserEntity user);
 }

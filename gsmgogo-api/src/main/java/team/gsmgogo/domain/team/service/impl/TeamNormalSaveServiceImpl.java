@@ -3,6 +3,7 @@ package team.gsmgogo.domain.team.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.normalteamparticipate.entity.NormalTeamParticipateEntity;
 import team.gsmgogo.domain.normalteamparticipate.repository.NormalTeamParticipateJpaRepository;
 import team.gsmgogo.domain.team.controller.dto.request.TeamNormalSaveRequest;
@@ -31,6 +32,7 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
     private final UserFacade userFacade;
 
     @Override
+    @Transactional
     public void saveNormalTeam(List<TeamNormalSaveRequest> request) {
         UserEntity currentUser = userFacade.getCurrentUser();
 

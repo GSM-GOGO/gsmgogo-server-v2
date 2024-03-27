@@ -3,6 +3,7 @@ package team.gsmgogo.domain.team.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import team.gsmgogo.domain.normalteamparticipate.entity.NormalTeamParticipateEntity;
+import team.gsmgogo.domain.team.enums.BadmintonRank;
 import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
@@ -44,6 +45,10 @@ public class TeamEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "team_class")
     private ClassEnum teamClass;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "badminton_rank")
+    private BadmintonRank badmintonRank;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamParticipateEntity> teamParticipates = new ArrayList<>();
