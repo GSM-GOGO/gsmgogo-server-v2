@@ -31,11 +31,11 @@ public class TeamGetServiceImpl implements TeamGetService {
             teamEntityList.stream().map(teamEntity -> new TeamInfoDto(
                 teamEntity.getTeamId(),
                 teamEntity.getTeamName(),
-                teamEntity.getTeamGrade().toString(),
-                teamEntity.getTeamType().getType(),
+                teamEntity.getTeamGrade().getRole(),
+                teamEntity.getTeamClass().getRole(),
                 teamEntity.getWinCount(),
                 followJpaRepository.existsByUserAndTeam(user, teamEntity),
-                "뭐용"
+                teamEntity.getBadmintonRank().name()
             )).toList()
         );
     }
