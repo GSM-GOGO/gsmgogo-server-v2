@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -66,4 +66,6 @@ public class UserEntity {
     public void plusCount(){
         verifyCount += 1;
     }
+
+    public void resetCount(){ verifyCount = 0L; }
 }
