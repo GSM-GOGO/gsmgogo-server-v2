@@ -11,7 +11,7 @@ import team.gsmgogo.domain.user.enums.GradeEnum;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "match")
+@Table(name = "matchs")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder

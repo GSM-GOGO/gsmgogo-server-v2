@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -79,4 +79,6 @@ public class UserEntity {
     public void plusCount(){
         verifyCount += 1;
     }
+
+    public void resetCount(){ verifyCount = 0L; }
 }
