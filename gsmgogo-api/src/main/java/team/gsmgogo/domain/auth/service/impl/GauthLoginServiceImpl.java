@@ -54,6 +54,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
 
         GauthUserDto gauthUserDto = gauthInfo.getInfo("Bearer " + gauthTokenDto.getAccessToken());
 
+        Gender gender = gauthUserDto.getGender();
         Integer grade = gauthUserDto.getGrade();
         Integer classNum = gauthUserDto.getClassNum();
         Integer userNum = gauthUserDto.getNum();
@@ -98,6 +99,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
                     .role(Role.USER)
                     .verifyCount(0L)
                     .userNum(userNum)
+                    .gender(gender)
                     .point(30000).build();
 
             userId = userJpaRepository.save(newUser).getUserId();

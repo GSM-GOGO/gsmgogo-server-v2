@@ -7,10 +7,9 @@ import lombok.Getter;
 @Getter
 public enum TeamType {
 
-    SOCCER("SOCCER"),
-    BASKETBALL("BASKETBALL"),
-    VOLLEYBALL("VOLLEYBALL"),
-    NORMAL("NORMAL"); // 일반경기
+    SOCCER,
+    BADMINTON,
+    VOLLEYBALL,
+    NORMAL; // 일반경기
 
-    private final String type;
 }
