@@ -13,6 +13,7 @@ import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
 import team.gsmgogo.domain.teamparticipate.repository.TeamParticipateJpaRepository;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
+import team.gsmgogo.domain.user.enums.Gender;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
@@ -20,7 +21,11 @@ import team.gsmgogo.global.facade.UserFacade;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+// TODO
+//      축구: 남자 9명
+//      배구: 남자 8명, 여자 1명 = 총 9명
 
 @Service
 @RequiredArgsConstructor
@@ -42,13 +47,19 @@ public class TeamSaveServiceImpl implements TeamSaveService {
 
         Set<Long> chackDublicate = new HashSet<>();
 
+        AtomicInteger participateCount = new AtomicInteger();
         request.getParticipates().forEach(
                 participate -> {
                     if (!chackDublicate.add(participate.getUserId())) {
                         throw new ExpectedException("참가 인원이 중복되서는 안됩니다.", HttpStatus.BAD_REQUEST);
                     }
+
+                    participateCount.getAndIncrement();
                 }
         );
+
+        if (participateCount.get() != 9)
+            throw new ExpectedException("축구의 인원수는 9명입니다.", HttpStatus.BAD_REQUEST);
 
         request.getParticipates().stream().map(user -> {
             UserEntity findUser = userJpaRepository.findByUserId(user.getUserId())
@@ -78,8 +89,7 @@ public class TeamSaveServiceImpl implements TeamSaveService {
         List<TeamParticipateEntity> participates = request.getParticipates()
                 .stream().map(user -> TeamParticipateEntity.builder()
                         .team(savedTeam)
-                        .user(userJpaRepository.findByUserId(user.getUserId())
-                                .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND)))
+                        .user(getUser(user.getUserId()))
                         .positionX(user.getPositionX())
                         .positionY(user.getPositionY())
                         .build()
@@ -94,6 +104,16 @@ public class TeamSaveServiceImpl implements TeamSaveService {
             return TeamClassType.SW;
         else
             return TeamClassType.EB;
+    }
+
+    private UserEntity getUser(Long userId) {
+        UserEntity user = userJpaRepository.findByUserId(userId)
+                .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
+
+        if (user.getGender() != Gender.MALE)
+            throw new ExpectedException("축구 경기는 남학생만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
+
+        return user;
     }
 
 }
