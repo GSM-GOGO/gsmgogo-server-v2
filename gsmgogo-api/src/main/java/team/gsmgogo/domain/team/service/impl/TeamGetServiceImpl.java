@@ -10,6 +10,7 @@ import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.team.service.TeamGetService;
+import team.gsmgogo.domain.teamparticipate.repository.TeamParticipateJpaRepository;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
 import team.gsmgogo.global.exception.error.ExpectedException;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamGetServiceImpl implements TeamGetService {
     private final TeamJpaRepository teamJpaRepository;
+    private final TeamParticipateJpaRepository teamParticipateJpaRepository;
     private final FollowJpaRepository followJpaRepository;
     private final UserFacade userFacade;
 
@@ -38,6 +40,7 @@ public class TeamGetServiceImpl implements TeamGetService {
                 toTeamClassType(teamEntity.getTeamClass()),
                 teamEntity.getWinCount(),
                 followJpaRepository.existsByUserAndTeam(user, teamEntity),
+                teamParticipateJpaRepository.existsByUserAndTeam(user, teamEntity),
                 teamEntity.getBadmintonRank()
             )).toList();
     }

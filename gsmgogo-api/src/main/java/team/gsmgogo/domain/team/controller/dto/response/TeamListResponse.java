@@ -26,6 +26,7 @@ public class TeamListResponse {
     private TeamClassType teamClassType;
     private Integer winCount;
     private boolean isFollow;
+    private boolean isMyTeam = false;
     @Nullable
     @Enumerated(EnumType.STRING)
     private BadmintonRank badmintonRank;
