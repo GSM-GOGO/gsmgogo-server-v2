@@ -5,12 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.team.controller.dto.request.TeamSaveRequest;
+import team.gsmgogo.domain.team.controller.dto.response.TeamClassType;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.team.service.TeamSaveService;
 import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
 import team.gsmgogo.domain.teamparticipate.repository.TeamParticipateJpaRepository;
 import team.gsmgogo.domain.user.entity.UserEntity;
+import team.gsmgogo.domain.user.enums.ClassEnum;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
@@ -48,6 +50,20 @@ public class TeamSaveServiceImpl implements TeamSaveService {
                 }
         );
 
+        request.getParticipates().stream().map(user -> {
+            UserEntity findUser = userJpaRepository.findByUserId(user.getUserId())
+                    .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
+
+            if (
+                    findUser.getUserGrade() != currentUser.getUserGrade() ||
+                            toTeamClassType(findUser.getUserClass()) != toTeamClassType(currentUser.getUserClass())
+            ) {
+                throw new ExpectedException("참가 인원이 같은 학년, 과의 학생 확인해주세요.", HttpStatus.BAD_REQUEST);
+            }
+
+            return findUser;
+        }).toList();
+
         TeamEntity newTeam = TeamEntity.builder()
                 .teamName(request.getTeamName())
                 .winCount(0)
@@ -72,4 +88,12 @@ public class TeamSaveServiceImpl implements TeamSaveService {
         teamParticipateJpaRepository.saveAll(participates);
 
     }
+
+    private TeamClassType toTeamClassType(ClassEnum classEnum) {
+        if (classEnum == ClassEnum.ONE || classEnum == ClassEnum.TWO)
+            return TeamClassType.SW;
+        else
+            return TeamClassType.EB;
+    }
+
 }

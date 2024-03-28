@@ -7,11 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.normalteamparticipate.entity.NormalTeamParticipateEntity;
 import team.gsmgogo.domain.normalteamparticipate.repository.NormalTeamParticipateJpaRepository;
 import team.gsmgogo.domain.team.controller.dto.request.TeamNormalSaveRequest;
+import team.gsmgogo.domain.team.controller.dto.response.TeamClassType;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.team.service.TeamNormalSaveService;
 import team.gsmgogo.domain.user.entity.UserEntity;
+import team.gsmgogo.domain.user.enums.ClassEnum;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
@@ -41,7 +43,6 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
             throw new ExpectedException("이미 등록된 팀이 있습니다.", HttpStatus.BAD_REQUEST);
 
         Set<Long> chackDublicate = new HashSet<>();
-
         request.forEach(
                 participate -> {
                     if (!chackDublicate.add(participate.getUserId())) {
@@ -49,6 +50,21 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
                     }
                 }
         );
+
+        request.stream().map(user -> {
+            UserEntity findUser = userJpaRepository.findByUserId(user.getUserId())
+                    .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
+
+            if (
+                    findUser.getUserGrade() != currentUser.getUserGrade() ||
+                    toTeamClassType(findUser.getUserClass()) != toTeamClassType(currentUser.getUserClass())
+            ) {
+                throw new ExpectedException("참가 인원이 같은 학년, 과의 학생 확인해주세요.", HttpStatus.BAD_REQUEST);
+            }
+
+            return findUser;
+        }).toList();
+
 
         TeamEntity newTeam = TeamEntity.builder()
                 .teamClass(currentUser.getUserClass())
@@ -68,5 +84,13 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
 
         normalTeamParticipateJpaRepository.saveAll(normalTeamParticipateEntities);
     }
+
+    private TeamClassType toTeamClassType(ClassEnum classEnum) {
+        if (classEnum == ClassEnum.ONE || classEnum == ClassEnum.TWO)
+            return TeamClassType.SW;
+        else
+            return TeamClassType.EB;
+    }
+
 }
 
