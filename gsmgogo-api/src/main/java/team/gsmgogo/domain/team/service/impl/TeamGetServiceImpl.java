@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.gsmgogo.domain.follow.repository.FollowJpaRepository;
 import team.gsmgogo.domain.team.controller.dto.response.TeamListResponse;
-import team.gsmgogo.domain.team.controller.dto.response.TeamInfoDto;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.team.repository.TeamJpaRepository;
@@ -22,12 +21,11 @@ public class TeamGetServiceImpl implements TeamGetService {
     private final UserFacade userFacade;
 
     @Override
-    public TeamListResponse getTeam(TeamType teamType) {
+    public List<TeamListResponse> getTeam(TeamType teamType) {
         UserEntity user = userFacade.getCurrentUser();
         List<TeamEntity> teamEntityList = teamJpaRepository.findByTeamType(teamType);
 
-        return new TeamListResponse(
-            teamEntityList.stream().map(teamEntity -> new TeamInfoDto(
+        return teamEntityList.stream().map(teamEntity -> new TeamListResponse(
                 teamEntity.getTeamId(),
                 teamEntity.getTeamName(),
                 teamEntity.getTeamGrade().getRole(),
@@ -35,7 +33,6 @@ public class TeamGetServiceImpl implements TeamGetService {
                 teamEntity.getWinCount(),
                 followJpaRepository.existsByUserAndTeam(user, teamEntity),
                 teamEntity.getBadmintonRank().name()
-            )).toList()
-        );
+            )).toList();
     }
 }

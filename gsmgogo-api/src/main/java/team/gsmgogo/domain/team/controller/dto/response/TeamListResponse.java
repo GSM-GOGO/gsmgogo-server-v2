@@ -13,5 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TeamListResponse {
-    private List<TeamInfoDto> teamInfoDtoList;
+    private Long teamId;
+    private String teamName;
+    private String teamGrade;
+    private String teamClassType;
+    private Integer winCount;
+    private boolean isFollow;
+    private String badmintonRank;
 }

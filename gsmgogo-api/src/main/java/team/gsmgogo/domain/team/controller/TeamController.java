@@ -25,9 +25,8 @@ public class TeamController {
     private final TeamGetService teamGetService;
 
     @GetMapping
-    public ResponseEntity<TeamListResponse> getTeamList(@RequestParam(name = "type") String type){
-        TeamListResponse teamListResponse = teamGetService.getTeam(TeamType.valueOf(type));
-        return ResponseEntity.ok(teamListResponse);
+    public ResponseEntity<List<TeamListResponse>> getTeamList(@RequestParam(name = "type") String type){
+        return ResponseEntity.ok(teamGetService.getTeam(TeamType.valueOf(type)));
     }
 
     @PostMapping
