@@ -13,8 +13,5 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByUserEmail(String userEmail);
     Optional<UserEntity> findByUserId(Long userId);
 
-
-    @Query("SELECT u FROM UserEntity u WHERE u.userName = :name AND u.userGrade = :grade")
-    List<UserEntity> findUserNameAndUserGradeByLimited(@Param("name") String name, @Param("grade") GradeEnum grade, int limit);
-
+    List<UserEntity> findTop5ByUserNameContainingAndUserGradeOrderByUserNameAsc(String userName, GradeEnum userGrade);
 }

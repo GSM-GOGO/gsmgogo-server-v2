@@ -19,7 +19,7 @@ public class UserController {
     private final QueryUserInfoService queryUserInfoService;
 
     @GetMapping
-    public ResponseEntity<List<UserInfoResponse>> queryUser(@RequestParam String name) {
+    public ResponseEntity<List<UserInfoResponse>> queryUser(@RequestParam(name = "name") String name) {
         return ResponseEntity.ok(queryUserInfoService.queryUserInfo(name));
     }
 

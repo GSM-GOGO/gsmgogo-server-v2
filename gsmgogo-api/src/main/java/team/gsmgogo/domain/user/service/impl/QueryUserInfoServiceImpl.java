@@ -23,7 +23,7 @@ public class QueryUserInfoServiceImpl implements QueryUserInfoService {
     public List<UserInfoResponse> queryUserInfo(String name) {
         UserEntity currentUser = userFacade.getCurrentUser();
 
-        return userJpaRepository.findUserNameAndUserGradeByLimited(name, currentUser.getUserGrade(), 10)
+        return userJpaRepository.findTop5ByUserNameContainingAndUserGradeOrderByUserNameAsc(name, currentUser.getUserGrade())
                 .stream().map(user -> UserInfoResponse.builder()
                         .userId(user.getUserId())
                         .userName(user.getUserName())
