@@ -38,7 +38,7 @@ public class TeamGetServiceImpl implements TeamGetService {
                 toTeamClassType(teamEntity.getTeamClass()),
                 teamEntity.getWinCount(),
                 followJpaRepository.existsByUserAndTeam(user, teamEntity),
-                teamEntity.getBadmintonRank().name()
+                teamEntity.getBadmintonRank()
             )).toList();
     }
 
