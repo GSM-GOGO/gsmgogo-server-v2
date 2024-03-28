@@ -8,10 +8,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Getter
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TeamInfoDto {
     @NotNull
@@ -32,6 +32,5 @@ public class TeamInfoDto {
     @NotNull
     private boolean isFollow;
 
-    @NotNull
     private String badmintonRank;
 }
