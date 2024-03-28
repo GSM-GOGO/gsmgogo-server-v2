@@ -39,7 +39,6 @@ public class ResetLoginCountJob {
                     userEntity.resetCount();
                     userJpaRepository.save(userEntity);
                 });
-                log.info("w");
                 return RepeatStatus.FINISHED;
             },
             platformTransactionManager)
