@@ -1,6 +1,7 @@
 package team.gsmgogo.domain.team.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,25 +65,7 @@ public class TeamBadmintonSaveServiceImpl implements TeamBadmintonSaveService {
         )
             throw new ExpectedException("이미 등록된 팀이 있습니다.", HttpStatus.BAD_REQUEST);
 
-        BadmintonRank rank = null;
-
-        if (
-            participateA.getGender() == Gender.MALE && participateB.getGender() == Gender.MALE &&
-            participateA.getUserGrade() == GradeEnum.ONE && participateB.getUserGrade() == GradeEnum.ONE
-        ) {
-            rank = BadmintonRank.C;
-        } else if (
-                participateA.getGender() == Gender.FEMALE && participateB.getGender() == Gender.FEMALE
-        ) {
-            rank = BadmintonRank.D;
-        } else if (
-                participateA.getGender() == Gender.MALE && participateB.getGender() == Gender.MALE &&
-                (participateA.getUserGrade() == GradeEnum.TWO || participateA.getUserGrade() == GradeEnum.THREE)
-                        &&
-                (participateB.getUserGrade() == GradeEnum.TWO || participateB.getUserGrade() == GradeEnum.THREE)
-        ) {
-            rank = BadmintonRank.B;
-        }
+        BadmintonRank rank = getBadmintonRank(participateA, participateB);
 
         TeamEntity newTeam = TeamEntity.builder()
                 .teamName(request.getTeamName())
@@ -113,5 +96,31 @@ public class TeamBadmintonSaveServiceImpl implements TeamBadmintonSaveService {
         teamParticipateJpaRepository.save(newParticipateA);
         teamParticipateJpaRepository.save(newParticipateB);
 
+    }
+
+    @Nullable
+    private static BadmintonRank getBadmintonRank(UserEntity participateA, UserEntity participateB) {
+        BadmintonRank rank = null;
+
+        if ( // 1학년 남자: C
+            participateA.getGender() == Gender.MALE && participateB.getGender() == Gender.MALE
+                    &&
+            participateA.getUserGrade() == GradeEnum.ONE && participateB.getUserGrade() == GradeEnum.ONE ) {
+            rank = BadmintonRank.C;
+        } else if ( // 학년무관 여자: D
+                participateA.getGender() == Gender.FEMALE && participateB.getGender() == Gender.FEMALE
+        ) {
+            rank = BadmintonRank.D;
+        } else if ( // 2, 3학년 남자: B
+                participateA.getGender() == Gender.MALE && participateB.getGender() == Gender.MALE
+                        &&
+                (participateA.getUserGrade() == GradeEnum.TWO || participateA.getUserGrade() == GradeEnum.THREE)
+                        &&
+                (participateB.getUserGrade() == GradeEnum.TWO || participateB.getUserGrade() == GradeEnum.THREE)
+        ) {
+            rank = BadmintonRank.B;
+        }
+
+        return rank;
     }
 }
