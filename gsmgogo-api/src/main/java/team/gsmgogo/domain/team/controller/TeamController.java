@@ -9,6 +9,7 @@ import team.gsmgogo.domain.team.controller.dto.request.*;
 import team.gsmgogo.domain.team.controller.dto.response.TeamListResponse;
 import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.team.service.*;
+import team.gsmgogo.global.exception.error.ExpectedException;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class TeamController {
 
     @GetMapping
     public ResponseEntity<List<TeamListResponse>> getTeamList(@RequestParam(name = "type") String type){
-        return ResponseEntity.ok(teamGetService.getTeam(TeamType.valueOf(type)));
+        return ResponseEntity.ok(teamGetService.getTeam(type));
     }
 
     @PostMapping

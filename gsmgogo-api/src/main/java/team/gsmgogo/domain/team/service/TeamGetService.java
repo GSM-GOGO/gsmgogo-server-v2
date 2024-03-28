@@ -6,5 +6,5 @@ import team.gsmgogo.domain.team.enums.TeamType;
 import java.util.List;
 
 public interface TeamGetService {
-    List<TeamListResponse> getTeam(TeamType teamType);
+    List<TeamListResponse> getTeam(String type);
 }
