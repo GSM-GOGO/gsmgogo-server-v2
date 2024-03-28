@@ -28,7 +28,7 @@ public class ResetLoginCountScheduler {
     private final PlatformTransactionManager platformTransactionManager;
     private final UserJpaRepository userJpaRepository;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 12 * * *")
     public void resetLoginCount() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         Map<String, JobParameter<?>> confMap = new HashMap<>();
         confMap.put("time", new JobParameter(System.currentTimeMillis(), String.class));
