@@ -6,14 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import team.gsmgogo.domain.user.dto.response.UserFollowTeamIdResponse;
-import team.gsmgogo.domain.user.dto.response.UserIdResponse;
-import team.gsmgogo.domain.user.dto.response.UserInfoResponse;
-import team.gsmgogo.domain.user.dto.response.UserPointResponse;
-import team.gsmgogo.domain.user.service.QueryUserFollowTeamService;
-import team.gsmgogo.domain.user.service.QueryUserIdService;
-import team.gsmgogo.domain.user.service.QueryUserInfoService;
-import team.gsmgogo.domain.user.service.QueryUserPointService;
+import team.gsmgogo.domain.user.dto.response.*;
+import team.gsmgogo.domain.user.service.*;
 
 import java.util.List;
 
@@ -26,6 +20,7 @@ public class UserController {
     private final QueryUserIdService queryUserIdService;
     private final QueryUserFollowTeamService queryUserFollowTeamService;
     private final QueryUserPointService queryUserPointService;
+    private final QueryIsLeaderService queryIsLeaderService;
 
     @GetMapping
     public ResponseEntity<List<UserInfoResponse>> queryUser(@RequestParam(name = "name") String name) {
@@ -45,6 +40,11 @@ public class UserController {
     @GetMapping("/my-point")
     public ResponseEntity<UserPointResponse> queryPoint() {
         return ResponseEntity.ok(queryUserPointService.queryUserPoint());
+    }
+
+    @GetMapping("/is-leader")
+    public ResponseEntity<UserIsLeaderResponse> queryIsLeader() {
+        return ResponseEntity.ok(queryIsLeaderService.queryIsLeader());
     }
 
 }
