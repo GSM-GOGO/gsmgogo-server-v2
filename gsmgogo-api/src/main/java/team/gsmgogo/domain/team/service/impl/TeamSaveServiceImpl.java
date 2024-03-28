@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.team.controller.dto.request.TeamSaveRequest;
 import team.gsmgogo.domain.team.controller.dto.response.TeamClassType;
 import team.gsmgogo.domain.team.entity.TeamEntity;
+import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.team.service.TeamSaveService;
 import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
@@ -41,29 +42,33 @@ public class TeamSaveServiceImpl implements TeamSaveService {
     public void saveTeam(TeamSaveRequest request) {
         UserEntity currentUser = userFacade.getCurrentUser();
 
+        if (request.getTeamType() != TeamType.SOCCER && request.getTeamType() != TeamType.VOLLEYBALL) {
+            throw new ExpectedException("팀 타입이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
         if (teamJpaRepository.existsByTeamGradeAndTeamClassAndTeamType
                 (currentUser.getUserGrade(), currentUser.getUserClass(), request.getTeamType()))
             throw new ExpectedException("이미 등록된 팀이 있습니다.", HttpStatus.BAD_REQUEST);
 
         Set<Long> chackDublicate = new HashSet<>();
 
-        AtomicInteger participateCount = new AtomicInteger();
         request.getParticipates().forEach(
                 participate -> {
                     if (!chackDublicate.add(participate.getUserId())) {
                         throw new ExpectedException("참가 인원이 중복되서는 안됩니다.", HttpStatus.BAD_REQUEST);
                     }
-
-                    participateCount.getAndIncrement();
                 }
         );
 
-        if (participateCount.get() != 9)
-            throw new ExpectedException("축구의 인원수는 9명입니다.", HttpStatus.BAD_REQUEST);
+        AtomicInteger maleCount = new AtomicInteger();
+        AtomicInteger femaleCount = new AtomicInteger();
 
         request.getParticipates().stream().map(user -> {
             UserEntity findUser = userJpaRepository.findByUserId(user.getUserId())
                     .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
+
+            if (findUser.getGender().equals(Gender.MALE)) maleCount.getAndIncrement();
+            else femaleCount.getAndIncrement();
 
             if (
                     findUser.getUserGrade() != currentUser.getUserGrade() ||
@@ -74,6 +79,12 @@ public class TeamSaveServiceImpl implements TeamSaveService {
 
             return findUser;
         }).toList();
+
+        if (request.getTeamType() == TeamType.SOCCER && maleCount.get() != 9)
+            throw new ExpectedException("축구 경기는 남학생 9명만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
+
+        if (request.getTeamType() == TeamType.VOLLEYBALL && maleCount.get() != 8 && femaleCount.get() != 1)
+            throw new ExpectedException("배구 경기는 남학생 8명, 여학생 1명 참여 가능합니다.", HttpStatus.BAD_REQUEST);
 
         TeamEntity newTeam = TeamEntity.builder()
                 .teamName(request.getTeamName())
@@ -89,7 +100,8 @@ public class TeamSaveServiceImpl implements TeamSaveService {
         List<TeamParticipateEntity> participates = request.getParticipates()
                 .stream().map(user -> TeamParticipateEntity.builder()
                         .team(savedTeam)
-                        .user(getUser(user.getUserId()))
+                        .user(userJpaRepository.findByUserId(user.getUserId())
+                                .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND)))
                         .positionX(user.getPositionX())
                         .positionY(user.getPositionY())
                         .build()
@@ -104,16 +116,6 @@ public class TeamSaveServiceImpl implements TeamSaveService {
             return TeamClassType.SW;
         else
             return TeamClassType.EB;
-    }
-
-    private UserEntity getUser(Long userId) {
-        UserEntity user = userJpaRepository.findByUserId(userId)
-                .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
-
-        if (user.getGender() != Gender.MALE)
-            throw new ExpectedException("축구 경기는 남학생만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
-
-        return user;
     }
 
 }
