@@ -2,9 +2,12 @@ package team.gsmgogo.domain.team.controller.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.gsmgogo.domain.user.enums.GradeEnum;
 
 import java.util.List;
 
@@ -15,8 +18,10 @@ import java.util.List;
 public class TeamListResponse {
     private Long teamId;
     private String teamName;
-    private String teamGrade;
-    private String teamClassType;
+    @Enumerated(EnumType.STRING)
+    private GradeEnum teamGrade;
+    @Enumerated(EnumType.STRING)
+    private TeamClassType teamClassType;
     private Integer winCount;
     private boolean isFollow;
     private String badmintonRank;

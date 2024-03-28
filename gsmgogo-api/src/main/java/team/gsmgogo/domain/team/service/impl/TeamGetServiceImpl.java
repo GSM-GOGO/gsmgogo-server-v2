@@ -3,12 +3,14 @@ package team.gsmgogo.domain.team.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.gsmgogo.domain.follow.repository.FollowJpaRepository;
+import team.gsmgogo.domain.team.controller.dto.response.TeamClassType;
 import team.gsmgogo.domain.team.controller.dto.response.TeamListResponse;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.team.service.TeamGetService;
 import team.gsmgogo.domain.user.entity.UserEntity;
+import team.gsmgogo.domain.user.enums.ClassEnum;
 import team.gsmgogo.global.facade.UserFacade;
 
 import java.util.List;
@@ -28,11 +30,18 @@ public class TeamGetServiceImpl implements TeamGetService {
         return teamEntityList.stream().map(teamEntity -> new TeamListResponse(
                 teamEntity.getTeamId(),
                 teamEntity.getTeamName(),
-                teamEntity.getTeamGrade().getRole(),
-                teamEntity.getTeamClass().getRole(),
+                teamEntity.getTeamGrade(),
+                toTeamClassType(teamEntity.getTeamClass()),
                 teamEntity.getWinCount(),
                 followJpaRepository.existsByUserAndTeam(user, teamEntity),
                 teamEntity.getBadmintonRank().name()
             )).toList();
+    }
+
+    private TeamClassType toTeamClassType(ClassEnum classEnum) {
+        if (classEnum == ClassEnum.ONE || classEnum == ClassEnum.TWO)
+            return TeamClassType.SW;
+        else
+            return TeamClassType.EB;
     }
 }

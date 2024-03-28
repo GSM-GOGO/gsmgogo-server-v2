@@ -7,10 +7,8 @@ import lombok.Getter;
 @Getter
 public enum ClassEnum {
 
-    ONE("ONE"),
-    TWO("TWO"),
-    THREE("THREE"),
-    FOUR("FOUR");
-
-    private final String role;
+    ONE,
+    TWO,
+    THREE,
+    FOUR;
 }
