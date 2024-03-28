@@ -15,6 +15,6 @@ public class QueryIsLeaderServiceImpl implements QueryIsLeaderService {
 
     @Override
     public UserIsLeaderResponse queryIsLeader() {
-        return new UserIsLeaderResponse(userFacade.getCurrentUser().getRole() == Role.LEADER);
+        return new UserIsLeaderResponse(userFacade.getCurrentUser().getRole().equals(Role.LEADER));
     }
 }

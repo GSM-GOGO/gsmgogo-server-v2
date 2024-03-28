@@ -10,7 +10,7 @@ import team.gsmgogo.global.facade.UserFacade;
 @RequiredArgsConstructor
 public class QueryUserPointServiceImpl implements QueryUserPointService {
 
-    private UserFacade userFacade;
+    private final UserFacade userFacade;
 
     @Override
     public UserPointResponse queryUserPoint() {
