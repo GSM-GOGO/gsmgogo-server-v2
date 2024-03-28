@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class NormalTeamParticipateDto {
-    private String userId;
+    private Long userId;
     private String userName;
 }
