@@ -42,7 +42,16 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
                 (currentUser.getUserGrade(), currentUser.getUserClass(), TeamType.NORMAL))
             throw new ExpectedException("이미 등록된 팀이 있습니다.", HttpStatus.BAD_REQUEST);
 
-        List<UserEntity> participates = request.stream().map(user -> {
+        Set<Long> chackDublicate = new HashSet<>();
+        request.forEach(
+                participate -> {
+                    if (!chackDublicate.add(participate.getUserId())) {
+                        throw new ExpectedException("참가 인원이 중복되서는 안됩니다.", HttpStatus.BAD_REQUEST);
+                    }
+                }
+        );
+
+        request.stream().map(user -> {
             UserEntity findUser = userJpaRepository.findByUserId(user.getUserId())
                     .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
 
@@ -56,14 +65,6 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
             return findUser;
         }).toList();
 
-        Set<Long> chackDublicate = new HashSet<>();
-        participates.forEach(
-                participate -> {
-                    if (!chackDublicate.add(participate.getUserId())) {
-                        throw new ExpectedException("참가 인원이 중복되서는 안됩니다.", HttpStatus.BAD_REQUEST);
-                    }
-                }
-        );
 
         TeamEntity newTeam = TeamEntity.builder()
                 .teamClass(currentUser.getUserClass())
