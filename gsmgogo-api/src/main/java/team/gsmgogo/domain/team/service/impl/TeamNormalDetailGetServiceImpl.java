@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import team.gsmgogo.domain.normalteamparticipate.entity.NormalTeamParticipateEntity;
 import team.gsmgogo.domain.normalteamparticipate.repository.NormalTeamParticipateJpaRepository;
 import team.gsmgogo.domain.team.controller.dto.response.NormalTeamParticipateDto;
+import team.gsmgogo.domain.team.controller.dto.response.TeamClassType;
 import team.gsmgogo.domain.team.controller.dto.response.TeamNormalListResponse;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.team.service.TeamNormalDetailGetService;
+import team.gsmgogo.domain.user.enums.ClassEnum;
 import team.gsmgogo.global.exception.error.ExpectedException;
 
 import java.util.List;
@@ -30,8 +32,8 @@ public class TeamNormalDetailGetServiceImpl implements TeamNormalDetailGetServic
 
         return new TeamNormalListResponse(
             team.getTeamId(),
-            team.getTeamGrade().getRole(),
-            team.getTeamClass().getClass().getName(),
+            team.getTeamGrade(),
+            toTeamClassType(team.getTeamClass()),
             normalTeamParticipateList.stream().map(normalTeamParticipate ->
                 new NormalTeamParticipateDto(
                     normalTeamParticipate.getUser().getUserId().toString(),
@@ -39,5 +41,12 @@ public class TeamNormalDetailGetServiceImpl implements TeamNormalDetailGetServic
                 )
             ).toList()
         );
+    }
+
+    private TeamClassType toTeamClassType(ClassEnum classEnum) {
+        if (classEnum == ClassEnum.ONE || classEnum == ClassEnum.TWO)
+            return TeamClassType.SW;
+        else
+            return TeamClassType.EB;
     }
 }

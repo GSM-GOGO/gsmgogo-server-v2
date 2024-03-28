@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.gsmgogo.domain.user.enums.GradeEnum;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TeamNormalListResponse {
     private Long teamId;
-    private String teamGrade;
-    private String teamClass;
+    private GradeEnum teamGrade;
+    private TeamClassType teamClass;
     private List<NormalTeamParticipateDto> participates;
 }
