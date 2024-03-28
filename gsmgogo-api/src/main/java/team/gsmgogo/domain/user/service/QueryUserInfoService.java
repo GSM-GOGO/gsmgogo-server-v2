@@ -2,6 +2,8 @@ package team.gsmgogo.domain.user.service;
 
 import team.gsmgogo.domain.user.dto.response.UserInfoResponse;
 
+import java.util.List;
+
 public interface QueryUserInfoService {
-    UserInfoResponse queryUserInfo(String name);
+    List<UserInfoResponse> queryUserInfo(String name);
 }
