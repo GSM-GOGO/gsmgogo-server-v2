@@ -7,12 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.team.controller.dto.request.TeamSaveRequest;
 import team.gsmgogo.domain.team.controller.dto.response.TeamClassType;
 import team.gsmgogo.domain.team.entity.TeamEntity;
+import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.team.service.TeamSaveService;
 import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
 import team.gsmgogo.domain.teamparticipate.repository.TeamParticipateJpaRepository;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
+import team.gsmgogo.domain.user.enums.Gender;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
@@ -20,7 +22,11 @@ import team.gsmgogo.global.facade.UserFacade;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+// TODO
+//      축구: 남자 9명
+//      배구: 남자 8명, 여자 1명 = 총 9명
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +42,10 @@ public class TeamSaveServiceImpl implements TeamSaveService {
     public void saveTeam(TeamSaveRequest request) {
         UserEntity currentUser = userFacade.getCurrentUser();
 
+        if (request.getTeamType() != TeamType.SOCCER && request.getTeamType() != TeamType.VOLLEYBALL) {
+            throw new ExpectedException("팀 타입이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
         if (teamJpaRepository.existsByTeamGradeAndTeamClassAndTeamType
                 (currentUser.getUserGrade(), currentUser.getUserClass(), request.getTeamType()))
             throw new ExpectedException("이미 등록된 팀이 있습니다.", HttpStatus.BAD_REQUEST);
@@ -50,9 +60,15 @@ public class TeamSaveServiceImpl implements TeamSaveService {
                 }
         );
 
+        AtomicInteger maleCount = new AtomicInteger();
+        AtomicInteger femaleCount = new AtomicInteger();
+
         request.getParticipates().stream().map(user -> {
             UserEntity findUser = userJpaRepository.findByUserId(user.getUserId())
                     .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
+
+            if (findUser.getGender().equals(Gender.MALE)) maleCount.getAndIncrement();
+            else femaleCount.getAndIncrement();
 
             if (
                     findUser.getUserGrade() != currentUser.getUserGrade() ||
@@ -63,6 +79,12 @@ public class TeamSaveServiceImpl implements TeamSaveService {
 
             return findUser;
         }).toList();
+
+        if (request.getTeamType() == TeamType.SOCCER && maleCount.get() != 9)
+            throw new ExpectedException("축구 경기는 남학생 9명만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
+
+        if (request.getTeamType() == TeamType.VOLLEYBALL && maleCount.get() != 8 && femaleCount.get() != 1)
+            throw new ExpectedException("배구 경기는 남학생 8명, 여학생 1명 참여 가능합니다.", HttpStatus.BAD_REQUEST);
 
         TeamEntity newTeam = TeamEntity.builder()
                 .author(currentUser)
