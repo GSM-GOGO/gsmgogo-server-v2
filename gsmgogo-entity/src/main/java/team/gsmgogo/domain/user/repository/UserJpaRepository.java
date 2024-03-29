@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import team.gsmgogo.domain.user.enums.ClassEnum;
 import team.gsmgogo.domain.user.enums.GradeEnum;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByUserEmail(String userEmail);
     Optional<UserEntity> findByUserId(Long userId);
     List<UserEntity> findTop5ByUserNameContainingAndUserGradeOrderByUserNameAsc(String userName, GradeEnum userGrade);
+    List<UserEntity> findAllByUserGradeAndUserClass(GradeEnum userGrade, ClassEnum userClass);
 }
