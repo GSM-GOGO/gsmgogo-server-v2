@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TeamJpaRepository extends JpaRepository<TeamEntity, Long> {
-    Boolean existsByTeamGradeAndTeamClassAndTeamType(GradeEnum grade, ClassEnum classEnum, TeamType teamType);
-
     Optional<TeamEntity> findByTeamId(Long teamId);
 
     List<TeamEntity> findByTeamType(TeamType teamType);
