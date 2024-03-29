@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.gsmgogo.domain.team.controller.dto.request.*;
+import team.gsmgogo.domain.team.controller.dto.response.TeamFormationResponse;
 import team.gsmgogo.domain.team.controller.dto.response.TeamListResponse;
 import team.gsmgogo.domain.team.controller.dto.response.TeamNormalListResponse;
 import team.gsmgogo.domain.team.enums.TeamType;
@@ -25,11 +26,17 @@ public class TeamController {
     private final TeamBadmintonSaveService teamBadmintonSaveService;
     private final TeamFollowService teamFollowService;
     private final TeamGetService teamGetService;
+    private final TeamFormationGetService teamFormationGetService;
     private final TeamNormalDetailGetService teamNormalDetailGetService;
 
     @GetMapping
     public ResponseEntity<List<TeamListResponse>> getTeamList(@RequestParam(name = "type") String type){
         return ResponseEntity.ok(teamGetService.getTeam(type));
+    }
+
+    @GetMapping("/formation")
+    public ResponseEntity<TeamFormationResponse> getTeamFormation(@RequestParam(name = "teamId") String teamId){
+        return ResponseEntity.ok(teamFormationGetService.execute(teamId));
     }
 
     @PostMapping
