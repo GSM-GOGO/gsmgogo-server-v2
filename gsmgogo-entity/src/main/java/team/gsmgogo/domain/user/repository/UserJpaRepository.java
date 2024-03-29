@@ -15,4 +15,5 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByUserId(Long userId);
     List<UserEntity> findTop5ByUserNameContainingAndUserGradeOrderByUserNameAsc(String userName, GradeEnum userGrade);
     List<UserEntity> findAllByUserGradeAndUserClassIn(GradeEnum userGrade, List<ClassEnum> userClasses);
+    List<UserEntity> findAllByOrderByPointDesc();
 }

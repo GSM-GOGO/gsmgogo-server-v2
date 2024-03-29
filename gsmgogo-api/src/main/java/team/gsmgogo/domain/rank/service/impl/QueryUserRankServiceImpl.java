@@ -18,7 +18,7 @@ public class QueryUserRankServiceImpl implements QueryUserRankService {
     @Override
     @Transactional(readOnly = true)
     public List<RankListResponse> queryUserRank() {
-        return userJpaRepository.findAll().stream().map(user ->
+        return userJpaRepository.findAllByOrderByPointDesc().stream().map(user ->
                 RankListResponse.builder()
                         .userId(user.getUserId())
                         .userName(user.getUserName())
