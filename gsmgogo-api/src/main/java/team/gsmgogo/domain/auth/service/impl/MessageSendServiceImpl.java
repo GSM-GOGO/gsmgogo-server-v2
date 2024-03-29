@@ -69,7 +69,7 @@ public class MessageSendServiceImpl implements MessageSendService {
     public String test(String phoneNumber) {
         UserEntity user = userFacade.getCurrentUser();
 
-        if(user.getIsVerify() == IsVerify.Enabled) throw new ExpectedException("이미 인증된 전화번호가 존재합니다.", HttpStatus.BAD_REQUEST);
+        if(user.getIsVerify() == IsVerify.VERIFY) throw new ExpectedException("이미 인증된 전화번호가 존재합니다.", HttpStatus.BAD_REQUEST);
 
         String generatedCode = generateCode();
 
