@@ -57,11 +57,11 @@ public class TeamBadmintonSaveServiceImpl implements TeamBadmintonSaveService {
             throw new ExpectedException("참가 인원의 성별은 같아야 합니다.", HttpStatus.BAD_REQUEST);
         }
 
-        if (teamJpaRepository.existsByTeamGradeAndTeamClassAndTeamType
-                (participateA.getUserGrade(), participateA.getUserClass(), TeamType.BADMINTON)
+        if (teamJpaRepository.existsByAuthorAndTeamType
+                (participateA, TeamType.BADMINTON)
             ||
-                teamJpaRepository.existsByTeamGradeAndTeamClassAndTeamType
-                        (participateB.getUserGrade(), participateB.getUserClass(), TeamType.BADMINTON)
+                teamJpaRepository.existsByAuthorAndTeamType
+                        (participateB, TeamType.BADMINTON)
         )
             throw new ExpectedException("이미 등록된 팀이 있습니다.", HttpStatus.BAD_REQUEST);
 

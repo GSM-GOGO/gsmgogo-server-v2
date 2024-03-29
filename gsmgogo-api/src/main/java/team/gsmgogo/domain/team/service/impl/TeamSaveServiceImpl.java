@@ -46,8 +46,8 @@ public class TeamSaveServiceImpl implements TeamSaveService {
             throw new ExpectedException("팀 타입이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        if (teamJpaRepository.existsByTeamGradeAndTeamClassAndTeamType
-                (currentUser.getUserGrade(), currentUser.getUserClass(), request.getTeamType()))
+        if (teamJpaRepository.existsByAuthorAndTeamType
+                (currentUser, request.getTeamType()))
             throw new ExpectedException("이미 등록된 팀이 있습니다.", HttpStatus.BAD_REQUEST);
 
         Set<Long> chackDublicate = new HashSet<>();
