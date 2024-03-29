@@ -14,5 +14,5 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByUserEmail(String userEmail);
     Optional<UserEntity> findByUserId(Long userId);
     List<UserEntity> findTop5ByUserNameContainingAndUserGradeOrderByUserNameAsc(String userName, GradeEnum userGrade);
-    List<UserEntity> findAllByUserGradeAndUserClass(GradeEnum userGrade, ClassEnum userClass);
+    List<UserEntity> findAllByUserGradeAndUserClassIn(GradeEnum userGrade, List<ClassEnum> userClasses);
 }
