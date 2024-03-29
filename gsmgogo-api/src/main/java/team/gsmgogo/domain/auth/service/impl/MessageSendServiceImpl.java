@@ -66,6 +66,7 @@ public class MessageSendServiceImpl implements MessageSendService {
     }
 
     @Override
+    @Transactional
     public String test(String phoneNumber) {
         UserEntity user = userFacade.getCurrentUser();
 

@@ -3,6 +3,7 @@ package team.gsmgogo.domain.team.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.normalteamparticipate.entity.NormalTeamParticipateEntity;
 import team.gsmgogo.domain.normalteamparticipate.enums.NormalTeamType;
 import team.gsmgogo.domain.normalteamparticipate.repository.NormalTeamParticipateJpaRepository;
@@ -28,6 +29,7 @@ public class TeamNormalDetailGetServiceImpl implements TeamNormalDetailGetServic
     private final NormalTeamParticipateJpaRepository normalTeamParticipateJpaRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public TeamNormalListResponse execute(String teamId) {
         List<NormalTeamParticipateEntity> normalTeamParticipateList = normalTeamParticipateJpaRepository.findByTeamTeamId(Long.valueOf(teamId));
 
