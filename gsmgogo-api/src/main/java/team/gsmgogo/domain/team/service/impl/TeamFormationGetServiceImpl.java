@@ -38,6 +38,7 @@ public class TeamFormationGetServiceImpl implements TeamFormationGetService {
 
         return new TeamFormationResponse(
             team.getTeamId(),
+            team.getTeamName(),
             team.getTeamType(),
             team.getTeamGrade(),
             toTeamClassType(team.getTeamClass()),
