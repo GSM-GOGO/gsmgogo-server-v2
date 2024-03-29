@@ -2,6 +2,7 @@ package team.gsmgogo.global.security.jwt;
 
 import io.jsonwebtoken.*;
 import team.gsmgogo.global.exception.error.ExpectedException;
+import team.gsmgogo.global.exception.error.TokenException;
 import team.gsmgogo.global.security.jwt.dto.TokenResponse;
 import team.gsmgogo.global.security.principle.AuthDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -77,11 +78,11 @@ public class TokenProvider {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
-            throw new ExpectedException("토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED);
+            throw new TokenException("토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED);
         } catch (JwtException e) {
-            throw new ExpectedException("검증되지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED);
+            throw new TokenException("검증되지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            throw new ExpectedException("토큰 예외입니다.", HttpStatus.FORBIDDEN);
+            throw new TokenException("토큰 예외입니다.", HttpStatus.FORBIDDEN);
         }
     }
 }
