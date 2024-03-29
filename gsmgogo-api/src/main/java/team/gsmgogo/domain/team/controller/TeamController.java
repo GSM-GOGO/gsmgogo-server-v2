@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import team.gsmgogo.domain.team.controller.dto.request.*;
 import team.gsmgogo.domain.team.controller.dto.response.TeamFormationResponse;
 import team.gsmgogo.domain.team.controller.dto.response.TeamListResponse;
+import team.gsmgogo.domain.team.controller.dto.response.TeamNormalListResponse;
 import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.team.service.*;
 import team.gsmgogo.global.exception.error.ExpectedException;
@@ -26,6 +27,7 @@ public class TeamController {
     private final TeamFollowService teamFollowService;
     private final TeamGetService teamGetService;
     private final TeamFormationGetService teamFormationGetService;
+    private final TeamNormalDetailGetService teamNormalDetailGetService;
 
     @GetMapping
     public ResponseEntity<List<TeamListResponse>> getTeamList(@RequestParam(name = "type") String type){
@@ -41,6 +43,12 @@ public class TeamController {
     public ResponseEntity<Void> saveTeam(@RequestBody @Valid TeamSaveRequest request) {
         teamSaveService.saveTeam(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/normal")
+    public ResponseEntity<TeamNormalListResponse> getNormalTeamDetail(@RequestParam(name = "teamId") String teamId){
+        TeamNormalListResponse teamNormalListResponse = teamNormalDetailGetService.execute(teamId);
+        return ResponseEntity.ok(teamNormalListResponse);
     }
 
     @PostMapping("/normal")
