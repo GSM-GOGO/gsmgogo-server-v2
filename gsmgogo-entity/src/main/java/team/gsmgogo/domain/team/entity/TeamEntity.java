@@ -2,6 +2,7 @@ package team.gsmgogo.domain.team.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import team.gsmgogo.domain.follow.entity.FollowEntity;
 import team.gsmgogo.domain.normalteamparticipate.entity.NormalTeamParticipateEntity;
 import team.gsmgogo.domain.team.enums.BadmintonRank;
 import team.gsmgogo.domain.team.enums.TeamType;
@@ -54,6 +55,9 @@ public class TeamEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "badminton_rank")
     private BadmintonRank badmintonRank;
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FollowEntity> follows;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamParticipateEntity> teamParticipates = new ArrayList<>();
