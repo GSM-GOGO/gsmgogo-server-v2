@@ -3,6 +3,7 @@ package team.gsmgogo.domain.auth.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.auth.controller.dto.response.ReissueTokenDto;
 import team.gsmgogo.domain.auth.entity.RefreshTokenRedisEntity;
 import team.gsmgogo.domain.auth.repository.RefreshTokenJpaRepository;
@@ -22,6 +23,7 @@ public class TokenReissueServiceImpl implements TokenReissueService {
     private final TokenProvider tokenProvider;
 
     @Override
+    @Transactional
     public ReissueTokenDto execute(String refreshToken) {
 
         if (refreshToken == null) {

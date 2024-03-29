@@ -3,6 +3,7 @@ package team.gsmgogo.domain.team.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.team.controller.dto.response.FormationParticipateDto;
 import team.gsmgogo.domain.team.controller.dto.response.TeamClassType;
 import team.gsmgogo.domain.team.controller.dto.response.TeamFormationResponse;
@@ -26,6 +27,7 @@ public class TeamFormationGetServiceImpl implements TeamFormationGetService {
     private final UserFacade userFacade;
 
     @Override
+    @Transactional(readOnly = true)
     public TeamFormationResponse execute(String teamId) {
         UserEntity currentUser = userFacade.getCurrentUser();
 

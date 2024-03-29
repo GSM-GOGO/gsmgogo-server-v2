@@ -3,6 +3,7 @@ package team.gsmgogo.domain.team.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.follow.repository.FollowJpaRepository;
 import team.gsmgogo.domain.team.controller.dto.response.TeamClassType;
 import team.gsmgogo.domain.team.controller.dto.response.TeamListResponse;
@@ -27,6 +28,7 @@ public class TeamGetServiceImpl implements TeamGetService {
     private final UserFacade userFacade;
 
     @Override
+    @Transactional(readOnly = true)
     public List<TeamListResponse> getTeam(String type) {
         if (!isValidTeamType(type)) throw new ExpectedException("검색 조건이 잘못되었습니다.", HttpStatus.BAD_REQUEST);
 

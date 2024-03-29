@@ -2,6 +2,7 @@ package team.gsmgogo.domain.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.follow.entity.FollowEntity;
 import team.gsmgogo.domain.follow.repository.FollowJpaRepository;
 import team.gsmgogo.domain.user.dto.response.UserFollowTeamIdResponse;
@@ -17,6 +18,7 @@ public class QueryUserFollowTeamServiceImpl implements QueryUserFollowTeamServic
     private final FollowJpaRepository followJpaRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public UserFollowTeamIdResponse queryUserFollowTeam() {
         UserEntity currentUser = userFacade.getCurrentUser();
         FollowEntity follow = followJpaRepository.findByUser(currentUser).orElse(null);

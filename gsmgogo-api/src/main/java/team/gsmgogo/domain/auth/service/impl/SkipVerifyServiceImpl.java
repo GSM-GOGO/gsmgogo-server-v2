@@ -3,6 +3,7 @@ package team.gsmgogo.domain.auth.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.auth.service.SkipVerifyService;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.IsVerify;
@@ -17,6 +18,7 @@ public class SkipVerifyServiceImpl implements SkipVerifyService {
     private final UserJpaRepository userJpaRepository;
 
     @Override
+    @Transactional
     public void execute(){
         UserEntity currentUser = userFacade.getCurrentUser();
 
