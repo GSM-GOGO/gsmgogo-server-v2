@@ -2,6 +2,7 @@ package team.gsmgogo.domain.auth.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -63,13 +64,13 @@ public class AuthController {
     }
 
     @PostMapping("/sms")
-    public ResponseEntity<Void> sendCodeMessage(@RequestBody AuthSendCodeRequest request){
+    public ResponseEntity<Void> sendCodeMessage(@Valid @RequestBody AuthSendCodeRequest request){
         messageSendService.execute(request.getPhoneNumber());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/sms/test")
-    public ResponseEntity<String> sendCodeMessageTest(@RequestBody AuthSendCodeRequest request){
+    public ResponseEntity<String> sendCodeMessageTest(@Valid @RequestBody AuthSendCodeRequest request){
         return ResponseEntity.ok(messageSendService.test(request.getPhoneNumber()));
     }
 
