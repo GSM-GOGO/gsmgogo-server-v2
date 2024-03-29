@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.normalteamparticipate.entity.NormalTeamParticipateEntity;
+import team.gsmgogo.domain.normalteamparticipate.enums.NormalTeamType;
 import team.gsmgogo.domain.normalteamparticipate.repository.NormalTeamParticipateJpaRepository;
 import team.gsmgogo.domain.team.controller.dto.request.TeamNormalSaveRequest;
 import team.gsmgogo.domain.team.controller.dto.response.TeamClassType;
@@ -14,15 +15,20 @@ import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.team.service.TeamNormalSaveService;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
+import team.gsmgogo.domain.user.enums.Gender;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-// TODO 일반경기 확정되면 인원수 체크하는 로직 추가
+// TODO
+//      TOSS_RUN 이어달리기: 남자 3명, 여자 3명 = 총 6명
+//      MISSION_RUN 미션달리기: 6명
+//      TUG_OF_WAR 줄다리기: 30명
+//      FREE_THROW 자유투 릴레이: 30명
+//      GROUP_ROPE_JUMP 단체 줄넘기: 10명
 
 @Service
 @RequiredArgsConstructor
@@ -51,9 +57,23 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
                 }
         );
 
+        Map<NormalTeamType, Integer> maleCount = new HashMap<>();
+        Map<NormalTeamType, Integer> femaleCount = new HashMap<>();
+
         request.stream().map(user -> {
             UserEntity findUser = userJpaRepository.findByUserId(user.getUserId())
                     .orElseThrow(() -> new ExpectedException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
+
+            user.getTeamTypes().forEach(
+                type -> {
+                    if (findUser.getGender().equals(Gender.MALE)) {
+                        maleCount.put(type, maleCount.getOrDefault(type, 0) + 1);
+
+                    } else if (findUser.getGender().equals(Gender.FEMALE)) {
+                        femaleCount.put(type, femaleCount.getOrDefault(type, 0) + 1);
+                    }
+                }
+            );
 
             if (
                     findUser.getUserGrade() != currentUser.getUserGrade() ||
@@ -65,6 +85,26 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
             return findUser;
         }).toList();
 
+        if (maleCount.getOrDefault(NormalTeamType.TOSS_RUN, 0) != 3
+                || femaleCount.getOrDefault(NormalTeamType.TOSS_RUN, 0) != 3) {
+            throw new ExpectedException("이어달리기는 남학생 3명, 여학생 3명민 참여 가능합니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        if ((maleCount.getOrDefault(NormalTeamType.MISSION_RUN, 0) +
+                femaleCount.getOrDefault(NormalTeamType.MISSION_RUN, 0)) != 6)
+            throw new ExpectedException("미션달리기는 6명만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
+
+        if ((maleCount.getOrDefault(NormalTeamType.TUG_OF_WAR, 0) +
+                femaleCount.getOrDefault(NormalTeamType.TUG_OF_WAR, 0)) != 30)
+            throw new ExpectedException("줄다리기는 30명만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
+
+        if ((maleCount.getOrDefault(NormalTeamType.FREE_THROW, 0) +
+                femaleCount.getOrDefault(NormalTeamType.FREE_THROW, 0))!= 30)
+            throw new ExpectedException("자유투 릴레이는 30명만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
+
+        if ((maleCount.getOrDefault(NormalTeamType.GROUP_ROPE_JUMP, 0) +
+                femaleCount.getOrDefault(NormalTeamType.GROUP_ROPE_JUMP, 0)) != 10)
+            throw new ExpectedException("단체 줄넘기는 10명만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
 
         TeamEntity newTeam = TeamEntity.builder()
                 .teamClass(currentUser.getUserClass())
