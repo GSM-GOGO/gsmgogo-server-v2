@@ -81,7 +81,7 @@ public class TokenProvider {
         } catch (JwtException e) {
             throw new ExpectedException("검증되지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            throw new ExpectedException("토큰 예외입니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExpectedException("토큰 예외입니다.", HttpStatus.FORBIDDEN);
         }
     }
 }
