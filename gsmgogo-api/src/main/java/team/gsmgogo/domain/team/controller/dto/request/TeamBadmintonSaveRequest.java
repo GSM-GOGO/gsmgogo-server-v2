@@ -16,8 +16,8 @@ import java.util.List;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TeamBadmintonSaveRequest {
     @NotBlank
-    @Size(min = 1, max = 5)
-    @Pattern(regexp = "\\S{1,5}")
+    @Size(min = 1, max = 6)
+    @Pattern(regexp = "\\S{1,6}")
     private String teamName;
     @NotNull
     private List<TeamParticipateDto> participates;

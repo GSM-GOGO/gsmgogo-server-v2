@@ -14,8 +14,8 @@ import java.util.List;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TeamSaveRequest {
     @NotBlank
-    @Size(min = 1, max = 7)
-    @Pattern(regexp = "\\S{1,7}")
+    @Size(min = 1, max = 6)
+    @Pattern(regexp = "\\S{1,6}")
     private String teamName;
     @NotNull
     private TeamType teamType;
