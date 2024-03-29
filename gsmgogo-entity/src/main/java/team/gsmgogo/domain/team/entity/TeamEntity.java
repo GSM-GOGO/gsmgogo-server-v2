@@ -30,7 +30,7 @@ public class TeamEntity {
     @JoinColumn(name = "user_id")
     private UserEntity author;
 
-    @Column(name = "team_name", length = 7)
+    @Column(name = "team_name", length = 6)
     private String teamName;
 
     @Enumerated(EnumType.STRING)
