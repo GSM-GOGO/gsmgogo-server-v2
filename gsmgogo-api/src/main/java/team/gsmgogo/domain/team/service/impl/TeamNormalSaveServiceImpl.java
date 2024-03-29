@@ -79,7 +79,7 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
                     findUser.getUserGrade() != currentUser.getUserGrade() ||
                     toTeamClassType(findUser.getUserClass()) != toTeamClassType(currentUser.getUserClass())
             ) {
-                throw new ExpectedException("참가 인원이 같은 학년, 과의 학생 확인해주세요.", HttpStatus.BAD_REQUEST);
+                throw new ExpectedException("참가 인원은 같은 학년, 과의 학생만 가능합니다.", HttpStatus.BAD_REQUEST);
             }
 
             return findUser;
