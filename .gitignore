@@ -40,3 +40,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### QueryDSL ###
+gsmgogo-entity/src/generated/
+
+### Environment ###
+.env
