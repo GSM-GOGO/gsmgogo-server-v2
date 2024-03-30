@@ -15,8 +15,10 @@ import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.team.service.TeamNormalDetailGetService;
+import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
 import team.gsmgogo.global.exception.error.ExpectedException;
+import team.gsmgogo.global.facade.UserFacade;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,11 +28,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamNormalDetailGetServiceImpl implements TeamNormalDetailGetService {
     private final TeamJpaRepository teamJpaRepository;
+    private final UserFacade userFacade;
     private final NormalTeamParticipateJpaRepository normalTeamParticipateJpaRepository;
 
     @Override
     @Transactional(readOnly = true)
     public TeamNormalListResponse execute(String teamId) {
+        UserEntity currentUser = userFacade.getCurrentUser();
         List<NormalTeamParticipateEntity> normalTeamParticipateList = normalTeamParticipateJpaRepository.findByTeamTeamId(Long.valueOf(teamId));
 
         TeamEntity team = teamJpaRepository.findByTeamTypeAndTeamId(TeamType.NORMAL, Long.valueOf(teamId))
@@ -48,10 +52,11 @@ public class TeamNormalDetailGetServiceImpl implements TeamNormalDetailGetServic
                 .toList();
 
         return new TeamNormalListResponse(
-            team.getTeamId(),
-            team.getTeamGrade(),
-            toTeamClassType(team.getTeamClass()),
-            teamNormalInfoDtoList
+                team.getTeamId(),
+                team.getTeamGrade(),
+                team.getAuthor().getUserId().equals(currentUser.getUserId()),
+                toTeamClassType(team.getTeamClass()),
+                teamNormalInfoDtoList
         );
     }
 

@@ -16,6 +16,7 @@ import java.util.List;
 public class TeamNormalListResponse {
     private Long teamId;
     private GradeEnum teamGrade;
+    private boolean authorMe;
     private TeamClassType teamClass;
     private List<TeamNormalInfoDto> teamList;
 }
