@@ -15,8 +15,5 @@ public class UserQueryDslRepository {
     public void bulkResetVerifyCount() {
         QUserEntity user = QUserEntity.userEntity;
         queryFactory.update(user).set(user.verifyCount, 0L).execute();
-
-        entityManager.flush();
-
     }
 }
