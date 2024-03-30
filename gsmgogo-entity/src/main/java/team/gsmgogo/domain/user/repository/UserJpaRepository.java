@@ -1,5 +1,6 @@
 package team.gsmgogo.domain.user.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import team.gsmgogo.domain.user.entity.UserEntity;
