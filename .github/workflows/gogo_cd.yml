@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: pull
+      - name: build/deploy gsmgogo-api module
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.REMOTE_IP }}
@@ -22,16 +22,7 @@ jobs:
           script: |
             cd /home/ubuntu/GSM-GOGO-Server/
             git pull origin main
-
-      - name: build/deploy gsmgogo-api module
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.REMOTE_IP }}
-          port: ${{ secrets.REMOTE_SSH_PORT }}
-          username: ${{ secrets.REMOTE_USERNAME }}
-          password: ${{ secrets.REMOTE_PASSWORD }}
-          script: |
-            cd /home/ubuntu/GSM-GOGO-Server/gsmgogo-api/
+            cd gsmgogo-api/
             ./gradlew clean build
             docker build -t gsmgogo/gsmgogo-api . -f Api.dockerfile
             docker stop gogo-api || true
