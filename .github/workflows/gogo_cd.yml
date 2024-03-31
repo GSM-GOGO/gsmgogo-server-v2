@@ -24,8 +24,10 @@ jobs:
             git pull origin main
             ./gradlew clean
             ./gradlew build
-            docker stop gogo-server
-            docker rm gogo-server
+            docker stop gogo-api || true
+            docker rm gogo-api || true
+            docker stop gogo-batch || true
+            docker rm gogo-batch || true
             docker build -t gsmgogo/gsmgogo-api . -f Api.dockerfile
             docker build -t gsmgogo/gsmgogo-batch . -f Batch.dockerfile
             docker run -d -it --env-file ./.env -p 10001:8080 --name gogo-api gsmgogo/gsmgogo-api
