@@ -44,8 +44,8 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
     public void saveNormalTeam(List<TeamNormalSaveRequest> request) {
         UserEntity currentUser = userFacade.getCurrentUser();
 
-        if (teamJpaRepository.existsByTeamGradeAndTeamClassAndTeamType
-                (currentUser.getUserGrade(), currentUser.getUserClass(), TeamType.NORMAL))
+        if (teamJpaRepository.existsByAuthorAndTeamType
+                (currentUser, TeamType.NORMAL))
             throw new ExpectedException("이미 등록된 팀이 있습니다.", HttpStatus.BAD_REQUEST);
 
         Set<Long> chackDublicate = new HashSet<>();

@@ -17,14 +17,20 @@ import java.util.List;
 public class UserController {
 
     private final QueryUserInfoService queryUserInfoService;
+    private final QueryUserListService queryUserListService;
     private final QueryUserIdService queryUserIdService;
     private final QueryUserFollowTeamService queryUserFollowTeamService;
     private final QueryUserPointService queryUserPointService;
     private final QueryIsLeaderService queryIsLeaderService;
 
-    @GetMapping
+    @GetMapping("/search")
     public ResponseEntity<List<UserInfoResponse>> queryUser(@RequestParam(name = "name") String name) {
         return ResponseEntity.ok(queryUserInfoService.queryUserInfo(name));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserInfoResponse>> queryUserList() {
+        return ResponseEntity.ok(queryUserListService.queryUserList());
     }
 
     @GetMapping("/my-id")

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.follow.repository.FollowJpaRepository;
+import team.gsmgogo.domain.normalteamparticipate.repository.NormalTeamParticipateJpaRepository;
 import team.gsmgogo.domain.team.controller.dto.response.TeamClassType;
 import team.gsmgogo.domain.team.controller.dto.response.TeamListResponse;
 import team.gsmgogo.domain.team.entity.TeamEntity;
@@ -24,6 +25,7 @@ import java.util.List;
 public class TeamGetServiceImpl implements TeamGetService {
     private final TeamJpaRepository teamJpaRepository;
     private final TeamParticipateJpaRepository teamParticipateJpaRepository;
+    private final NormalTeamParticipateJpaRepository normalTeamParticipateJpaRepository;
     private final FollowJpaRepository followJpaRepository;
     private final UserFacade userFacade;
 
@@ -42,7 +44,9 @@ public class TeamGetServiceImpl implements TeamGetService {
                 toTeamClassType(teamEntity.getTeamClass()),
                 teamEntity.getWinCount(),
                 followJpaRepository.existsByUserAndTeam(user, teamEntity),
-                teamParticipateJpaRepository.existsByUserAndTeam(user, teamEntity),
+                teamEntity.getTeamType().equals(TeamType.NORMAL)
+                        ? normalTeamParticipateJpaRepository.existsByUserAndTeam(user, teamEntity)
+                        : teamParticipateJpaRepository.existsByUserAndTeam(user, teamEntity),
                 teamEntity.getBadmintonRank()
             )).toList();
     }

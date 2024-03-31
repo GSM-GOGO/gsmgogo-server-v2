@@ -1,10 +1,12 @@
 package team.gsmgogo.global.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import team.gsmgogo.global.security.jwt.TokenProvider;
+import team.gsmgogo.global.security.jwt.filter.TokenExceptionFilter;
 import team.gsmgogo.global.security.jwt.filter.TokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,8 @@ public class SecurityConfig {
 
     private final TokenProvider tokenProvider;
 
+    private final TokenExceptionFilter tokenExceptionFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -43,6 +47,7 @@ public class SecurityConfig {
         );
 
         http.addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(tokenExceptionFilter, TokenFilter.class);
 
         http.cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()));
 
@@ -54,7 +59,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:3000", "https://gsm-gogo-client-three.vercel.app"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setExposedHeaders(Arrays.asList("*"));

@@ -20,6 +20,7 @@ import java.util.List;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TeamFormationResponse {
     private Long teamId;
+    private String teamName;
     @Enumerated(EnumType.STRING)
     private TeamType teamType;
     @Enumerated(EnumType.STRING)

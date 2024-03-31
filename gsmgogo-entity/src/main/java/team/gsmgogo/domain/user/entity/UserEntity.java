@@ -1,5 +1,6 @@
 package team.gsmgogo.domain.user.entity;
 
+import team.gsmgogo.domain.follow.entity.FollowEntity;
 import team.gsmgogo.domain.normalteamparticipate.entity.NormalTeamParticipateEntity;
 import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
 import team.gsmgogo.domain.user.enums.*;
@@ -62,9 +63,11 @@ public class UserEntity {
     @Column(name = "is_verify", nullable = false)
     private IsVerify isVerify = IsVerify.NONE;
 
-
     @Column(name = "verify_count")
     private Long verifyCount;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FollowEntity> follows;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamParticipateEntity> teamParticipates = new ArrayList<>();

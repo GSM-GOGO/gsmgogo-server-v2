@@ -1,4 +1,5 @@
 spring:
+
   datasource:
     url: ${DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -29,6 +30,8 @@ spring:
   batch:
     job:
       enabled: false
+    jdbc:
+      initialize-schema: always
 
 gauth:
   clientId: ${CLIENT_ID}

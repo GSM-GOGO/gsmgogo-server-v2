@@ -10,10 +10,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
-import team.gsmgogo.domain.user.entity.UserEntity;
-import team.gsmgogo.domain.user.repository.UserJpaRepository;
-
-import java.util.List;
+import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
 
 @Slf4j
 @Configuration
@@ -21,7 +18,7 @@ import java.util.List;
 public class ResetLoginCountJob {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
-    private final UserJpaRepository userJpaRepository;
+    private final UserQueryDslRepository userQueryDslRepository;
 
     @Bean
     public Job resetCountJob(){
@@ -34,11 +31,7 @@ public class ResetLoginCountJob {
     public Step resetCountStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
         return new StepBuilder("reset-count-step", jobRepository)
             .tasklet((contribution, chunkContext) -> {
-                List<UserEntity> userList = userJpaRepository.findAll();
-                userList.forEach(userEntity -> {
-                    userEntity.resetCount();
-                    userJpaRepository.save(userEntity);
-                });
+                userQueryDslRepository.bulkResetVerifyCount();
                 return RepeatStatus.FINISHED;
             },
             platformTransactionManager)
