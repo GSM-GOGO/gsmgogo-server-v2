@@ -44,7 +44,7 @@ public class TokenProvider {
                 .setSubject(String.valueOf(userId))
                 .setHeaderParam("typ", ACCESS_KEY)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .compact();
     }
 
@@ -53,7 +53,7 @@ public class TokenProvider {
                 .setSubject(String.valueOf(userId))
                 .setHeaderParam("typ", REFRESH_KEY)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .compact();
     }
 
