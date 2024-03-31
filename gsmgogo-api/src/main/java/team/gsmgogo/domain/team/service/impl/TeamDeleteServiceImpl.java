@@ -12,6 +12,8 @@ import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class TeamDeleteServiceImpl implements TeamDeleteService {
@@ -27,7 +29,7 @@ public class TeamDeleteServiceImpl implements TeamDeleteService {
 
         UserEntity currentUser = userFacade.getCurrentUser();
 
-        if (team.getTeamGrade() != currentUser.getUserGrade() || team.getTeamClass() != currentUser.getUserClass()) {
+        if (!Objects.equals(team.getAuthor().getUserId(), currentUser.getUserId())) {
             throw new ExpectedException("팀을 동록한 사람이 아닙니다.", HttpStatus.BAD_REQUEST);
         }
 
