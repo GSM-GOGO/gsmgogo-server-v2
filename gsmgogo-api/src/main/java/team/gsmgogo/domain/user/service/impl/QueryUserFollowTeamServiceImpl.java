@@ -23,6 +23,6 @@ public class QueryUserFollowTeamServiceImpl implements QueryUserFollowTeamServic
         UserEntity currentUser = userFacade.getCurrentUser();
         FollowEntity follow = followJpaRepository.findByUser(currentUser).orElse(null);
 
-        return new UserFollowTeamIdResponse(follow != null ? follow.getFollowId() : null);
+        return new UserFollowTeamIdResponse(follow != null ? follow.getTeam().getTeamId() : null);
     }
 }
