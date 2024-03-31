@@ -1,5 +1,4 @@
 spring:
-
   datasource:
     url: ${DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,6 +15,12 @@ spring:
         show_sql: true
     database-platform: org.hibernate.dialect.MySQLDialect
 
+  jwt:
+    secretKey: ${SECRET_KEY}
+    refreshKey: ${REFRESH_KEY}
+    accessExp: ${ACCESS_EXP}
+    refreshExp: ${REFRESH_EXP}
+
   data:
     redis:
       host: ${REDIS_HOST}
@@ -26,3 +31,17 @@ spring:
       enabled: false
     jdbc:
       initialize-schema: always
+
+gauth:
+  clientId: ${CLIENT_ID}
+  clientSecret: ${CLIENT_SECRET}
+  redirectUrl: ${REDIRECT_URL}
+  authUrl: ${AUTH_URL}
+  userApiUrl: ${USER_API_URL}
+
+cookie-domain: localhost
+
+message:
+  apiKey: ${API_KEY}
+  apiSecretKey: ${API_SECRET_KEY}
+  send: ${SEND_NUMBER}
