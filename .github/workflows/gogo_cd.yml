@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: build/deploy gsmgogo-api module
+      - name: excuting remote ssh commands
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.REMOTE_IP }}
@@ -20,26 +20,13 @@ jobs:
           username: ${{ secrets.REMOTE_USERNAME }}
           password: ${{ secrets.REMOTE_PASSWORD }}
           script: |
-            cd /home/ubuntu/GSM-GOGO-Server/
+            cd /home/ubuntu/GSM-GOGO-Server
             git pull origin main
-            cd gsmgogo-api/
-            ./gradlew clean build
-            docker build -t gsmgogo/gsmgogo-api . -f gsmgogo-api/Api.dockerfile
-            docker stop gogo-api || true
-            docker rm gogo-api || true
+            ./gradlew clean
+            ./gradlew build
+            docker stop gogo-server
+            docker rm gogo-server
+            docker build -t gsmgogo/gsmgogo-api . -f Api.dockerfile
+            docker build -t gsmgogo/gsmgogo-batch . -f Batch.dockerfile
             docker run -d -it --env-file ./.env -p 10001:8080 --name gogo-api gsmgogo/gsmgogo-api
-
-      - name: build/deploy gsmgogo-batch module
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.REMOTE_IP }}
-          port: ${{ secrets.REMOTE_SSH_PORT }}
-          username: ${{ secrets.REMOTE_USERNAME }}
-          password: ${{ secrets.REMOTE_PASSWORD }}
-          script: |
-            cd /home/ubuntu/GSM-GOGO-Server/gsmgogo-batch
-            ./gradlew clean build
-            docker build -t gsmgogo/gsmgogo-batch . -f gsmgogo-batch/Batch.dockerfile
-            docker stop gogo-batch || true
-            docker rm gogo-batch || true
-            docker run -d -it --env-file ./.env -p 10002:8081 --name gogo-batch gsmgogo/gsmgogo-batch
+            docker run -d -it --env-file ./.env -p 8080:8081 --name gogo-batch gsmgogo/gsmgogo-batch
