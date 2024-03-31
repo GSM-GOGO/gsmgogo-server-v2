@@ -42,7 +42,8 @@ bin/
 .DS_Store
 
 ### QueryDSL ###
-gsmgogo-entity/src/generated/
+
+gsmgogo-entity/src/generated
 
 ### Environment ###
 .env
