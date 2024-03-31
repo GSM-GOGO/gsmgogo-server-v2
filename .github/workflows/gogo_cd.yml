@@ -10,13 +10,18 @@ jobs:
 
     steps:
       - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Checkout repository
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.REMOTE_IP }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
           username: ${{ secrets.REMOTE_USERNAME }}
           password: ${{ secrets.REMOTE_PASSWORD }
+
       - name: Build and deploy gsmgogo-api module
+        uses: appleboy/ssh-action@v1.0.3
         run: |
           cd /home/ubuntu/GSM-GOGO-Server/gsmgogo-api
           ./gradlew clean build
@@ -27,11 +32,6 @@ jobs:
 
       - name: Build and deploy gsmgogo-batch module
         uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.REMOTE_IP }}
-          port: ${{ secrets.REMOTE_SSH_PORT }}
-          username: ${{ secrets.REMOTE_USERNAME }}
-          password: ${{ secrets.REMOTE_PASSWORD }}
         run: |
           cd /home/ubuntu/GSM-GOGO-Server/gsmgogo-batch
           ./gradlew clean build
