@@ -31,4 +31,4 @@ jobs:
             docker build -t gsmgogo/gsmgogo-api . -f Api.dockerfile
             docker build -t gsmgogo/gsmgogo-batch . -f Batch.dockerfile
             docker run -d -it --env-file ./.env -p 10001:8080 --name gogo-api gsmgogo/gsmgogo-api
-            docker run -d -it --env-file ./.env -p 8080:8081 --name gogo-batch gsmgogo/gsmgogo-batch
+            docker run -d -it --env-file ./.env --name gogo-batch gsmgogo/gsmgogo-batch
