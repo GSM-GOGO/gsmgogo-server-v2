@@ -28,4 +28,4 @@ jobs:
           docker build -t gsmgogo/gsmgogo-batch . -f Batch.dockerfile
           docker stop gogo-batch || true
           docker rm gogo-batch || true
-          docker run -d -it --env-file ./.env --name gogo-batch gsmgogo/gsmgogo-batch
+          docker run -d -it --env-file ./.env -p 10002:8081  --name gogo-batch gsmgogo/gsmgogo-batch
