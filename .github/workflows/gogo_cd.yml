@@ -14,7 +14,7 @@ jobs:
 
       - name: Build and deploy gsmgogo-api module
         run: |
-          cd GSM-GOGO-Server/gsmgogo-api
+          cd /home/ubuntu/GSM-GOGO-Server/gsmgogo-api
           ./gradlew clean build
           docker build -t gsmgogo/gsmgogo-api . -f Api.dockerfile
           docker stop gogo-api || true
@@ -23,7 +23,7 @@ jobs:
 
       - name: Build and deploy gsmgogo-batch module
         run: |
-          cd GSM-GOGO-Server/gsmgogo-batch
+          cd /home/ubuntu/GSM-GOGO-Server/gsmgogo-batch
           ./gradlew clean build
           docker build -t gsmgogo/gsmgogo-batch . -f Batch.dockerfile
           docker stop gogo-batch || true
