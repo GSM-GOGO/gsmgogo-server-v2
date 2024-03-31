@@ -20,7 +20,9 @@ jobs:
           username: ${{ secrets.REMOTE_USERNAME }}
           password: ${{ secrets.REMOTE_PASSWORD }}
           script: |
-            cd /home/ubuntu/GSM-GOGO-Server/gsmgogo-api
+            cd /home/ubuntu/GSM-GOGO-Server/
+            git pull origin main
+            cd gsmgogo-api/
             ./gradlew clean build
             docker build -t gsmgogo/gsmgogo-api . -f Api.dockerfile
             docker stop gogo-api || true
