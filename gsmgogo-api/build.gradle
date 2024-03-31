@@ -1,10 +1,5 @@
-bootJar {
-    enabled = true
-}
-
-jar {
-    enabled = true
-}
+bootJar { enabled = true }
+jar { enabled = true }
 
 ext {
     set('springCloudVersion', "2023.0.0")
@@ -12,7 +7,6 @@ ext {
 
 dependencies {
     implementation project(':gsmgogo-entity')
-    implementation project(':gsmgogo-batch')
 
     /* spring app */
     implementation 'org.springframework.boot:spring-boot-starter-web'
