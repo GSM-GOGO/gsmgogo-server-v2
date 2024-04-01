@@ -85,9 +85,9 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
             return findUser;
         }).toList();
 
-        if (maleCount.getOrDefault(NormalTeamType.TOSS_RUN, 0) != 3
-                || femaleCount.getOrDefault(NormalTeamType.TOSS_RUN, 0) != 3) {
-            throw new ExpectedException("이어달리기는 남학생 3명, 여학생 3명민 참여 가능합니다.", HttpStatus.BAD_REQUEST);
+        if (maleCount.getOrDefault(NormalTeamType.TOSS_RUN, 0) != 4
+                || femaleCount.getOrDefault(NormalTeamType.TOSS_RUN, 0) != 2) {
+            throw new ExpectedException("이어달리기는 남학생 4명, 여학생 2명민 참여 가능합니다.", HttpStatus.BAD_REQUEST);
         }
 
         if ((maleCount.getOrDefault(NormalTeamType.MISSION_RUN, 0) +
