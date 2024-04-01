@@ -15,7 +15,7 @@ import org.springframework.data.redis.core.index.Indexed;
 public class BlackListRedisEntity {
 
     @Id
-    private String userId;
+    private Long userId;
 
     @Indexed
     private String accessToken;
