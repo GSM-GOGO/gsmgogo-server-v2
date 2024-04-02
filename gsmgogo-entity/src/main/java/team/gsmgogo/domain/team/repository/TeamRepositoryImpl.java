@@ -10,10 +10,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeamRepositoryImpl implements TeamRepository {
 
-    private final TeamJpaRepository teamJpaRepository;
+//    private final TeamJpaRepository teamJpaRepository;
+    private final TeamQueryDslRepository teamQueryDslRepository;
 
     @Override
     public Optional<TeamEntity> findById(Long teamId) {
-        return teamJpaRepository.findByTeamId(teamId);
+        return teamQueryDslRepository.findByTeamId(teamId);
     }
 }

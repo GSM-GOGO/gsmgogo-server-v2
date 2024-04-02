@@ -10,20 +10,15 @@ import team.gsmgogo.domain.team.controller.dto.response.TeamFormationResponse;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.repository.TeamRepository;
 import team.gsmgogo.domain.team.service.TeamFormationGetService;
-import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
-import team.gsmgogo.domain.teamparticipate.repository.TeamParticipateJpaRepository;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class TeamFormationGetServiceImpl implements TeamFormationGetService {
     private final TeamRepository teamRepository;
-    private final TeamParticipateJpaRepository teamParticipateJpaRepository;
     private final UserFacade userFacade;
 
     @Override
@@ -34,8 +29,6 @@ public class TeamFormationGetServiceImpl implements TeamFormationGetService {
         TeamEntity team = teamRepository.findById(Long.valueOf(teamId))
             .orElseThrow(() -> new ExpectedException("해당 팀을 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
 
-        List<TeamParticipateEntity> participateList = teamParticipateJpaRepository.findByTeamTeamId(team.getTeamId());
-
         return new TeamFormationResponse(
             team.getTeamId(),
             team.getTeamName(),
@@ -44,7 +37,7 @@ public class TeamFormationGetServiceImpl implements TeamFormationGetService {
             toTeamClassType(team.getTeamClass()),
             team.getAuthor().getUserId().equals(currentUser.getUserId()),
             team.getWinCount(),
-            participateList.stream().map(teamParticipate -> new FormationParticipateDto(
+                team.getTeamParticipates().stream().map(teamParticipate -> new FormationParticipateDto(
                 teamParticipate.getUser().getUserId(),
                 teamParticipate.getUser().getUserName(),
                 teamParticipate.getPositionX(),
