@@ -48,6 +48,8 @@ gsmgogo-entity/src/generated
 ### Environment ###
 .env
 
+### Modules Build Files ###
+**/build
 gsmgogo-api/build/
 gsmgogo-entity/build/
 gsmgogo-batch/build/
