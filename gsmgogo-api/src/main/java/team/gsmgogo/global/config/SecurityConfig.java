@@ -1,11 +1,9 @@
 package team.gsmgogo.global.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import team.gsmgogo.global.security.jwt.TokenProvider;
 import team.gsmgogo.global.security.jwt.filter.TokenExceptionFilter;
 import team.gsmgogo.global.security.jwt.filter.TokenFilter;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +23,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final TokenProvider tokenProvider;
-
+    private final TokenFilter tokenFilter;
     private final TokenExceptionFilter tokenExceptionFilter;
 
     @Bean
@@ -45,7 +42,7 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
         );
 
-        http.addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(tokenExceptionFilter, TokenFilter.class);
 
         http.cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()));
