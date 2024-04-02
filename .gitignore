@@ -49,7 +49,7 @@ gsmgogo-entity/src/generated
 .env
 
 ### Modules Build Files ###
-**/build
-/gsmgogo-api/build/
-/gsmgogo-entity/build/
-/gsmgogo-batch/build/
+**/build/
+**/gsmgogo-api/build/
+**/gsmgogo-entity/build/
+**/gsmgogo-batch/build/
