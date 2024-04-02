@@ -50,6 +50,6 @@ gsmgogo-entity/src/generated
 
 ### Modules Build Files ###
 **/build
-gsmgogo-api/build/
-gsmgogo-entity/build/
-gsmgogo-batch/build/
+/gsmgogo-api/build/
+/gsmgogo-entity/build/
+/gsmgogo-batch/build/
