@@ -1,6 +1,5 @@
-.gradle
 build/
-**/build/
+**/build
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -48,8 +47,7 @@ gsmgogo-entity/src/generated
 ### Environment ###
 .env
 
-### Modules Build Files ###
-/build/
-gsmgogo-api/build/**
-gsmgogo-entity/build/**
-gsmgogo-batch/build/**
+### Gradle ###
+.gradle
+**/build/
+!src/**/build/
