@@ -47,3 +47,7 @@ gsmgogo-entity/src/generated
 
 ### Environment ###
 .env
+
+gsmgogo-api/build/
+gsmgogo-entity/build/
+gsmgogo-batch/build/

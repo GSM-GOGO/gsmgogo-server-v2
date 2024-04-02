@@ -10,20 +10,15 @@ import team.gsmgogo.domain.team.controller.dto.response.TeamFormationResponse;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.repository.TeamRepository;
 import team.gsmgogo.domain.team.service.TeamFormationGetService;
-import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
-import team.gsmgogo.domain.teamparticipate.repository.TeamParticipateJpaRepository;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class TeamFormationGetServiceImpl implements TeamFormationGetService {
     private final TeamRepository teamRepository;
-    private final TeamParticipateJpaRepository teamParticipateJpaRepository;
     private final UserFacade userFacade;
 
     @Override
