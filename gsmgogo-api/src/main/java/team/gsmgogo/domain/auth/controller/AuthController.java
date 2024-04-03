@@ -25,6 +25,7 @@ public class AuthController {
     private final GauthLoginService gauthLoginService;
     private final TokenReissueService tokenReissueService;
     private final SkipVerifyService skipVerifyService;
+    private final LogoutService logoutService;
 
     @Value("${gauth.clientId}")
     private String clientId;
@@ -62,25 +63,32 @@ public class AuthController {
     }
 
     @PostMapping("/sms")
-    public ResponseEntity<Void> sendCodeMessage(@Valid @RequestBody AuthSendCodeRequest request){
+    public ResponseEntity<Void> sendCodeMessage(@Valid @RequestBody AuthSendCodeRequest request) {
         messageSendService.execute(request.getPhoneNumber());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/sms/test")
-    public ResponseEntity<String> sendCodeMessageTest(@Valid @RequestBody AuthSendCodeRequest request){
+    public ResponseEntity<String> sendCodeMessageTest(@Valid @RequestBody AuthSendCodeRequest request) {
         return ResponseEntity.ok(messageSendService.test(request.getPhoneNumber()));
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<Void> checkVerifyCode(@RequestParam("code") String verifyCode){
+    public ResponseEntity<Void> checkVerifyCode(@RequestParam("code") String verifyCode) {
         checkVerifyCodeService.execute(verifyCode);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/sms/skip")
-    public ResponseEntity<Void> skipVerify(){
+    public ResponseEntity<Void> skipVerify() {
         skipVerifyService.execute();
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
+        String accessToken = request.getHeader("Authorization");
+        logoutService.logout(accessToken);
         return ResponseEntity.ok().build();
     }
 }
