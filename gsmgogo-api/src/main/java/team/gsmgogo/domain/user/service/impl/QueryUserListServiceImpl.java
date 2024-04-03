@@ -32,7 +32,7 @@ public class QueryUserListServiceImpl implements QueryUserListService {
         List<UserEntity> userList;
         List<GradeEnum> grades;
 
-        TeamType teamType = TeamType.valueOf(type);
+        TeamType teamType = type != null ? TeamType.valueOf(type) : TeamType.NORMAL;
 
         if(teamType == TeamType.BADMINTON){
             boolean isGradeOne = currentUser.getUserGrade() == GradeEnum.ONE;
