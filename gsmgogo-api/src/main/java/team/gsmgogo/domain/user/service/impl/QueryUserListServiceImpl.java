@@ -23,8 +23,6 @@ public class QueryUserListServiceImpl implements QueryUserListService {
 
     @Override
     public List<UserInfoResponse> queryUserList(String type) {
-        type = null;
-
         UserEntity currentUser = userFacade.getCurrentUser();
 
         List<ClassEnum> userClasses = new ArrayList<>();
