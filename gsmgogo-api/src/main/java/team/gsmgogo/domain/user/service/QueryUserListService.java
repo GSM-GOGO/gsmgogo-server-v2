@@ -5,5 +5,5 @@ import team.gsmgogo.domain.user.dto.response.UserInfoResponse;
 import java.util.List;
 
 public interface QueryUserListService {
-    List<UserInfoResponse> queryUserList();
+    List<UserInfoResponse> queryUserList(String type);
 }

@@ -2,9 +2,11 @@ package team.gsmgogo.domain.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.user.dto.response.UserInfoResponse;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
+import team.gsmgogo.domain.user.enums.GradeEnum;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.domain.user.service.QueryUserListService;
 import team.gsmgogo.global.facade.UserFacade;
@@ -20,21 +22,31 @@ public class QueryUserListServiceImpl implements QueryUserListService {
     private final UserFacade userFacade;
 
     @Override
-    public List<UserInfoResponse> queryUserList() {
+    public List<UserInfoResponse> queryUserList(String type) {
         UserEntity currentUser = userFacade.getCurrentUser();
 
         List<ClassEnum> userClasses = new ArrayList<>();
         userClasses.add(currentUser.getUserClass());
         userClasses.add(userOtherMajorClass(currentUser.getUserClass()));
 
-        return userJpaRepository
-                .findAllByUserGradeAndUserClassIn(
-                        currentUser.getUserGrade(), userClasses)
-                .stream().map(user -> UserInfoResponse.builder()
-                        .userId(user.getUserId())
-                        .userName(user.getUserName())
-                        .userGrade(user.getUserGrade())
-                        .userClass(user.getUserClass()).build()).toList();
+        List<UserEntity> userList;
+        List<GradeEnum> grades;
+
+        TeamType teamType = type != null ? TeamType.valueOf(type) : TeamType.NORMAL;
+
+        if(teamType == TeamType.BADMINTON){
+            boolean isGradeOne = currentUser.getUserGrade() == GradeEnum.ONE;
+            grades = isGradeOne ? List.of(GradeEnum.ONE) : List.of(GradeEnum.TWO, GradeEnum.THREE);
+        } else grades = List.of(currentUser.getUserGrade());
+
+        userList = userJpaRepository.findAllByUserGradeInAndUserClassIn(grades, userClasses);
+
+        return userList.stream().map(user -> UserInfoResponse.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .userGrade(user.getUserGrade())
+                .userClass(user.getUserClass()).build()
+        ).toList();
     }
 
     private ClassEnum userOtherMajorClass(ClassEnum userClass) {

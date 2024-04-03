@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserInfoResponse>> queryUserList() {
-        return ResponseEntity.ok(queryUserListService.queryUserList());
+    public ResponseEntity<List<UserInfoResponse>> queryUserList(@RequestParam(name = "type", required = false) String type) {
+        return ResponseEntity.ok(queryUserListService.queryUserList(type));
     }
 
     @GetMapping("/my-id")
