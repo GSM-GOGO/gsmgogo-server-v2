@@ -80,8 +80,8 @@ public class TeamSaveServiceImpl implements TeamSaveService {
             return findUser;
         }).toList();
 
-        if (request.getTeamType() == TeamType.SOCCER && maleCount.get() != 9)
-            throw new ExpectedException("축구 경기는 남학생 9명만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
+        if (request.getTeamType() == TeamType.SOCCER && maleCount.get() != 8)
+            throw new ExpectedException("축구 경기는 남학생 8명만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
 
         if (request.getTeamType() == TeamType.VOLLEYBALL && maleCount.get() != 8 && femaleCount.get() != 1)
             throw new ExpectedException("배구 경기는 남학생 8명, 여학생 1명 참여 가능합니다.", HttpStatus.BAD_REQUEST);
