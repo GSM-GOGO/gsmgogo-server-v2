@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import team.gsmgogo.domain.user.dto.response.UserInfoResponse;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
+import team.gsmgogo.domain.user.enums.GradeEnum;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.domain.user.service.QueryUserListService;
 import team.gsmgogo.global.facade.UserFacade;
@@ -27,14 +28,17 @@ public class QueryUserListServiceImpl implements QueryUserListService {
         userClasses.add(currentUser.getUserClass());
         userClasses.add(userOtherMajorClass(currentUser.getUserClass()));
 
-        return userJpaRepository
-                .findAllByUserGradeAndUserClassIn(
-                        currentUser.getUserGrade(), userClasses)
-                .stream().map(user -> UserInfoResponse.builder()
-                        .userId(user.getUserId())
-                        .userName(user.getUserName())
-                        .userGrade(user.getUserGrade())
-                        .userClass(user.getUserClass()).build()).toList();
+        boolean isGradeOne = currentUser.getUserGrade() == GradeEnum.ONE;
+        List<GradeEnum> grades = isGradeOne ? List.of(GradeEnum.ONE) : List.of(GradeEnum.TWO, GradeEnum.THREE);
+
+        List<UserEntity> userList = userJpaRepository.findAllByUserGradeInAndUserClassIn(grades, userClasses);
+
+        return userList.stream().map(user -> UserInfoResponse.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .userGrade(user.getUserGrade())
+                .userClass(user.getUserClass()).build()
+        ).toList();
     }
 
     private ClassEnum userOtherMajorClass(ClassEnum userClass) {
