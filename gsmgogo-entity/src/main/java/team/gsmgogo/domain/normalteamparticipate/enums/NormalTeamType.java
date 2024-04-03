@@ -10,5 +10,6 @@ public enum NormalTeamType {
     MISSION_RUN, // 미션달리기
     TUG_OF_WAR, // 줄다리기
     FREE_THROW, // 자유투 릴레이
-    GROUP_ROPE_JUMP // 단체 줄넘기
+    GROUP_ROPE_JUMP, // 단체 줄넘기
+    CROSS_ROPE_JUMP // 8자 줄넘기
 }
