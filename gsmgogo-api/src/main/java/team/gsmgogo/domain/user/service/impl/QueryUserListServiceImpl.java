@@ -2,6 +2,7 @@ package team.gsmgogo.domain.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.user.dto.response.UserInfoResponse;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.enums.ClassEnum;
@@ -21,17 +22,26 @@ public class QueryUserListServiceImpl implements QueryUserListService {
     private final UserFacade userFacade;
 
     @Override
-    public List<UserInfoResponse> queryUserList() {
+    public List<UserInfoResponse> queryUserList(String type) {
+        type = null;
+
         UserEntity currentUser = userFacade.getCurrentUser();
 
         List<ClassEnum> userClasses = new ArrayList<>();
         userClasses.add(currentUser.getUserClass());
         userClasses.add(userOtherMajorClass(currentUser.getUserClass()));
 
-        boolean isGradeOne = currentUser.getUserGrade() == GradeEnum.ONE;
-        List<GradeEnum> grades = isGradeOne ? List.of(GradeEnum.ONE) : List.of(GradeEnum.TWO, GradeEnum.THREE);
+        List<UserEntity> userList;
+        List<GradeEnum> grades;
 
-        List<UserEntity> userList = userJpaRepository.findAllByUserGradeInAndUserClassIn(grades, userClasses);
+        TeamType teamType = TeamType.valueOf(type);
+
+        if(teamType == TeamType.BADMINTON){
+            boolean isGradeOne = currentUser.getUserGrade() == GradeEnum.ONE;
+            grades = isGradeOne ? List.of(GradeEnum.ONE) : List.of(GradeEnum.TWO, GradeEnum.THREE);
+        } else grades = List.of(currentUser.getUserGrade());
+
+        userList = userJpaRepository.findAllByUserGradeInAndUserClassIn(grades, userClasses);
 
         return userList.stream().map(user -> UserInfoResponse.builder()
                 .userId(user.getUserId())
