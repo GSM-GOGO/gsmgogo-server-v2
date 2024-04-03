@@ -24,7 +24,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 // TODO
-//      TOSS_RUN 이어달리기: 남자 3명, 여자 3명 = 총 6명
+//      TOSS_RUN 이어달리기: 남자 4명, 여자 2명 = 총 6명
 //      MISSION_RUN 미션달리기: 6명
 //      TUG_OF_WAR 줄다리기: 30명
 //      FREE_THROW 자유투 릴레이: 30명
