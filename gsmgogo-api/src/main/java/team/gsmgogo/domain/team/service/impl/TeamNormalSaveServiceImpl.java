@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 //      TUG_OF_WAR 줄다리기: 30명
 //      FREE_THROW 자유투 릴레이: 30명
 //      GROUP_ROPE_JUMP 단체 줄넘기: 10명
+//      CROSS_ROPE_JUMP 8자 줄넘기: 20명
 
 @Service
 @RequiredArgsConstructor
@@ -105,6 +106,10 @@ public class TeamNormalSaveServiceImpl implements TeamNormalSaveService {
         if ((maleCount.getOrDefault(NormalTeamType.GROUP_ROPE_JUMP, 0) +
                 femaleCount.getOrDefault(NormalTeamType.GROUP_ROPE_JUMP, 0)) != 10)
             throw new ExpectedException("단체 줄넘기는 10명만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
+
+        if ((maleCount.getOrDefault(NormalTeamType.CROSS_ROPE_JUMP, 0) +
+                femaleCount.getOrDefault(NormalTeamType.CROSS_ROPE_JUMP, 0)) != 20)
+            throw new ExpectedException("8자 줄넘기는 20명만 참여 가능합니다.", HttpStatus.BAD_REQUEST);
 
         TeamEntity newTeam = TeamEntity.builder()
                 .author(currentUser)
