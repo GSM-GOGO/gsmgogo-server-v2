@@ -27,7 +27,7 @@ public class LogoutServiceImpl implements LogoutService {
     @Transactional
     public void logout(String accessToken) {
         UserEntity currentUser = userFacade.getCurrentUser();
-        RefreshTokenRedisEntity refreshToken = refreshTokenJpaRepository.findByUserId(currentUser.getUserId())
+        RefreshTokenRedisEntity refreshToken = refreshTokenJpaRepository.findById(currentUser.getUserId())
                 .orElseThrow(() -> new ExpectedException("리프레시 토큰을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST));
         refreshTokenJpaRepository.delete(refreshToken);
 
