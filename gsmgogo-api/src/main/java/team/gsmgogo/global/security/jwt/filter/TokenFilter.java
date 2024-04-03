@@ -1,6 +1,7 @@
 package team.gsmgogo.global.security.jwt.filter;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import team.gsmgogo.domain.auth.entity.BlackListRedisEntity;
 import team.gsmgogo.domain.auth.repository.BlackListJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
@@ -17,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Optional;
 
+@Component
 @RequiredArgsConstructor
 public class TokenFilter extends OncePerRequestFilter {
 
