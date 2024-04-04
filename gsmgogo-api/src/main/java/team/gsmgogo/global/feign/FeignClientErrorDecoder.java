@@ -12,7 +12,7 @@ public class FeignClientErrorDecoder implements ErrorDecoder {
     public Exception decode(String methodKey, Response response) throws FeignException {
 
         if(response.status() >= 400) {
-            throw new ExpectedException("Feign Client 예외가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExpectedException("Feign Client 예외가 발생했습니다. " + response.status(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return FeignException.errorStatus(methodKey, response);
