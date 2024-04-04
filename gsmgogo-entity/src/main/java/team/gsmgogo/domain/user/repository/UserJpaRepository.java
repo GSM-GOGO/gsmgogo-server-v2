@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByUserEmail(String userEmail);
     Optional<UserEntity> findByUserId(Long userId);
-    List<UserEntity> findTop5ByUserNameContainingAndUserGradeOrderByUserNameAsc(String userName, GradeEnum userGrade);
+    List<UserEntity> findTop5ByUserNameContainingAndUserGradeInOrderByUserNameAsc(String userName, List<GradeEnum> userGrade);
     List<UserEntity> findAllByUserGradeInAndUserClassIn(List<GradeEnum> userGrades, List<ClassEnum> userClasses);
     List<UserEntity> findAllByOrderByPointDesc();
 }
