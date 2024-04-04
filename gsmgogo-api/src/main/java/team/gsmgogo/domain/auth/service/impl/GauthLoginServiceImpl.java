@@ -1,7 +1,6 @@
 package team.gsmgogo.domain.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ import team.gsmgogo.global.security.jwt.dto.TokenResponse;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class GauthLoginServiceImpl implements GauthLoginService {
 
     private final GauthToken gauthToken;
@@ -54,11 +52,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
                 .redirectUri(redirectUri)
                 .build());
 
-        log.info("=============== " + gauthTokenDto.getAccessToken());
-
         GauthUserDto gauthUserDto = gauthInfo.getInfo("Bearer " + gauthTokenDto.getAccessToken());
-
-        log.info("=============== " + gauthUserDto.getName());
 
         Gender gender = gauthUserDto.getGender();
         Integer grade = gauthUserDto.getGrade();
