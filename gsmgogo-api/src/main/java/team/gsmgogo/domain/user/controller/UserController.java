@@ -24,13 +24,16 @@ public class UserController {
     private final QueryIsLeaderService queryIsLeaderService;
 
     @GetMapping("/search")
-    public ResponseEntity<List<UserInfoResponse>> queryUser(@RequestParam(name = "name") String name) {
-        return ResponseEntity.ok(queryUserInfoService.queryUserInfo(name));
+    public ResponseEntity<List<UserInfoResponse>> queryUser(
+        @RequestParam(name = "name") String name,
+        @RequestParam(name = "type", required = false) String type
+    ) {
+        return ResponseEntity.ok(queryUserInfoService.queryUserInfo(name, type));
     }
 
     @GetMapping
-    public ResponseEntity<List<UserInfoResponse>> queryUserList(@RequestParam(name = "type", required = false) String type) {
-        return ResponseEntity.ok(queryUserListService.queryUserList(type));
+    public ResponseEntity<List<UserInfoResponse>> queryUserList() {
+        return ResponseEntity.ok(queryUserListService.queryUserList());
     }
 
     @GetMapping("/my-id")
