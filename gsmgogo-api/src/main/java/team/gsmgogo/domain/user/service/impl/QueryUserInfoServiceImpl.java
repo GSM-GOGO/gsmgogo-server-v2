@@ -26,10 +26,15 @@ public class QueryUserInfoServiceImpl implements QueryUserInfoService {
         UserEntity currentUser = userFacade.getCurrentUser();
 
         List<GradeEnum> grades;
-        if(type != null & TeamType.valueOf(type).equals(TeamType.BADMINTON)) {
+
+        if (type == null || type.isEmpty() || type.isBlank()) {
+            grades = List.of(currentUser.getUserGrade());
+        } else if (TeamType.valueOf(type).equals(TeamType.BADMINTON)) {
             boolean isGradeOne = currentUser.getUserGrade() == GradeEnum.ONE;
             grades = isGradeOne ? List.of(GradeEnum.ONE) : List.of(GradeEnum.TWO, GradeEnum.THREE);
-        } else grades = List.of(currentUser.getUserGrade());
+        } else {
+            grades = List.of(currentUser.getUserGrade());
+        }
 
         return userJpaRepository.findTop5ByUserNameContainingAndUserGradeInOrderByUserNameAsc(name, grades)
                 .stream().map(user -> UserInfoResponse.builder()
