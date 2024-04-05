@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping("/search")
     public ResponseEntity<List<UserInfoResponse>> queryUser(
         @RequestParam(name = "name") String name,
-        @RequestParam(name = "type") String type
+        @RequestParam(name = "type", required = false) String type
     ) {
         return ResponseEntity.ok(queryUserInfoService.queryUserInfo(name, type));
     }
