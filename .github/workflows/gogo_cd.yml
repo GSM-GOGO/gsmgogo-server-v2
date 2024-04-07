@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.REMOTE_USERNAME }}
           password: ${{ secrets.REMOTE_PASSWORD }}
           script: |
-            cd /home/root/GSM-GOGO-Server
+            cd /root/GSM-GOGO-Server
             git pull origin main
             ./gradlew clean
             ./gradlew build
