@@ -39,11 +39,11 @@ public class TeamController {
         return ResponseEntity.ok(teamFormationGetService.execute(teamId));
     }
 
-    @PostMapping
-    public ResponseEntity<Void> saveTeam(@RequestBody @Valid TeamSaveRequest request) {
-        teamSaveService.saveTeam(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+//    @PostMapping
+//    public ResponseEntity<Void> saveTeam(@RequestBody @Valid TeamSaveRequest request) {
+//        teamSaveService.saveTeam(request);
+//        return ResponseEntity.status(HttpStatus.CREATED).build();
+//    }
 
     @GetMapping("/normal")
     public ResponseEntity<TeamNormalListResponse> getNormalTeamDetail(@RequestParam(name = "teamId") String teamId){
@@ -51,23 +51,23 @@ public class TeamController {
         return ResponseEntity.ok(teamNormalListResponse);
     }
 
-    @PostMapping("/normal")
-    public ResponseEntity<Void> saveNormalTeam(@RequestBody @Valid List<TeamNormalSaveRequest> request) {
-        teamNormalSaveService.saveNormalTeam(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteTeam(@RequestBody @Valid TeamDeleteRequest request) {
-        teamDeleteService.deleteTeam(request);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/badminton")
-    public ResponseEntity<Void> saveTeamBadminton(@RequestBody @Valid TeamBadmintonSaveRequest request) {
-        teamBadmintonSaveService.saveBadmintonTeam(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+//    @PostMapping("/normal")
+//    public ResponseEntity<Void> saveNormalTeam(@RequestBody @Valid List<TeamNormalSaveRequest> request) {
+//        teamNormalSaveService.saveNormalTeam(request);
+//        return ResponseEntity.status(HttpStatus.CREATED).build();
+//    }
+//
+//    @DeleteMapping
+//    public ResponseEntity<Void> deleteTeam(@RequestBody @Valid TeamDeleteRequest request) {
+//        teamDeleteService.deleteTeam(request);
+//        return ResponseEntity.ok().build();
+//    }
+//
+//    @PostMapping("/badminton")
+//    public ResponseEntity<Void> saveTeamBadminton(@RequestBody @Valid TeamBadmintonSaveRequest request) {
+//        teamBadmintonSaveService.saveBadmintonTeam(request);
+//        return ResponseEntity.status(HttpStatus.CREATED).build();
+//    }
 
     @PostMapping("/follow")
     public ResponseEntity<Void> followTeam(@RequestBody @Valid TeamFollowRequest request) {
