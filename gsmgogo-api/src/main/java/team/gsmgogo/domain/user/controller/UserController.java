@@ -23,18 +23,18 @@ public class UserController {
     private final QueryUserPointService queryUserPointService;
     private final QueryIsLeaderService queryIsLeaderService;
 
-    @GetMapping("/search")
-    public ResponseEntity<List<UserInfoResponse>> queryUser(
-        @RequestParam(name = "name") String name,
-        @RequestParam(name = "type", required = false) String type
-    ) {
-        return ResponseEntity.ok(queryUserInfoService.queryUserInfo(name, type));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<UserInfoResponse>> queryUserList() {
-        return ResponseEntity.ok(queryUserListService.queryUserList());
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<List<UserInfoResponse>> queryUser(
+//        @RequestParam(name = "name") String name,
+//        @RequestParam(name = "type", required = false) String type
+//    ) {
+//        return ResponseEntity.ok(queryUserInfoService.queryUserInfo(name, type));
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<List<UserInfoResponse>> queryUserList() {
+//        return ResponseEntity.ok(queryUserListService.queryUserList());
+//    }
 
     @GetMapping("/my-id")
     public ResponseEntity<UserIdResponse> queryUserId() {
