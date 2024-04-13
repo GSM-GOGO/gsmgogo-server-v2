@@ -13,10 +13,9 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
-import team.gsmgogo.domain.bet.repository.BetJpaRepository;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
-import team.gsmgogo.job.BetResultJob;
+import team.gsmgogo.job.CalculateMatchResult;
 import team.gsmgogo.job.ResetLoginCountJob;
 
 import java.util.HashMap;
@@ -30,7 +29,6 @@ public class ResetLoginCountScheduler {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final UserQueryDslRepository userQueryDslRepository;
-    private final UserJpaRepository betJpaRepository;
 
     @Scheduled(cron = "0 5 1 * * *")
     public void resetLoginCount() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
@@ -41,18 +39,6 @@ public class ResetLoginCountScheduler {
         jobLauncher.run(
             new ResetLoginCountJob(jobRepository, platformTransactionManager, userQueryDslRepository).resetCountJob(),
             jobParameters
-        );
-    }
-
-    @Scheduled(cron = "* * * * * *")
-    public void a() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-        Map<String, JobParameter<?>> confMap = new HashMap<>();
-        confMap.put("time", new JobParameter(System.currentTimeMillis(), String.class));
-        JobParameters jobParameters = new JobParameters(confMap);
-
-        jobLauncher.run(
-                new BetResultJob(jobRepository, platformTransactionManager, betJpaRepository).betJob(),
-                jobParameters
         );
     }
 }
