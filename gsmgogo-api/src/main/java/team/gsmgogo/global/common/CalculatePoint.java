@@ -26,6 +26,3 @@ public class CalculatePoint {
         return response;
     }
 }
-
-//나의 배팅액 * 패배 팀 총 배팅액 / 승리 팀 총 배팅액 + 배팅액) * 1.5
-//나의 배팅액 * (패배 팀의 총 배팅액 / 승리 팀 총 배팅액) + 배팅액 * 0.9
