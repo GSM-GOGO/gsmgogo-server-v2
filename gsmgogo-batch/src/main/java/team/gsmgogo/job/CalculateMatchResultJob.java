@@ -67,7 +67,7 @@ public class CalculateMatchResultJob {
         this.matchResultJpaRepository = matchResultJpaRepository;
         this.jobParameters = jobParameters;
     }
-    
+
     @Autowired
     public CalculateMatchResultJob(JobRepository jobRepository,
                                    PlatformTransactionManager platformTransactionManager,
@@ -83,7 +83,7 @@ public class CalculateMatchResultJob {
         this.matchResultJpaRepository = matchResultJpaRepository;
     }
 
-    @Bean
+    @Bean(name = "betJob")
     public Job betJob() {
         return new JobBuilder("calculate-match-job", jobRepository)
                 .incrementer(new RunIdIncrementer())

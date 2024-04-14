@@ -20,7 +20,7 @@ public class ResetLoginCountJob {
     private final PlatformTransactionManager platformTransactionManager;
     private final UserQueryDslRepository userQueryDslRepository;
 
-    @Bean
+    @Bean(name = "resetCountJob")
     public Job resetCountJob(){
         return new JobBuilder("reset-count-Job", jobRepository)
             .start(resetCountStep(jobRepository, platformTransactionManager))

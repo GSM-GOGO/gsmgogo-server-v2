@@ -28,8 +28,7 @@ spring:
 
   batch:
     job:
-      names: ${job.name:NONE}
-      enabled: true
+      enabled: false
     jdbc:
       initialize-schema: always
 
@@ -46,3 +45,6 @@ message:
   apiKey: ${API_KEY}
   apiSecretKey: ${API_SECRET_KEY}
   send: ${SEND_NUMBER}
+
+server:
+  port: 8081

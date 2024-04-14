@@ -1,4 +1,4 @@
-package team.gsmgogo.global.batch.dto;
+package team.gsmgogo.job.controller.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
