@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.batch.core.launch.JobLauncher;
 import team.gsmgogo.domain.bet.repository.BetJpaRepository;
+import team.gsmgogo.domain.match.repository.MatchJpaRepository;
 import team.gsmgogo.global.batch.dto.CalculateMatchResultRequest;
 import team.gsmgogo.job.CalculateMatchResult;
 
@@ -30,6 +31,7 @@ public class BatchController {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final BetJpaRepository betJpaRepository;
+    private final MatchJpaRepository matchJpaRepository;
 
     @PostMapping("/batch/calculate-match-result")
     public ResponseEntity<Void> calculateMatchResult(@RequestBody @Valid CalculateMatchResultRequest request)
@@ -38,11 +40,18 @@ public class BatchController {
         Map<String, JobParameter<?>> jobParametersMap = new HashMap<>();
         jobParametersMap.put("bet-result-time", new JobParameter(System.currentTimeMillis(), String.class));
         jobParametersMap.put("matchId", new JobParameter<>(request.getMatchId(), Long.class));
-        jobParametersMap.put("teamAScore", new JobParameter<>(request.getTeamAScore(), Integer.class));
-        jobParametersMap.put("teamBScore", new JobParameter<>(request.getTeamBScore(), Integer.class));
+        jobParametersMap.put("teamAScore", new JobParameter<>(request.getTeamAScore(), Long.class));
+        jobParametersMap.put("teamBScore", new JobParameter<>(request.getTeamBScore(), Long.class));
         JobParameters jobParameters = new JobParameters(jobParametersMap);
 
-        jobLauncher.run(new CalculateMatchResult(jobRepository, platformTransactionManager, betJpaRepository, jobParameters).betJob(),
+        jobLauncher.run(CalculateMatchResult.builder()
+                .jobRepository(jobRepository)
+                        .platformTransactionManager(platformTransactionManager)
+                        .betJpaRepository(betJpaRepository)
+                        .matchJpaRepository(matchJpaRepository)
+                        .jobParameters(jobParameters)
+                        .build()
+                .betJob(),
                 jobParameters);
 
         return ResponseEntity.ok().build();

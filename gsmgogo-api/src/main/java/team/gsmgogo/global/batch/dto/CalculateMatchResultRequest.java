@@ -10,7 +10,7 @@ public class CalculateMatchResultRequest {
     @NotNull
     private Long matchId;
     @NotNull
-    private Integer teamAScore;
+    private Long teamAScore;
     @NotNull
-    private Integer teamBScore;
+    private Long teamBScore;
 }
