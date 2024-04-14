@@ -95,7 +95,7 @@ public class MatchServiceImpl implements MatchService {
                     match.getTeamABet(), 
                     match.getTeamBBet(), 
                     matchResult.getTeamAScore(), 
-                    matchResult.getTeamAScore(), 
+                    matchResult.getTeamBScore(), 
                     betting.get().getBetScoreA(), 
                     betting.get().getBetScoreB(), 
                     calculatePoint.getEarnedPoint(), 
