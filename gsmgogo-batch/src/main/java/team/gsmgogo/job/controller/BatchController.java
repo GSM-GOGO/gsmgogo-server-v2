@@ -38,7 +38,7 @@ public class BatchController {
         jobParametersMap.put("teamBScore", new JobParameter<>(request.getTeamBScore(), Long.class));
         JobParameters jobParameters = new JobParameters(jobParametersMap);
 
-        jobLauncher.run((Job) ac.getBean("betJob"), jobParameters);
+        jobLauncher.run((Job) ac.getBean("calculateMatchJob"), jobParameters);
 
         return ResponseEntity.ok().build();
     }

@@ -53,8 +53,8 @@ public class CalculateMatchResultJob {
 
     private final Integer chunkSize = 10;
 
-    @Bean(name = "betJob")
-    public Job betJob(Step betStep, Step migrationResultStep) {
+    @Bean(name = "calculateMatchJob")
+    public Job calculateMatchJob(Step betStep, Step migrationResultStep) {
         return new JobBuilder("calculate-match-job", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .validator(new CalculateMatchValidator())
