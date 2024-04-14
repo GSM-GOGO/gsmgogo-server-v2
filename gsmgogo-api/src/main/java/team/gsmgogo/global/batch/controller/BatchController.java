@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.batch.core.launch.JobLauncher;
 import team.gsmgogo.domain.bet.repository.BetJpaRepository;
 import team.gsmgogo.domain.match.repository.MatchJpaRepository;
+import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.batch.dto.CalculateMatchResultRequest;
 import team.gsmgogo.job.CalculateMatchResult;
 
@@ -32,6 +33,7 @@ public class BatchController {
     private final PlatformTransactionManager platformTransactionManager;
     private final BetJpaRepository betJpaRepository;
     private final MatchJpaRepository matchJpaRepository;
+    private final UserJpaRepository userJpaRepository;
 
     @PostMapping("/batch/calculate-match-result")
     public ResponseEntity<Void> calculateMatchResult(@RequestBody @Valid CalculateMatchResultRequest request)
@@ -49,6 +51,7 @@ public class BatchController {
                         .platformTransactionManager(platformTransactionManager)
                         .betJpaRepository(betJpaRepository)
                         .matchJpaRepository(matchJpaRepository)
+                        .userJpaRepository(userJpaRepository)
                         .jobParameters(jobParameters)
                         .build()
                 .betJob(),
