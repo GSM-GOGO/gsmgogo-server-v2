@@ -6,10 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Role {
-
-    USER("USER"),
-    PLAYER("PLAYER"),
-    LEADER("LEADER");
-
-    private final String role;
+    USER,
+    ROOT,
+    LEADER;
 }
