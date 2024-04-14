@@ -13,9 +13,7 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
-import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
-import team.gsmgogo.job.CalculateMatchResult;
 import team.gsmgogo.job.ResetLoginCountJob;
 
 import java.util.HashMap;

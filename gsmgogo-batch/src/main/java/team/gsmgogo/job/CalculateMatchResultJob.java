@@ -1,9 +1,6 @@
 package team.gsmgogo.job;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
@@ -14,11 +11,12 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
-import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
+import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,63 +26,91 @@ import team.gsmgogo.domain.bet.entity.BetEntity;
 import team.gsmgogo.domain.bet.repository.BetJpaRepository;
 import team.gsmgogo.domain.match.entity.MatchEntity;
 import team.gsmgogo.domain.match.repository.MatchJpaRepository;
+import team.gsmgogo.domain.matchresult.entity.MatchResultEntity;
+import team.gsmgogo.domain.matchresult.repository.MatchResultJpaRepository;
+import team.gsmgogo.domain.team.entity.TeamEntity;
+import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.job.validator.CalculateMatchValidator;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;
 
 @Slf4j
 @Configuration
-public class CalculateMatchResult {
+public class CalculateMatchResultJob {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final BetJpaRepository betJpaRepository;
     private final MatchJpaRepository matchJpaRepository;
     private final UserJpaRepository userJpaRepository;
+    private final MatchResultJpaRepository matchResultJpaRepository;
     private JobParameters jobParameters = new JobParameters();
 
     @Builder
-    public CalculateMatchResult(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager, BetJpaRepository betJpaRepository, MatchJpaRepository matchJpaRepository, UserJpaRepository userJpaRepository, JobParameters jobParameters) {
+    public CalculateMatchResultJob(JobRepository jobRepository,
+                                   PlatformTransactionManager platformTransactionManager,
+                                   BetJpaRepository betJpaRepository,
+                                   MatchJpaRepository matchJpaRepository,
+                                   UserJpaRepository userJpaRepository,
+                                   MatchResultJpaRepository matchResultJpaRepository,
+                                   JobParameters jobParameters) {
         this.jobRepository = jobRepository;
         this.platformTransactionManager = platformTransactionManager;
         this.betJpaRepository = betJpaRepository;
         this.matchJpaRepository = matchJpaRepository;
         this.userJpaRepository = userJpaRepository;
+        this.matchResultJpaRepository = matchResultJpaRepository;
         this.jobParameters = jobParameters;
     }
     
     @Autowired
-    public CalculateMatchResult(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager, BetJpaRepository betJpaRepository, MatchJpaRepository matchJpaRepository, UserJpaRepository userJpaRepository) {
+    public CalculateMatchResultJob(JobRepository jobRepository,
+                                   PlatformTransactionManager platformTransactionManager,
+                                   BetJpaRepository betJpaRepository,
+                                   MatchJpaRepository matchJpaRepository,
+                                   UserJpaRepository userJpaRepository,
+                                   MatchResultJpaRepository matchResultJpaRepository) {
         this.jobRepository = jobRepository;
         this.platformTransactionManager = platformTransactionManager;
         this.betJpaRepository = betJpaRepository;
         this.matchJpaRepository = matchJpaRepository;
         this.userJpaRepository = userJpaRepository;
+        this.matchResultJpaRepository = matchResultJpaRepository;
     }
 
     @Bean
     public Job betJob() {
-        return new JobBuilder("bet-Job", jobRepository)
+        return new JobBuilder("calculate-match-job", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .validator(new CalculateMatchValidator())
                 .start(betStep(jobRepository, platformTransactionManager))
+                .next(migrationResultStep(jobRepository, platformTransactionManager))
                 .build();
     }
 
     @Bean
     @JobScope
     public Step betStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
-        return new StepBuilder("bet-Step", jobRepository)
+        return new StepBuilder("calculate-match-step", jobRepository)
                 .<BetEntity, UserEntity>chunk(5, platformTransactionManager)
                 .reader(betItemReader())
                 .processor(betProcessor())
                 .writer(writer())
                 .build();
     }
+
+    @Bean
+    @JobScope
+    public Step migrationResultStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
+        return new StepBuilder("migration-result-step", jobRepository)
+                .tasklet(migrationResultTasklet(), platformTransactionManager)
+                .build();
+    }
+
+    // betResult
 
     @Bean
     @StepScope
@@ -152,6 +178,33 @@ public class CalculateMatchResult {
     @StepScope
     public ItemWriter<UserEntity> writer() {
         return userJpaRepository::saveAll;
+    }
+
+    // migrationResult
+
+    @Bean
+    public Tasklet migrationResultTasklet() {
+        return (contribution, chunkContext) -> {
+
+            Long matchId = jobParameters.getLong("matchId");
+            Long teamAScore = jobParameters.getLong("teamAScore");
+            Long teamBScore = jobParameters.getLong("teamBScore");
+
+            MatchEntity match = matchJpaRepository.findByMatchId(matchId).orElseThrow(RuntimeException::new);
+
+            matchResultJpaRepository.save(
+                    MatchResultEntity.builder()
+                            .match(match)
+                            .team(teamAScore > teamBScore ? match.getTeamA() : match.getTeamB())
+                            .teamABet(match.getTeamABet())
+                            .teamBBet(match.getTeamBBet())
+                            .teamAScore(teamAScore.intValue())
+                            .teamBScore(teamBScore.intValue())
+                            .build()
+            );
+
+            return RepeatStatus.FINISHED;
+        };
     }
 
 }

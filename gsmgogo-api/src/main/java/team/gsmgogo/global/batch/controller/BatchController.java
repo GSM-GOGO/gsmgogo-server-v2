@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.batch.core.launch.JobLauncher;
 import team.gsmgogo.domain.bet.repository.BetJpaRepository;
 import team.gsmgogo.domain.match.repository.MatchJpaRepository;
+import team.gsmgogo.domain.matchresult.repository.MatchResultJpaRepository;
+import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.batch.dto.CalculateMatchResultRequest;
-import team.gsmgogo.job.CalculateMatchResult;
+import team.gsmgogo.job.CalculateMatchResultJob;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +35,7 @@ public class BatchController {
     private final PlatformTransactionManager platformTransactionManager;
     private final BetJpaRepository betJpaRepository;
     private final MatchJpaRepository matchJpaRepository;
+    private final MatchResultJpaRepository matchResultJpaRepository;
     private final UserJpaRepository userJpaRepository;
 
     @PostMapping("/batch/calculate-match-result")
@@ -46,11 +49,12 @@ public class BatchController {
         jobParametersMap.put("teamBScore", new JobParameter<>(request.getTeamBScore(), Long.class));
         JobParameters jobParameters = new JobParameters(jobParametersMap);
 
-        jobLauncher.run(CalculateMatchResult.builder()
+        jobLauncher.run(CalculateMatchResultJob.builder()
                 .jobRepository(jobRepository)
                         .platformTransactionManager(platformTransactionManager)
                         .betJpaRepository(betJpaRepository)
                         .matchJpaRepository(matchJpaRepository)
+                        .matchResultJpaRepository(matchResultJpaRepository)
                         .userJpaRepository(userJpaRepository)
                         .jobParameters(jobParameters)
                         .build()
