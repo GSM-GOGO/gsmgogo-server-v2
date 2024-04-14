@@ -1,5 +1,6 @@
 package team.gsmgogo.global.batch.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
@@ -31,14 +32,17 @@ public class BatchController {
     private final BetJpaRepository betJpaRepository;
 
     @PostMapping("/batch/calculate-match-result")
-    public ResponseEntity<Void> calculateMatchResult()
+    public ResponseEntity<Void> calculateMatchResult(@RequestBody @Valid CalculateMatchResultRequest request)
             throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
 
         Map<String, JobParameter<?>> jobParametersMap = new HashMap<>();
         jobParametersMap.put("bet-result-time", new JobParameter(System.currentTimeMillis(), String.class));
+        jobParametersMap.put("matchId", new JobParameter<>(request.getMatchId(), Long.class));
+        jobParametersMap.put("teamAScore", new JobParameter<>(request.getTeamAScore(), Integer.class));
+        jobParametersMap.put("teamBScore", new JobParameter<>(request.getTeamBScore(), Integer.class));
         JobParameters jobParameters = new JobParameters(jobParametersMap);
 
-        jobLauncher.run(new CalculateMatchResult(jobRepository, platformTransactionManager, betJpaRepository).betJob(),
+        jobLauncher.run(new CalculateMatchResult(jobRepository, platformTransactionManager, betJpaRepository, jobParameters).betJob(),
                 jobParameters);
 
         return ResponseEntity.ok().build();
