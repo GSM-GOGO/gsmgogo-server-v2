@@ -49,6 +49,8 @@ public class CalculateMatchResultJob {
     private final MatchResultJpaRepository matchResultJpaRepository;
     private JobParameters jobParameters = new JobParameters();
 
+    private final Integer chunkSize = 10;
+
     @Builder
     public CalculateMatchResultJob(JobRepository jobRepository,
                                    PlatformTransactionManager platformTransactionManager,
@@ -87,7 +89,8 @@ public class CalculateMatchResultJob {
                 .incrementer(new RunIdIncrementer())
                 .validator(new CalculateMatchValidator())
                 .start(betStep(jobRepository, platformTransactionManager))
-                .next(migrationResultStep(jobRepository, platformTransactionManager))
+                .on("COMPLETED").to(migrationResultStep(jobRepository, platformTransactionManager))
+                .end()
                 .build();
     }
 
@@ -95,7 +98,7 @@ public class CalculateMatchResultJob {
     @JobScope
     public Step betStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
         return new StepBuilder("calculate-match-step", jobRepository)
-                .<BetEntity, UserEntity>chunk(5, platformTransactionManager)
+                .<BetEntity, UserEntity>chunk(chunkSize, platformTransactionManager)
                 .reader(betItemReader())
                 .processor(betProcessor())
                 .writer(writer())
@@ -121,7 +124,7 @@ public class CalculateMatchResultJob {
         reader.setRepository(betJpaRepository);
         reader.setMethodName("findByMatch");
         reader.setArguments(Collections.singletonList(matchJpaRepository.findByMatchId(matchId).orElseThrow(RuntimeException::new)));
-        reader.setPageSize(5);
+        reader.setPageSize(chunkSize);
 
         HashMap<String, Sort.Direction> sorts = new HashMap<>();
         sorts.put("betId", Sort.Direction.ASC);
