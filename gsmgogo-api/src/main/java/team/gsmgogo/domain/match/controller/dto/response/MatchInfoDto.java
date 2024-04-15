@@ -2,6 +2,7 @@ package team.gsmgogo.domain.match.controller.dto.response;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -21,19 +22,44 @@ import team.gsmgogo.domain.user.enums.GradeEnum;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MatchInfoDto {
     private Long matchId;
+
     private TeamType matchType;
+
     private MatchLevelType matchLevel;
+
+    @JsonProperty("team_a_id")
     private Long teamAId;
+
+    @JsonProperty("team_a_name")
     private String teamAName;
+
+    @JsonProperty("team_a_grade")
     private GradeEnum teamAGrade;
+
+    @JsonProperty("team_a_class_type")
     private TeamClassType teamAClassType;
+
+    @JsonProperty("team_b_id")
     private Long teamBId;
+
+    @JsonProperty("team_b_name")
     private String teamBName;
+
+    @JsonProperty("team_b_grade")
     private GradeEnum teamBGrade;
+
+    @JsonProperty("team_b_class_type")
     private TeamClassType teamBClassType;
+
     private LocalDateTime matchStartAt;
+
     private LocalDateTime matchEndAt;
+
     private boolean isVote;
+
+    @JsonProperty("team_a_bet")
     private Long teamABet;
+
+    @JsonProperty("team_b_bet")
     private Long teamBBet;
 }
