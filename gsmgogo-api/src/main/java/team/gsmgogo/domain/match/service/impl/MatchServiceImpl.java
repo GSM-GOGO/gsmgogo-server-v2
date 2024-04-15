@@ -39,7 +39,7 @@ public class MatchServiceImpl implements MatchService {
         List<BetEntity> bettings = betJpaRepository.findByUser(currentUser);
 
         List<MatchInfoDto> matchList = matches.stream()
-            .filter(match -> match.getEndAt().isBefore(LocalDateTime.now()))
+            .filter(match -> match.getEndAt().isAfter(LocalDateTime.now()))
             .map(match -> {
                 return MatchInfoDto.builder()
                     .matchId(match.getMatchId())
