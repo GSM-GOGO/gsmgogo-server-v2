@@ -68,16 +68,19 @@ public class MatchServiceImpl implements MatchService {
                     .filter(bet -> bet.getMatch() == match)
                     .findFirst();
 
-                CalculatePointRequest request = new CalculatePointRequest(
-                    betting.get().getBetPoint(), 
-                    matchResult.getTeamAScore(), 
-                    matchResult.getTeamBScore(), 
-                    betting.get().getBetScoreA(), 
-                    betting.get().getBetScoreB(), 
-                    match.getTeamABet(), 
-                    match.getTeamBBet()
-                );
-                CalculatePointResponse calculatePoint = new CalculatePoint().execute(request);
+                CalculatePointResponse calculatePoint = new CalculatePointResponse();
+                if(betting != null){
+                    CalculatePointRequest request = new CalculatePointRequest(
+                        betting.get().getBetPoint(), 
+                        matchResult.getTeamAScore(), 
+                        matchResult.getTeamBScore(), 
+                        betting.get().getBetScoreA(), 
+                        betting.get().getBetScoreB(), 
+                        match.getTeamABet(), 
+                        match.getTeamBBet()
+                    );
+                    calculatePoint = new CalculatePoint().execute(request);
+                } else betting = Optional.empty();
 
                 return MatchResultDto.builder()
                     .matchId(match.getMatchId())

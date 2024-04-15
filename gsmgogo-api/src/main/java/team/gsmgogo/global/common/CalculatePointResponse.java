@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CalculatePointResponse {
-    private Long earnedPoint;
-    private Long losePoint;
+    private Long earnedPoint = null;
+    private Long losePoint = null;
 }
