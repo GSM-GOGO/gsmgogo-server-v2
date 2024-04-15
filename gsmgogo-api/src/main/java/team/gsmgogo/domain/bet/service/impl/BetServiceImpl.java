@@ -1,8 +1,10 @@
 package team.gsmgogo.domain.bet.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
 import team.gsmgogo.domain.bet.controller.dto.BetRequest;
 import team.gsmgogo.domain.bet.entity.BetEntity;
 import team.gsmgogo.domain.bet.repository.BetJpaRepository;
@@ -12,6 +14,7 @@ import team.gsmgogo.domain.match.repository.MatchJpaRepository;
 import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.user.entity.UserEntity;
+import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
 @Service
@@ -28,6 +31,10 @@ public class BetServiceImpl implements BetService {
         MatchEntity betMatch = matchJpaRepository.getReferenceById(betRequest.getMatchId());
         TeamEntity betTeam = teamJpaRepository.getReferenceById(betRequest.getTeamId());
         UserEntity currentUser = userFacade.getCurrentUser();
+
+        if(betJpaRepository.existsByUserAndMatch(currentUser, betMatch)){
+            throw new ExpectedException("이미 해당 경기에 배팅을 했습니다.", HttpStatus.BAD_REQUEST);
+        }
 
         BetEntity bet = BetEntity.builder()
             .match(betMatch)
