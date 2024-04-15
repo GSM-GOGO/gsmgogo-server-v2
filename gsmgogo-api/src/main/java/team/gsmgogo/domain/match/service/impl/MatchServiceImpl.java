@@ -41,24 +41,24 @@ public class MatchServiceImpl implements MatchService {
         List<MatchInfoDto> matchList = matches.stream()
             .filter(match -> match.getEndAt().isBefore(LocalDateTime.now()))
             .map(match -> {
-                return new MatchInfoDto(
-                    match.getMatchId(),
-                    match.getMatchType(),
-                    match.getMatchLevel(),
-                    match.getTeamA().getTeamId(),
-                    match.getTeamA().getTeamName(),
-                    match.getTeamAGrade(),
-                    match.getTeamAClassType(),
-                    match.getTeamB().getTeamId(),
-                    match.getTeamB().getTeamName(),
-                    match.getTeamBGrade(),
-                    match.getTeamBClassType(),
-                    match.getStartAt(),
-                    match.getEndAt(),
-                    bettings.stream().anyMatch(bet -> bet.getMatch() == match),
-                    match.getTeamABet(),
-                    match.getTeamBBet()
-                );
+                return MatchInfoDto.builder()
+                    .matchId(match.getMatchId())
+                    .matchType(match.getMatchType())
+                    .matchLevel(match.getMatchLevel())
+                    .teamAId(match.getTeamA().getTeamId())
+                    .teamAName(match.getTeamA().getTeamName())
+                    .teamAGrade(match.getTeamAGrade())
+                    .teamAClassType(match.getTeamAClassType())
+                    .teamBId(match.getTeamB().getTeamId())
+                    .teamBName(match.getTeamB().getTeamName())
+                    .teamBGrade(match.getTeamBGrade())
+                    .teamBClassType(match.getTeamBClassType())
+                    .matchStartAt(match.getStartAt())
+                    .matchEndAt(match.getEndAt())
+                    .isVote(bettings.stream().anyMatch(bet -> bet.getMatch() == match))
+                    .teamABet(match.getTeamABet())
+                    .teamBBet(match.getTeamBBet())
+                    .build();
             }).toList();
 
         List<MatchResultDto> endedMatches = matchResults.stream()
@@ -79,28 +79,26 @@ public class MatchServiceImpl implements MatchService {
                 );
                 CalculatePointResponse calculatePoint = new CalculatePoint().execute(request);
 
-                return new MatchResultDto(
-                    match.getMatchId(), 
-                    match.getMatchType(), 
-                    match.getMatchLevel(), 
-                    match.getTeamA().getTeamId(), 
-                    match.getTeamA().getTeamName(), 
-                    match.getTeamAGrade(), 
-                    match.getTeamAClassType(), 
-                    match.getTeamB().getTeamId(), 
-                    match.getTeamB().getTeamName(), 
-                    match.getTeamBGrade(), 
-                    match.getTeamBClassType(), 
-                    betting.isPresent(), 
-                    match.getTeamABet(), 
-                    match.getTeamBBet(), 
-                    matchResult.getTeamAScore(), 
-                    matchResult.getTeamBScore(), 
-                    betting.get().getBetScoreA(), 
-                    betting.get().getBetScoreB(), 
-                    calculatePoint.getEarnedPoint(), 
-                    calculatePoint.getLosePoint()
-                );
+                return MatchResultDto.builder()
+                    .matchId(match.getMatchId())
+                    .matchType(match.getMatchType())
+                    .matchLevel(match.getMatchLevel())
+                    .teamAId(match.getTeamA().getTeamId())
+                    .teamAName(match.getTeamA().getTeamName())
+                    .teamAGrade(match.getTeamAGrade())
+                    .teamAClassType(match.getTeamAClassType())
+                    .teamBId(match.getTeamB().getTeamId())
+                    .teamBName(match.getTeamB().getTeamName())
+                    .teamBGrade(match.getTeamBGrade())
+                    .teamBClassType(match.getTeamBClassType())
+                    .isVote(betting.isPresent())
+                    .teamABet(match.getTeamABet())
+                    .teamBBet(match.getTeamBBet())
+                    .teamAScore(matchResult.getTeamAScore())
+                    .teamBScore(matchResult.getTeamBScore())
+                    .earnedPoint(calculatePoint.getEarnedPoint())
+                    .losePoint(calculatePoint.getLosePoint())
+                    .build();
             }).toList();
 
         return new MatchResponse(matchList, endedMatches);
