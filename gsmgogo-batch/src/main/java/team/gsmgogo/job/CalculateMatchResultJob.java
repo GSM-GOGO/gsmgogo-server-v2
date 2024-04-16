@@ -161,6 +161,7 @@ public class CalculateMatchResultJob {
             Long teamBScore = chunkContext.getStepContext().getStepExecution().getJobParameters().getLong("teamBScore");
 
             MatchEntity match = matchJpaRepository.findByMatchId(matchId).orElseThrow(RuntimeException::new);
+            match.end();
 
             matchResultJpaRepository.save(
                     MatchResultEntity.builder()
@@ -172,6 +173,7 @@ public class CalculateMatchResultJob {
                             .teamBScore(teamBScore.intValue())
                             .build()
             );
+            matchJpaRepository.save(match);
 
             return RepeatStatus.FINISHED;
         };

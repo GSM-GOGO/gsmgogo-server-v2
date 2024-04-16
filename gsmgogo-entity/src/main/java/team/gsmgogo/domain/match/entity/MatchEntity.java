@@ -69,4 +69,8 @@ public class MatchEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "match_level")
     private MatchLevelType matchLevel;
+
+    public void end() {
+        this.isEnd = true;
+    }
 }
