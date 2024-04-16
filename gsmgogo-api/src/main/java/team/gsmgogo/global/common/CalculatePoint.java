@@ -4,8 +4,8 @@ public class CalculatePoint {
     public CalculatePointResponse execute(CalculatePointRequest req){
         CalculatePointResponse response = null;
 
-        long winTeamPoint = Math.max(req.getAllAPoint(), req.getAllBPoint());
-        long loseTeamPoint = Math.min(req.getAllAPoint(), req.getAllBPoint());
+        long winTeamPoint = req.getAScore() > req.getBScore() ? req.getAllAPoint() : req.getAllBPoint();
+        long loseTeamPoint = req.getAScore() > req.getBScore() ? req.getAllBPoint() : req.getAllAPoint();
 
         // 스코어 예측 성공
         if (req.getAScore() == req.getBetAScore() && req.getBScore() == req.getBetBScore()){
