@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.game.controller.dto.response.DailyRouletteResponse;
 import team.gsmgogo.domain.game.entity.GameEntity;
 import team.gsmgogo.domain.game.repository.GameJpaRepository;
-import team.gsmgogo.domain.game.service.DailyRouletteRoll;
+import team.gsmgogo.domain.game.service.DailyRouletteRollService;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.global.exception.error.ExpectedException;
@@ -17,7 +17,7 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class DailyRouletteRollImpl implements DailyRouletteRoll {
+public class DailyRouletteRollServiceImpl implements DailyRouletteRollService {
 
     private final UserJpaRepository userJpaRepository;
     private final GameJpaRepository gameJpaRepository;
