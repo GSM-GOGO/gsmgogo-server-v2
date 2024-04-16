@@ -39,26 +39,24 @@ public class MatchServiceImpl implements MatchService {
         List<BetEntity> bettings = betJpaRepository.findByUser(currentUser);
 
         List<MatchInfoDto> matchList = matches.stream()
-            .map(match -> {
-                return MatchInfoDto.builder()
-                    .matchId(match.getMatchId())
-                    .matchType(match.getMatchType())
-                    .matchLevel(match.getMatchLevel())
-                    .teamAId(match.getTeamA().getTeamId())
-                    .teamAName(match.getTeamA().getTeamName())
-                    .teamAGrade(match.getTeamAGrade())
-                    .teamAClassType(match.getTeamAClassType())
-                    .teamBId(match.getTeamB().getTeamId())
-                    .teamBName(match.getTeamB().getTeamName())
-                    .teamBGrade(match.getTeamBGrade())
-                    .teamBClassType(match.getTeamBClassType())
-                    .matchStartAt(match.getStartAt())
-                    .matchEndAt(match.getEndAt())
-                    .isVote(bettings.stream().anyMatch(bet -> bet.getMatch() == match))
-                    .teamABet(match.getTeamABet())
-                    .teamBBet(match.getTeamBBet())
-                    .build();
-            }).toList();
+            .map(match -> MatchInfoDto.builder()
+                .matchId(match.getMatchId())
+                .matchType(match.getMatchType())
+                .matchLevel(match.getMatchLevel())
+                .teamAId(match.getTeamA().getTeamId())
+                .teamAName(match.getTeamA().getTeamName())
+                .teamAGrade(match.getTeamAGrade())
+                .teamAClassType(match.getTeamAClassType())
+                .teamBId(match.getTeamB().getTeamId())
+                .teamBName(match.getTeamB().getTeamName())
+                .teamBGrade(match.getTeamBGrade())
+                .teamBClassType(match.getTeamBClassType())
+                .matchStartAt(match.getStartAt())
+                .matchEndAt(match.getEndAt())
+                .isVote(bettings.stream().anyMatch(bet -> bet.getMatch() == match))
+                .teamABet(match.getTeamABet())
+                .teamBBet(match.getTeamBBet())
+                .build()).toList();
 
         List<MatchResultDto> endedMatches = matchResults.stream()
             .map(matchResult -> {
@@ -68,7 +66,8 @@ public class MatchServiceImpl implements MatchService {
                     .findFirst().orElse(null);
 
                 CalculatePointResponse calculatePoint = new CalculatePointResponse();
-                if(betting != null){
+
+                if (betting != null){
                     CalculatePointRequest request = new CalculatePointRequest(
                         betting.getBetPoint(),
                         matchResult.getTeamAScore(), 
