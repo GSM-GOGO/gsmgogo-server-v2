@@ -49,6 +49,7 @@ public class MatchResultDto {
     @JsonProperty("team_b_class_type")
     private TeamClassType teamBClassType;
 
+    @JsonProperty("is_vote")
     private boolean isVote;
 
     @JsonProperty("team_a_bet")

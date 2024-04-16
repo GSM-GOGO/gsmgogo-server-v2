@@ -55,6 +55,7 @@ public class MatchInfoDto {
 
     private LocalDateTime matchEndAt;
 
+    @JsonProperty("is_vote")
     private boolean isVote;
 
     @JsonProperty("team_a_bet")
