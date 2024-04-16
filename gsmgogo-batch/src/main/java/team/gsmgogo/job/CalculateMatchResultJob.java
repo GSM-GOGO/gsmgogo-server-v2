@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecutionException;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
@@ -114,6 +115,10 @@ public class CalculateMatchResultJob {
                     .orElseThrow(RuntimeException::new);
 
             MatchEntity match = matchJpaRepository.findByMatchId(matchId).orElseThrow(RuntimeException::new);
+
+            if (match.getIsEnd()) {
+                throw new JobExecutionException("이미 끝난 경기 입니다.");
+            }
 
             String isWinTeam = teamAScore > teamBScore ? "A" : "B";
             Long winTeamAllBetPoint = isWinTeam.equals("A") ? match.getTeamABet() : match.getTeamBBet();
