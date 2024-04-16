@@ -5,6 +5,6 @@ import team.gsmgogo.domain.auth.entity.BlackListRedisEntity;
 
 import java.util.Optional;
 
-public interface BlackListJpaRepository extends CrudRepository<BlackListRedisEntity, String> {
+public interface BlackListJpaRepository extends CrudRepository<BlackListRedisEntity, Long> {
     Optional<BlackListRedisEntity> findByAccessToken(String accessToken);
 }

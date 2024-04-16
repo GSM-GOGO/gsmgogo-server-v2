@@ -1,0 +1,52 @@
+package team.gsmgogo.domain.bet.service.impl;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
+import team.gsmgogo.domain.bet.controller.dto.BetRequest;
+import team.gsmgogo.domain.bet.entity.BetEntity;
+import team.gsmgogo.domain.bet.repository.BetJpaRepository;
+import team.gsmgogo.domain.bet.service.BetService;
+import team.gsmgogo.domain.match.entity.MatchEntity;
+import team.gsmgogo.domain.match.repository.MatchJpaRepository;
+import team.gsmgogo.domain.team.entity.TeamEntity;
+import team.gsmgogo.domain.user.entity.UserEntity;
+import team.gsmgogo.global.exception.error.ExpectedException;
+import team.gsmgogo.global.facade.UserFacade;
+
+@Service
+@RequiredArgsConstructor
+public class BetServiceImpl implements BetService {
+    private final BetJpaRepository betJpaRepository;
+    private final MatchJpaRepository matchJpaRepository;
+    private final UserFacade userFacade;
+
+    @Override
+    @Transactional
+    public void execute(BetRequest betRequest) {
+        MatchEntity betMatch = matchJpaRepository.getReferenceById(betRequest.getMatchId());
+        TeamEntity betTeam = betRequest.getTeamAScore() > betRequest.getTeamBScore() ? betMatch.getTeamA() : betMatch.getTeamB();
+        UserEntity currentUser = userFacade.getCurrentUser();
+
+        if(betJpaRepository.existsByUserAndMatch(currentUser, betMatch)){
+            throw new ExpectedException("이미 해당 경기에 배팅을 했습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!currentUser.betPoint(betRequest.getBetPoint().intValue())) {
+            throw new ExpectedException("보유 포인트 보다 더 많이 배팅할 수 없습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        BetEntity bet = BetEntity.builder()
+            .match(betMatch)
+            .team(betTeam)
+            .betScoreA(betRequest.getTeamAScore())
+            .betScoreB(betRequest.getTeamBScore())
+            .betPoint(betRequest.getBetPoint())
+            .user(currentUser)
+            .build();
+
+        betJpaRepository.save(bet);
+    }
+}
