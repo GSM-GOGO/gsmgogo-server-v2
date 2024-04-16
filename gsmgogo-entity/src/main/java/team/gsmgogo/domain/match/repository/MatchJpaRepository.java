@@ -4,4 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import team.gsmgogo.domain.match.entity.MatchEntity;
 
-public interface MatchJpaRepository extends JpaRepository<MatchEntity, Long> {}
+import java.util.Optional;
+
+public interface MatchJpaRepository extends JpaRepository<MatchEntity, Long> {
+    Optional<MatchEntity> findByMatchId(Long matchId);
+}

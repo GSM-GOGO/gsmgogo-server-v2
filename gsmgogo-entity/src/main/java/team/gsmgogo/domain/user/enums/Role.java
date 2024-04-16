@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum Role {
 
     USER("USER"),
-    PLAYER("PLAYER"),
+    ROOT("ROOT"),
     LEADER("LEADER");
 
     private final String role;

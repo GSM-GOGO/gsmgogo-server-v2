@@ -89,6 +89,10 @@ public class UserEntity {
 
     public void resetCount(){ verifyCount = 0L; }
 
+    public void addPoint(Integer point) {
+        this.point += point;
+    }
+  
     public boolean betPoint(Integer point) {
         boolean isBet = this.point - point >= 0;
 
