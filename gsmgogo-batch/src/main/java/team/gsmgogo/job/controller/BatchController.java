@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.gsmgogo.job.controller.dto.CalculateMatchResultRequest;
 
@@ -19,12 +20,13 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/batch")
 public class BatchController {
 
     private final JobLauncher jobLauncher;
     private final ApplicationContext ac;
 
-    @PostMapping("/batch/calculate-match-result")
+    @PostMapping("/calculate-match-result")
     public ResponseEntity<Void> calculateMatchResult(@RequestBody @Valid CalculateMatchResultRequest request)
             throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
 
