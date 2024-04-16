@@ -39,7 +39,7 @@ public class MatchServiceImpl implements MatchService {
         List<BetEntity> bettings = betJpaRepository.findByUser(currentUser);
 
         List<MatchInfoDto> matchList = matches.stream()
-            .filter(match -> match.getEndAt().isAfter(LocalDateTime.now()))
+            .filter(match -> !match.getIsEnd())
             .map(match -> {
                 return MatchInfoDto.builder()
                     .matchId(match.getMatchId())
@@ -64,23 +64,23 @@ public class MatchServiceImpl implements MatchService {
         List<MatchResultDto> endedMatches = matchResults.stream()
             .map(matchResult -> {
                 MatchEntity match = matchResult.getMatch();
-                Optional<BetEntity> betting = bettings.stream()
+                BetEntity betting = bettings.stream()
                     .filter(bet -> bet.getMatch() == match)
-                    .findFirst();
+                    .findFirst().orElse(null);
 
                 CalculatePointResponse calculatePoint = new CalculatePointResponse();
                 if(betting != null){
                     CalculatePointRequest request = new CalculatePointRequest(
-                        betting.get().getBetPoint(), 
+                        betting.getBetPoint(),
                         matchResult.getTeamAScore(), 
                         matchResult.getTeamBScore(), 
-                        betting.get().getBetScoreA(), 
-                        betting.get().getBetScoreB(), 
+                        betting.getBetScoreA(),
+                        betting.getBetScoreB(),
                         match.getTeamABet(), 
                         match.getTeamBBet()
                     );
                     calculatePoint = new CalculatePoint().execute(request);
-                } else betting = Optional.empty();
+                }
 
                 return MatchResultDto.builder()
                     .matchId(match.getMatchId())
@@ -94,13 +94,15 @@ public class MatchServiceImpl implements MatchService {
                     .teamBName(match.getTeamB().getTeamName())
                     .teamBGrade(match.getTeamBGrade())
                     .teamBClassType(match.getTeamBClassType())
-                    .isVote(betting.isPresent())
+                    .isVote(betting != null)
                     .teamABet(match.getTeamABet())
                     .teamBBet(match.getTeamBBet())
                     .teamAScore(matchResult.getTeamAScore())
                     .teamBScore(matchResult.getTeamBScore())
                     .earnedPoint(calculatePoint.getEarnedPoint())
                     .losePoint(calculatePoint.getLosePoint())
+                    .betTeamAScore(betting != null ? betting.getBetScoreA() : null)
+                    .betTeamBScore(betting != null ? betting.getBetScoreB() : null)
                     .build();
             }).toList();
 
