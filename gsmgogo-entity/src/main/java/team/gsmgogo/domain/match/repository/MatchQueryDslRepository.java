@@ -19,7 +19,7 @@ public class MatchQueryDslRepository {
         QMatchEntity match = QMatchEntity.matchEntity;
         return queryFactory
             .selectFrom(match)
-            .where(match.startAt.month().eq(month).and(match.startAt.dayOfMonth().eq(day)))
+            .where(match.startAt.month().eq(month).and(match.startAt.dayOfMonth().eq(day)).and(match.isEnd.eq(false)))
             .fetch();
     }
 }

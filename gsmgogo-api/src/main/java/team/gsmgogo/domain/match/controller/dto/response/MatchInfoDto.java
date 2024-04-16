@@ -2,6 +2,7 @@ package team.gsmgogo.domain.match.controller.dto.response;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -51,8 +52,10 @@ public class MatchInfoDto {
     @JsonProperty("team_b_class_type")
     private TeamClassType teamBClassType;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime matchStartAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime matchEndAt;
 
     @JsonProperty("is_vote")

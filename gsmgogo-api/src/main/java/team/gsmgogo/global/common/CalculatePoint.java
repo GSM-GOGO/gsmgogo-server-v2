@@ -6,16 +6,15 @@ public class CalculatePoint {
 
         Long winTeamPoint = Math.max(req.getAllAPoint(), req.getAllBPoint());
         Long loseTeamPoint = Math.min(req.getAllAPoint(), req.getAllBPoint());
-        Long allTeamPoint = winTeamPoint + loseTeamPoint;
 
         if(req.getAScore() == req.getBetAScore() && req.getBScore() == req.getBetBScore()){ 
-            Long pointResult = (long) (req.getBetPoint() * (loseTeamPoint / winTeamPoint) + allTeamPoint * 1.5);
+            Long pointResult = (long) Math.ceil(((req.getBetPoint() * ((double) loseTeamPoint / winTeamPoint)) + req.getBetPoint()) * 1.5);
             response = new CalculatePointResponse(pointResult, null);
         }
 
         if((req.getAScore() > req.getBScore() && req.getBetAScore() > req.getBetBScore()) ||
         (req.getAScore() < req.getBScore() && req.getBetAScore() < req.getBetBScore())){
-            Long pointResult = (long) (req.getBetPoint() * (loseTeamPoint / winTeamPoint) + allTeamPoint * 0.9);
+            Long pointResult = (long) Math.ceil(((req.getBetPoint() * ((double) loseTeamPoint / winTeamPoint)) + req.getBetPoint()) * 0.9);
             response = new CalculatePointResponse(pointResult, null);
         }
 

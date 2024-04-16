@@ -39,7 +39,6 @@ public class MatchServiceImpl implements MatchService {
         List<BetEntity> bettings = betJpaRepository.findByUser(currentUser);
 
         List<MatchInfoDto> matchList = matches.stream()
-            .filter(match -> !match.getIsEnd())
             .map(match -> {
                 return MatchInfoDto.builder()
                     .matchId(match.getMatchId())
