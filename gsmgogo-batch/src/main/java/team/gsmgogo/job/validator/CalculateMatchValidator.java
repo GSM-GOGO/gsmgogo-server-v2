@@ -9,8 +9,8 @@ public class CalculateMatchValidator implements JobParametersValidator {
     @Override
     public void validate(JobParameters parameters) throws JobParametersInvalidException {
         Long matchId = parameters.getLong("matchId");
-        Long teamAScore = parameters.getLong("matchId");
-        Long teamBScore = parameters.getLong("matchId");
+        Long teamAScore = parameters.getLong("teamAScore");
+        Long teamBScore = parameters.getLong("teamBScore");
 
         if (matchId == null || teamAScore == null || teamBScore == null) {
             throw new JobParametersInvalidException("not valid jobParameters");
