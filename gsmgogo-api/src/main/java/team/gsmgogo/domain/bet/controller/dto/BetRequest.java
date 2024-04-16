@@ -18,9 +18,6 @@ public class BetRequest {
     private Long matchId;
     
     @NotNull
-    private Long teamId;
-    
-    @NotNull
     private Long betPoint;
 
     @NotNull

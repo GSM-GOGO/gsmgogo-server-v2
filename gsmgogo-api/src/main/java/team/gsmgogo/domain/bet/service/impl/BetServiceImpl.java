@@ -29,7 +29,7 @@ public class BetServiceImpl implements BetService {
     @Transactional
     public void execute(BetRequest betRequest) {
         MatchEntity betMatch = matchJpaRepository.getReferenceById(betRequest.getMatchId());
-        TeamEntity betTeam = teamJpaRepository.getReferenceById(betRequest.getTeamId());
+        TeamEntity betTeam = betRequest.getTeamAScore() > betRequest.getTeamBScore() ? betMatch.getTeamA() : betMatch.getTeamB();
         UserEntity currentUser = userFacade.getCurrentUser();
 
         if(betJpaRepository.existsByUserAndMatch(currentUser, betMatch)){
