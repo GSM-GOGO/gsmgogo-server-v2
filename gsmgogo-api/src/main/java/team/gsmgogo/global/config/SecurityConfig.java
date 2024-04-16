@@ -39,7 +39,7 @@ public class SecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers(HttpMethod.POST, "/team").hasAuthority("LEADER")
                         .requestMatchers(HttpMethod.POST, "/team/normal").hasAuthority("LEADER")
-                        .requestMatchers("/batch/calculate-match-result").hasAuthority("ROOT")
+                        .requestMatchers(HttpMethod.POST, "/batch/calculate-match-result").hasAuthority("ROOT")
                         .anyRequest().permitAll()
         );
 
