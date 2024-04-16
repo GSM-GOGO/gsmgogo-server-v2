@@ -12,7 +12,6 @@ import team.gsmgogo.domain.bet.service.BetService;
 import team.gsmgogo.domain.match.entity.MatchEntity;
 import team.gsmgogo.domain.match.repository.MatchJpaRepository;
 import team.gsmgogo.domain.team.entity.TeamEntity;
-import team.gsmgogo.domain.team.repository.TeamJpaRepository;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
@@ -22,7 +21,6 @@ import team.gsmgogo.global.facade.UserFacade;
 public class BetServiceImpl implements BetService {
     private final BetJpaRepository betJpaRepository;
     private final MatchJpaRepository matchJpaRepository;
-    private final TeamJpaRepository teamJpaRepository;
     private final UserFacade userFacade;
 
     @Override
