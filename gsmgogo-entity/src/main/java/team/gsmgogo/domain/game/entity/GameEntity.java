@@ -25,5 +25,9 @@ public class GameEntity {
     private Integer coinToss;
 
     @Column(name = "daily_roulette")
-    private Integer dailyRoulette;
+    private Boolean dailyRoulette;
+
+    public void rollDailyRoulette() {
+        this.dailyRoulette = true;
+    }
 }
