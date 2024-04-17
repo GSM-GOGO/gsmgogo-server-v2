@@ -30,4 +30,6 @@ public class GameEntity {
     public void rollDailyRoulette() {
         this.dailyRoulette = true;
     }
+
+    public void addCoinTossCount(){ this.coinToss++; }
 }
