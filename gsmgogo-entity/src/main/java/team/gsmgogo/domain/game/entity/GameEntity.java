@@ -18,7 +18,7 @@ public class GameEntity {
     private Long gameId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_b")
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @Column(name = "coin_toss")
@@ -30,4 +30,6 @@ public class GameEntity {
     public void rollDailyRoulette() {
         this.dailyRoulette = true;
     }
+
+    public void addCoinTossCount(){ this.coinToss++; }
 }
