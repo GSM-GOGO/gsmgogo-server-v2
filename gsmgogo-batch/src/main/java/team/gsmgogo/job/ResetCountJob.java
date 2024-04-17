@@ -22,8 +22,8 @@ public class ResetCountJob {
     private final UserQueryDslRepository userQueryDslRepository;
     private final GameQueryDslRepository gameQueryDslRepository;
 
-    @Bean(name = "resetCountJob")
-    public Job resetCountJob(){
+    @Bean(name = "resetJob")
+    public Job resetJob(){
         return new JobBuilder("reset-count-Job", jobRepository)
             .start(resetSmsCountStep(jobRepository, platformTransactionManager))
             .next(resetGameCountStep(jobRepository, platformTransactionManager))
