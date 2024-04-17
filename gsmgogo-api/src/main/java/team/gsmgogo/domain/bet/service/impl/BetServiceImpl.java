@@ -36,7 +36,7 @@ public class BetServiceImpl implements BetService {
         LocalDateTime bettingEndTime = betMatch.getStartAt().minusMinutes(5);
 
         if (currentTime.isBefore(bettingStartTime) || currentTime.isAfter(bettingEndTime)) {
-            throw new ExpectedException("배팅은 경기 시작 24시간 전 ~ 경기 시작 5분 전에만 가능합니다.", HttpStatus.BAD_REQUEST);
+            throw new ExpectedException("배팅은 경기 하루 전부터 경기 시작 5분 전 사이에만 가능합니다.", HttpStatus.BAD_REQUEST);
         }
 
         TeamEntity betTeam = betRequest.getTeamAScore() > betRequest.getTeamBScore() ? betMatch.getTeamA() : betMatch.getTeamB();
