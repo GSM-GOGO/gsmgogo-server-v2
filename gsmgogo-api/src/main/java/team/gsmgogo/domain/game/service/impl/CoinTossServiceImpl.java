@@ -46,7 +46,7 @@ public class CoinTossServiceImpl implements CoinTossService {
         CoinStatus result = secureRandom.nextBoolean() ? CoinStatus.TAIL : CoinStatus.HEAD;
 
         boolean isWin = result == coinRequest.getPrediction();
-        Integer earnedPoint = isWin ? coinRequest.getPoint() * 2 : null;
+        Integer earnedPoint = isWin ? coinRequest.getPoint() * 2 : 0;
 
         game.addCoinTossCount();
         gameJpaRepository.save(game);
