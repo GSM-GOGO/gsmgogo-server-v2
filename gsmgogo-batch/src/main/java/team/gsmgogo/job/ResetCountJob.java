@@ -10,6 +10,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+import team.gsmgogo.domain.game.repository.GameQueryDslRepository;
 import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
 
 @Slf4j
@@ -19,6 +20,7 @@ public class ResetCountJob {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final UserQueryDslRepository userQueryDslRepository;
+    private final GameQueryDslRepository gameQueryDslRepository;
 
     @Bean(name = "resetCountJob")
     public Job resetCountJob(){
@@ -43,6 +45,7 @@ public class ResetCountJob {
     public Step resetGameCountStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
         return new StepBuilder("reset-game-count-step", jobRepository)
                 .tasklet((contribution, chunkContext) -> {
+                            gameQueryDslRepository.bulkResetGameCount();
                             return RepeatStatus.FINISHED;
                         },
                         platformTransactionManager)

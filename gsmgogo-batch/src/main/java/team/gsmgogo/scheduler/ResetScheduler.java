@@ -28,7 +28,7 @@ public class ResetScheduler {
     private final PlatformTransactionManager platformTransactionManager;
     private final UserQueryDslRepository userQueryDslRepository;
 
-    @Scheduled(cron = "0 5 1 * * *")
+    @Scheduled(cron = "0 30 0 * * *")
     public void reset() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         Map<String, JobParameter<?>> confMap = new HashMap<>();
         confMap.put("time", new JobParameter(System.currentTimeMillis(), String.class));
