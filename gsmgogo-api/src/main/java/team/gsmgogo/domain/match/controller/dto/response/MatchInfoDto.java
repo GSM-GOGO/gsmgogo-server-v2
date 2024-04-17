@@ -55,6 +55,12 @@ public class MatchInfoDto {
 
     private BadmintonRank badmintonRank;
 
+    @JsonProperty("badminton_a_participate_names")
+    private String badmintonAParticipateNames;
+
+    @JsonProperty("badminton_b_participate_names")
+    private String badmintonBParticipateNames;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime matchStartAt;
 

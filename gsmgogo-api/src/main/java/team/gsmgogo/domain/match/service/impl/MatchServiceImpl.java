@@ -17,6 +17,7 @@ import team.gsmgogo.domain.match.repository.MatchQueryDslRepository;
 import team.gsmgogo.domain.match.service.MatchService;
 import team.gsmgogo.domain.matchresult.entity.MatchResultEntity;
 import team.gsmgogo.domain.matchresult.repository.MatchResultQueryDslRepository;
+import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.global.common.CalculatePoint;
 import team.gsmgogo.global.common.CalculatePointRequest;
@@ -52,6 +53,16 @@ public class MatchServiceImpl implements MatchService {
                 .teamBGrade(match.getTeamBGrade())
                 .teamBClassType(match.getTeamBClassType())
                 .badmintonRank(match.getTeamA().getBadmintonRank())
+                    .badmintonAParticipateNames(
+                            match.getTeamA().getTeamType() == TeamType.BADMINTON ?
+                                    match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
+                                    : null
+                    )
+                    .badmintonBParticipateNames(
+                            match.getTeamA().getTeamType() == TeamType.BADMINTON ?
+                                    match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
+                                    : null
+                    )
                 .matchStartAt(match.getStartAt())
                 .matchEndAt(match.getEndAt())
                 .isVote(bettings.stream().anyMatch(bet -> bet.getMatch() == match))
@@ -94,6 +105,16 @@ public class MatchServiceImpl implements MatchService {
                     .teamBGrade(match.getTeamBGrade())
                     .teamBClassType(match.getTeamBClassType())
                     .badmintonRank(match.getTeamA().getBadmintonRank())
+                        .badmintonAParticipateNames(
+                                match.getTeamA().getTeamType() == TeamType.BADMINTON ?
+                                        match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
+                                        : null
+                        )
+                        .badmintonBParticipateNames(
+                                match.getTeamA().getTeamType() == TeamType.BADMINTON ?
+                                        match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
+                                        : null
+                        )
                     .isVote(betting != null)
                     .teamABet(match.getTeamABet())
                     .teamBBet(match.getTeamBBet())
