@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.gsmgogo.domain.match.enums.MatchLevelType;
 import team.gsmgogo.domain.match.enums.TeamClassType;
+import team.gsmgogo.domain.team.enums.BadmintonRank;
 import team.gsmgogo.domain.team.enums.TeamType;
 import team.gsmgogo.domain.user.enums.GradeEnum;
 
@@ -48,6 +49,8 @@ public class MatchResultDto {
 
     @JsonProperty("team_b_class_type")
     private TeamClassType teamBClassType;
+
+    private BadmintonRank badmintonRank;
 
     @JsonProperty("is_vote")
     private boolean isVote;

@@ -12,21 +12,18 @@ import team.gsmgogo.domain.game.controller.dto.request.CoinRequest;
 import team.gsmgogo.domain.game.controller.dto.response.CoinResponse;
 import team.gsmgogo.domain.game.controller.dto.response.DailyRouletteResponse;
 import team.gsmgogo.domain.game.service.CoinTossService;
-import team.gsmgogo.domain.game.service.DailyRouletteRoll;
-
-import java.awt.image.RescaleOp;
+import team.gsmgogo.domain.game.service.DailyRouletteRollService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/game")
 public class GameController {
-
-    private final DailyRouletteRoll dailyRouletteRoll;
     private final CoinTossService coinTossService;
+    private final DailyRouletteRollService dailyRouletteRollService;
 
     @PostMapping("/roulette")
     public ResponseEntity<DailyRouletteResponse> dailyRouletteRoll() {
-        return ResponseEntity.ok(dailyRouletteRoll.roll());
+        return ResponseEntity.ok(dailyRouletteRollService.roll());
     }
 
     @PostMapping("/coin")
