@@ -23,12 +23,13 @@ public class ResetCountJob {
     @Bean(name = "resetCountJob")
     public Job resetCountJob(){
         return new JobBuilder("reset-count-Job", jobRepository)
-            .start(resetCountStep(jobRepository, platformTransactionManager))
+            .start(resetSmsCountStep(jobRepository, platformTransactionManager))
+            .next(resetGameCountStep(jobRepository, platformTransactionManager))
             .build();
     }
 
     @Bean
-    public Step resetCountStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
+    public Step resetSmsCountStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
         return new StepBuilder("reset-sms-count-step", jobRepository)
             .tasklet((contribution, chunkContext) -> {
                 userQueryDslRepository.bulkResetVerifyCount();
@@ -36,5 +37,15 @@ public class ResetCountJob {
             },
             platformTransactionManager)
             .build();
+    }
+
+    @Bean
+    public Step resetGameCountStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
+        return new StepBuilder("reset-game-count-step", jobRepository)
+                .tasklet((contribution, chunkContext) -> {
+                            return RepeatStatus.FINISHED;
+                        },
+                        platformTransactionManager)
+                .build();
     }
 }
