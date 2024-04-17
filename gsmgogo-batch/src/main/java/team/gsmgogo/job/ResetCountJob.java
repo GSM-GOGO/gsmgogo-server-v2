@@ -15,7 +15,7 @@ import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class ResetLoginCountJob {
+public class ResetCountJob {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final UserQueryDslRepository userQueryDslRepository;
@@ -29,7 +29,7 @@ public class ResetLoginCountJob {
 
     @Bean
     public Step resetCountStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
-        return new StepBuilder("reset-count-step", jobRepository)
+        return new StepBuilder("reset-sms-count-step", jobRepository)
             .tasklet((contribution, chunkContext) -> {
                 userQueryDslRepository.bulkResetVerifyCount();
                 return RepeatStatus.FINISHED;
