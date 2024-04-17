@@ -13,6 +13,7 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
+import team.gsmgogo.domain.game.repository.GameQueryDslRepository;
 import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
 import team.gsmgogo.job.ResetCountJob;
 
@@ -27,6 +28,7 @@ public class ResetScheduler {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final UserQueryDslRepository userQueryDslRepository;
+    private final GameQueryDslRepository gameQueryDslRepository;
 
     @Scheduled(cron = "0 30 0 * * *")
     public void reset() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
@@ -35,7 +37,7 @@ public class ResetScheduler {
         JobParameters jobParameters = new JobParameters(confMap);
 
         jobLauncher.run(
-            new ResetCountJob(jobRepository, platformTransactionManager, userQueryDslRepository).resetCountJob(),
+            new ResetCountJob(jobRepository, platformTransactionManager, userQueryDslRepository, gameQueryDslRepository).resetCountJob(),
             jobParameters
         );
     }
