@@ -31,7 +31,8 @@ public class BetServiceImpl implements BetService {
     public void execute(BetRequest betRequest) {
         MatchEntity betMatch = matchJpaRepository.getReferenceById(betRequest.getMatchId());
 
-        LocalDateTime currentTime = LocalDateTime.now();LocalDateTime bettingStartTime = betMatch.getStartAt().minus(1, ChronoUnit.DAYS);
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime bettingStartTime = betMatch.getStartAt().minus(1, ChronoUnit.DAYS);
         LocalDateTime bettingEndTime = betMatch.getStartAt().minusMinutes(5);
 
         if (currentTime.isBefore(bettingStartTime) || currentTime.isAfter(bettingEndTime)) {
