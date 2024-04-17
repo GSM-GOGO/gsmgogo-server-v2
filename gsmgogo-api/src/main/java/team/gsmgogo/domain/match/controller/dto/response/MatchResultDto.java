@@ -52,6 +52,12 @@ public class MatchResultDto {
 
     private BadmintonRank badmintonRank;
 
+    @JsonProperty("badminton_a_participate_names")
+    private String badmintonAParticipateNames;
+
+    @JsonProperty("badminton_b_participate_names")
+    private String badmintonBParticipateNames;
+
     @JsonProperty("is_vote")
     private boolean isVote;
 
