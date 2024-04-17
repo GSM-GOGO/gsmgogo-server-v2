@@ -9,6 +9,7 @@ import team.gsmgogo.domain.game.controller.dto.response.CoinResponse;
 import team.gsmgogo.domain.game.entity.GameEntity;
 import team.gsmgogo.domain.game.enums.CoinStatus;
 import team.gsmgogo.domain.game.repository.GameJpaRepository;
+import team.gsmgogo.domain.user.repository.UserJpaRepository;
 import team.gsmgogo.domain.game.service.CoinTossService;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.global.exception.error.ExpectedException;
@@ -20,6 +21,7 @@ import java.security.SecureRandom;
 @RequiredArgsConstructor
 public class CoinTossServiceImpl implements CoinTossService {
     private final GameJpaRepository gameJpaRepository;
+    private final UserJpaRepository userJpaRepository;
     private final UserFacade userFacade;
 
     @Override
@@ -50,6 +52,9 @@ public class CoinTossServiceImpl implements CoinTossService {
 
         game.addCoinTossCount();
         gameJpaRepository.save(game);
+
+        currentUser.addPoint(coinRequest.getPoint());
+        userJpaRepository.save(currentUser);
 
         return new CoinResponse(
             coinRequest.getPrediction(),
