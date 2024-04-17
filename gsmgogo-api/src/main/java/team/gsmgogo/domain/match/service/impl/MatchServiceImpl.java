@@ -59,8 +59,8 @@ public class MatchServiceImpl implements MatchService {
                                     : null
                     )
                     .badmintonBParticipateNames(
-                            match.getTeamA().getTeamType() == TeamType.BADMINTON ?
-                                    match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
+                            match.getTeamB().getTeamType() == TeamType.BADMINTON ?
+                                    match.getTeamB().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamB().getTeamParticipates().get(1).getUser().getUserName()
                                     : null
                     )
                 .matchStartAt(match.getStartAt())
@@ -111,8 +111,8 @@ public class MatchServiceImpl implements MatchService {
                                         : null
                         )
                         .badmintonBParticipateNames(
-                                match.getTeamA().getTeamType() == TeamType.BADMINTON ?
-                                        match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
+                                match.getTeamB().getTeamType() == TeamType.BADMINTON ?
+                                        match.getTeamB().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamB().getTeamParticipates().get(1).getUser().getUserName()
                                         : null
                         )
                     .isVote(betting != null)
