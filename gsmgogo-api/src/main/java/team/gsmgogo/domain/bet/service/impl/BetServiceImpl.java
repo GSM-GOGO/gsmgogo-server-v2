@@ -16,6 +16,9 @@ import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 @Service
 @RequiredArgsConstructor
 public class BetServiceImpl implements BetService {
@@ -27,6 +30,14 @@ public class BetServiceImpl implements BetService {
     @Transactional
     public void execute(BetRequest betRequest) {
         MatchEntity betMatch = matchJpaRepository.getReferenceById(betRequest.getMatchId());
+
+        LocalDateTime currentTime = LocalDateTime.now();LocalDateTime bettingStartTime = betMatch.getStartAt().minus(1, ChronoUnit.DAYS);
+        LocalDateTime bettingEndTime = betMatch.getStartAt().minusMinutes(5);
+
+        if (currentTime.isBefore(bettingStartTime) || currentTime.isAfter(bettingEndTime)) {
+            throw new ExpectedException("배팅은 경기 시작 24시간 전 ~ 경기 시작 5분 전에만 가능합니다.", HttpStatus.BAD_REQUEST);
+        }
+
         TeamEntity betTeam = betRequest.getTeamAScore() > betRequest.getTeamBScore() ? betMatch.getTeamA() : betMatch.getTeamB();
         UserEntity currentUser = userFacade.getCurrentUser();
 
