@@ -79,6 +79,6 @@ public class MatchEntity {
     }
 
     public void teamBBetPoint(Integer point) {
-        this.teamABet = this.getTeamBBet() + point;
+        this.teamBBet = this.getTeamBBet() + point;
     }
 }
