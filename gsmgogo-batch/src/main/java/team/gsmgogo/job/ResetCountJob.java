@@ -10,31 +10,45 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+import team.gsmgogo.domain.game.repository.GameQueryDslRepository;
 import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class ResetLoginCountJob {
+public class ResetCountJob {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final UserQueryDslRepository userQueryDslRepository;
+    private final GameQueryDslRepository gameQueryDslRepository;
 
-    @Bean(name = "resetCountJob")
-    public Job resetCountJob(){
+    @Bean(name = "resetJob")
+    public Job resetJob(){
         return new JobBuilder("reset-count-Job", jobRepository)
-            .start(resetCountStep(jobRepository, platformTransactionManager))
+            .start(resetSmsCountStep(jobRepository, platformTransactionManager))
+            .next(resetGameCountStep(jobRepository, platformTransactionManager))
             .build();
     }
 
     @Bean
-    public Step resetCountStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
-        return new StepBuilder("reset-count-step", jobRepository)
+    public Step resetSmsCountStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
+        return new StepBuilder("reset-sms-count-step", jobRepository)
             .tasklet((contribution, chunkContext) -> {
                 userQueryDslRepository.bulkResetVerifyCount();
                 return RepeatStatus.FINISHED;
             },
             platformTransactionManager)
             .build();
+    }
+
+    @Bean
+    public Step resetGameCountStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager){
+        return new StepBuilder("reset-game-count-step", jobRepository)
+                .tasklet((contribution, chunkContext) -> {
+                            gameQueryDslRepository.bulkResetGameCount();
+                            return RepeatStatus.FINISHED;
+                        },
+                        platformTransactionManager)
+                .build();
     }
 }

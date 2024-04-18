@@ -13,8 +13,9 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
+import team.gsmgogo.domain.game.repository.GameQueryDslRepository;
 import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
-import team.gsmgogo.job.ResetLoginCountJob;
+import team.gsmgogo.job.ResetCountJob;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,20 +23,21 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ResetLoginCountScheduler {
+public class ResetScheduler {
     private final JobLauncher jobLauncher;
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final UserQueryDslRepository userQueryDslRepository;
+    private final GameQueryDslRepository gameQueryDslRepository;
 
-    @Scheduled(cron = "0 5 1 * * *")
-    public void resetLoginCount() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    @Scheduled(cron = "0 0 0 * * *")
+    public void reset() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         Map<String, JobParameter<?>> confMap = new HashMap<>();
         confMap.put("time", new JobParameter(System.currentTimeMillis(), String.class));
         JobParameters jobParameters = new JobParameters(confMap);
 
         jobLauncher.run(
-            new ResetLoginCountJob(jobRepository, platformTransactionManager, userQueryDslRepository).resetCountJob(),
+            new ResetCountJob(jobRepository, platformTransactionManager, userQueryDslRepository, gameQueryDslRepository).resetJob(),
             jobParameters
         );
     }
