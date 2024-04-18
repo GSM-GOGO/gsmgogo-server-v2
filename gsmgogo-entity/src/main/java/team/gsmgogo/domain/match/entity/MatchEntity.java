@@ -73,4 +73,12 @@ public class MatchEntity {
     public void end() {
         this.isEnd = true;
     }
+
+    public void teamABetPoint(Integer point) {
+        this.teamABet = this.getTeamABet() + point;
+    }
+
+    public void teamBBetPoint(Integer point) {
+        this.teamABet = this.getTeamBBet() + point;
+    }
 }

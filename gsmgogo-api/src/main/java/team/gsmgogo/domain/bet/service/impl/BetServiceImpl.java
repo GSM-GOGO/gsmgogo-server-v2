@@ -50,6 +50,12 @@ public class BetServiceImpl implements BetService {
             throw new ExpectedException("보유 포인트 보다 더 많이 배팅할 수 없습니다.", HttpStatus.BAD_REQUEST);
         }
 
+        if (betRequest.getTeamAScore() > betRequest.getBetPoint()) {
+            betMatch.teamABetPoint(betRequest.getBetPoint().intValue());
+        } else {
+            betMatch.teamBBetPoint(betRequest.getBetPoint().intValue());
+        }
+
         BetEntity bet = BetEntity.builder()
             .match(betMatch)
             .team(betTeam)
