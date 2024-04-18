@@ -22,7 +22,7 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ResetLoginCountScheduler {
+public class DailyScheduler {
     private final JobLauncher jobLauncher;
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
@@ -30,6 +30,18 @@ public class ResetLoginCountScheduler {
 
     @Scheduled(cron = "0 5 1 * * *")
     public void resetLoginCount() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+        Map<String, JobParameter<?>> confMap = new HashMap<>();
+        confMap.put("time", new JobParameter(System.currentTimeMillis(), String.class));
+        JobParameters jobParameters = new JobParameters(confMap);
+
+        jobLauncher.run(
+            new ResetLoginCountJob(jobRepository, platformTransactionManager, userQueryDslRepository).resetCountJob(),
+            jobParameters
+        );
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void registerAlert() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         Map<String, JobParameter<?>> confMap = new HashMap<>();
         confMap.put("time", new JobParameter(System.currentTimeMillis(), String.class));
         JobParameters jobParameters = new JobParameters(confMap);
