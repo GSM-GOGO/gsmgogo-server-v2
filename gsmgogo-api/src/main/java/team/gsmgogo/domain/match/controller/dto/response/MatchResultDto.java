@@ -82,4 +82,9 @@ public class MatchResultDto {
     private Long earnedPoint;
     
     private Long losePoint;
+
+    @JsonProperty("is_participate_team_id")
+    private Long isParticipateTeamId;
+
+    private Integer participateEarnedPoint;
 }
