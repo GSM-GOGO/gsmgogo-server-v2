@@ -144,6 +144,15 @@ public class CalculateMatchResultJob {
 
             }
 
+            if ((isWinTeam.equals("A") ? match.getTeamA() : match.getTeamB())
+                    .getTeamParticipates().stream().anyMatch(
+                            participate -> Objects.equals(participate.getUser().getUserId(), user.getUserId())
+                    )) {
+                user.addPoint(
+                        (int) Math.ceil((loseTeamAllBetPoint + winTeamAllBetPoint) * 0.05)
+                );
+            }
+
             return user;
 
         };
