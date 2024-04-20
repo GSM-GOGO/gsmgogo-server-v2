@@ -93,6 +93,12 @@ public class MatchServiceImpl implements MatchService {
                     calculatePoint = new CalculatePoint().execute(request);
                 }
 
+                Long isParticipateTeamId =
+                        match.getTeamA().getTeamParticipates().stream().anyMatch(participate ->
+                            participate.getUser().getUserId().equals(currentUser.getUserId())) ? match.getTeamA().getTeamId() :
+                        match.getTeamB().getTeamParticipates().stream().anyMatch(participate ->
+                                participate.getUser().getUserId().equals(currentUser.getUserId())) ? match.getTeamB().getTeamId() : null;
+
                 return MatchResultDto.builder()
                     .matchId(match.getMatchId())
                     .matchType(match.getMatchType())
@@ -125,6 +131,10 @@ public class MatchServiceImpl implements MatchService {
                     .losePoint(calculatePoint.getLosePoint())
                     .betTeamAScore(betting != null ? betting.getBetScoreA() : null)
                     .betTeamBScore(betting != null ? betting.getBetScoreB() : null)
+                        .isParticipateTeamId(isParticipateTeamId)
+                        .participateEarnedPoint(isParticipateTeamId != null
+                                ? (int) Math.ceil((match.getTeamABet() + match.getTeamBBet()) * 0.05)
+                                : null)
                     .build();
             }).toList();
 
