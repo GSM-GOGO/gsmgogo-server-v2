@@ -52,7 +52,7 @@ public class MatchServiceImpl implements MatchService {
                 .teamBName(match.getTeamB() != null ? match.getTeamB().getTeamName() : null)
                 .teamBGrade(match.getTeamBGrade())
                 .teamBClassType(match.getTeamBClassType())
-                .badmintonRank(match.getTeamA().getBadmintonRank())
+                .badmintonRank(match.getTeamA().getTeamType() == TeamType.BADMINTON ? match.getTeamA().getBadmintonRank() : null)
                     .badmintonAParticipateNames(
                             match.getTeamA().getTeamType() == TeamType.BADMINTON ?
                                     match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
@@ -104,7 +104,7 @@ public class MatchServiceImpl implements MatchService {
                     .teamBName(match.getTeamB().getTeamName())
                     .teamBGrade(match.getTeamBGrade())
                     .teamBClassType(match.getTeamBClassType())
-                    .badmintonRank(match.getTeamA().getBadmintonRank())
+                    .badmintonRank(match.getTeamA().getTeamType() == TeamType.BADMINTON ? match.getTeamA().getBadmintonRank() : null)
                         .badmintonAParticipateNames(
                                 match.getTeamA().getTeamType() == TeamType.BADMINTON ?
                                         match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
