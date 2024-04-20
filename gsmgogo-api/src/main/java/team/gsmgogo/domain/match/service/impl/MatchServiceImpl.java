@@ -55,12 +55,12 @@ public class MatchServiceImpl implements MatchService {
                 .badmintonRank(
                         match.getTeamA() != null && match.getTeamA().getTeamType() == TeamType.BADMINTON ? match.getTeamA().getBadmintonRank() : null)
                     .badmintonAParticipateNames(
-                            match.getTeamA().getTeamType() == TeamType.BADMINTON ?
+                            match.getTeamA() != null && match.getTeamA().getTeamType() == TeamType.BADMINTON ?
                                     match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
                                     : null
                     )
                     .badmintonBParticipateNames(
-                            match.getTeamB().getTeamType() == TeamType.BADMINTON ?
+                            match.getTeamA() != null && match.getTeamB().getTeamType() == TeamType.BADMINTON ?
                                     match.getTeamB().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamB().getTeamParticipates().get(1).getUser().getUserName()
                                     : null
                     )
@@ -107,12 +107,12 @@ public class MatchServiceImpl implements MatchService {
                     .teamBClassType(match.getTeamBClassType())
                     .badmintonRank(match.getTeamA() != null && match.getTeamA().getTeamType() == TeamType.BADMINTON ? match.getTeamA().getBadmintonRank() : null)
                         .badmintonAParticipateNames(
-                                match.getTeamA().getTeamType() == TeamType.BADMINTON ?
+                                match.getTeamA() != null && match.getTeamA().getTeamType() == TeamType.BADMINTON ?
                                         match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
                                         : null
                         )
                         .badmintonBParticipateNames(
-                                match.getTeamB().getTeamType() == TeamType.BADMINTON ?
+                                match.getTeamA() != null && match.getTeamB().getTeamType() == TeamType.BADMINTON ?
                                         match.getTeamB().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamB().getTeamParticipates().get(1).getUser().getUserName()
                                         : null
                         )
