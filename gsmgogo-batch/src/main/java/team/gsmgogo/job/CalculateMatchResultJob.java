@@ -133,7 +133,7 @@ public class CalculateMatchResultJob {
                         Objects.equals(Long.valueOf(bet.getBetScoreB()), teamBScore)) {
                     // * 1.5
                     user.addPoint(
-                            (int) Math.ceil((bet.getBetPoint() * ((double) loseTeamAllBetPoint / winTeamAllBetPoint) + bet.getBetPoint()) * 1.5)
+                            (int) Math.ceil(((bet.getBetPoint() * ((double) loseTeamAllBetPoint / winTeamAllBetPoint)) + bet.getBetPoint()) * 1.5)
                     );
                 } else {
                     // * 1
