@@ -11,6 +11,7 @@ public class CalculatePoint {
         if (req.getAScore() == req.getBetAScore() && req.getBScore() == req.getBetBScore()){
             Long pointResult = (long) Math.ceil(((req.getBetPoint() * ((double) loseTeamPoint / winTeamPoint)) + req.getBetPoint()) * 1.5);
             response = new CalculatePointResponse(pointResult, null);
+            return response;
         }
 
         // 승부 예측 성공
@@ -18,13 +19,11 @@ public class CalculatePoint {
         (req.getAScore() < req.getBScore() && req.getBetAScore() < req.getBetBScore())){
             Long pointResult = (long) Math.ceil((req.getBetPoint() * ((double) loseTeamPoint / winTeamPoint)) + req.getBetPoint());
             response = new CalculatePointResponse(pointResult, null);
+            return response;
         }
 
         // 예측 실패
-        if (response == null) {
-            response = new CalculatePointResponse(null, req.getBetPoint());
-        }
-
+        response = new CalculatePointResponse(null, req.getBetPoint());
         return response;
     }
 }
