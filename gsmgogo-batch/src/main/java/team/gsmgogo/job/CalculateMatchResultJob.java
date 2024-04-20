@@ -136,7 +136,7 @@ public class CalculateMatchResultJob {
                             (int) Math.ceil((bet.getBetPoint() * ((double) loseTeamAllBetPoint / winTeamAllBetPoint) + bet.getBetPoint()) * 1.5)
                     );
                 } else {
-                    // * 0.9
+                    // * 1
                     user.addPoint(
                             (int) Math.ceil(bet.getBetPoint() * ((double) loseTeamAllBetPoint / winTeamAllBetPoint) + bet.getBetPoint())
                     );
