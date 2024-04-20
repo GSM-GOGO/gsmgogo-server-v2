@@ -42,6 +42,13 @@ public class BetServiceImpl implements BetService {
         TeamEntity betTeam = betRequest.getTeamAScore() > betRequest.getTeamBScore() ? betMatch.getTeamA() : betMatch.getTeamB();
         UserEntity currentUser = userFacade.getCurrentUser();
 
+        if (betMatch.getTeamA().getTeamParticipates().stream().anyMatch(participate ->
+                participate.getUser().getUserId().equals(currentUser.getUserId())) ||
+                betMatch.getTeamB().getTeamParticipates().stream().anyMatch(participate ->
+                        participate.getUser().getUserId().equals(currentUser.getUserId()))) {
+            throw new ExpectedException("참여중인 경기에는 투표가 불가능합니다.", HttpStatus.BAD_REQUEST);
+        }
+
         if(betJpaRepository.existsByUserAndMatch(currentUser, betMatch)){
             throw new ExpectedException("이미 해당 경기에 배팅을 했습니다.", HttpStatus.BAD_REQUEST);
         }
