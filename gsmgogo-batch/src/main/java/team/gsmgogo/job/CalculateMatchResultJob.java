@@ -20,6 +20,7 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,17 +56,19 @@ public class CalculateMatchResultJob {
     private final Integer chunkSize = 10;
 
     @Bean(name = "calculateMatchJob")
-    public Job calculateMatchJob(Step betStep, Step migrationResultStep) {
+    public Job calculateMatchJob(@Qualifier("betStep") Step betStep, @Qualifier("migrationResultStep") Step migrationResultStep, @Qualifier("participatesAddPointStep") Step participatesAddPointStep) {
         return new JobBuilder("calculate-match-job", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .validator(new CalculateMatchValidator())
                 .start(betStep)
-                .on("COMPLETED").to(migrationResultStep)
+                .on("COMPLETED").to((Step) migrationResultStep)
+                .on("COMPLETED").to((Step) participatesAddPointStep)
                 .end()
                 .build();
     }
 
     @Bean
+    @Qualifier("betStep")
     @JobScope
     public Step betStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager, ItemReader<BetEntity> betItemReader, ItemProcessor<BetEntity, UserEntity> betProcessor){
         return new StepBuilder("calculate-match-step", jobRepository)
@@ -77,10 +80,21 @@ public class CalculateMatchResultJob {
     }
 
     @Bean
+    @Qualifier("migrationResultStep")
     @JobScope
     public Step migrationResultStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager, Tasklet migrationResultTasklet){
         return new StepBuilder("migration-result-step", jobRepository)
                 .tasklet(migrationResultTasklet, platformTransactionManager)
+                .build();
+    }
+
+
+    @Bean
+    @Qualifier("participatesAddPointStep")
+    @JobScope
+    public Step participatesAddPointStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager, Tasklet participatesAddPointTasklet){
+        return new StepBuilder("participates-add-point-step", jobRepository)
+                .tasklet(participatesAddPointTasklet, platformTransactionManager)
                 .build();
     }
 
@@ -144,15 +158,6 @@ public class CalculateMatchResultJob {
 
             }
 
-            if ((isWinTeam.equals("A") ? match.getTeamA() : match.getTeamB())
-                    .getTeamParticipates().stream().anyMatch(
-                            participate -> participate.getUser().getUserId().equals(user.getUserId())
-                    )) {
-                user.addPoint(
-                        (int) Math.ceil((loseTeamAllBetPoint + winTeamAllBetPoint) * 0.05)
-                );
-            }
-
             return user;
 
         };
@@ -188,6 +193,42 @@ public class CalculateMatchResultJob {
                             .build()
             );
             matchJpaRepository.save(match);
+
+            return RepeatStatus.FINISHED;
+        };
+    }
+
+    @Bean
+    public Tasklet participatesAddPointTasklet() {
+        return (contribution, chunkContext) -> {
+
+            Long matchId = chunkContext.getStepContext().getStepExecution().getJobParameters().getLong("matchId");
+            Long teamAScore = chunkContext.getStepContext().getStepExecution().getJobParameters().getLong("teamAScore");
+            Long teamBScore = chunkContext.getStepContext().getStepExecution().getJobParameters().getLong("teamBScore");
+
+            MatchEntity match = matchJpaRepository.findByMatchId(matchId).orElseThrow(RuntimeException::new);
+
+            String isWinTeam = teamAScore > teamBScore ? "A" : "B";
+            Long winTeamAllBetPoint = isWinTeam.equals("A") ? match.getTeamABet() : match.getTeamBBet();
+            Long loseTeamAllBetPoint = isWinTeam.equals("A") ? match.getTeamBBet() : match.getTeamABet();
+
+            if (isWinTeam.equals("A")) {
+                match.getTeamA()
+                        .getTeamParticipates().forEach(
+                                participate -> {
+                                    UserEntity user = participate.getUser();
+                                    user.addPoint((int) Math.ceil((loseTeamAllBetPoint + winTeamAllBetPoint) * 0.05));
+                                    userJpaRepository.save(user);
+                                });
+            } else {
+                match.getTeamB()
+                        .getTeamParticipates().forEach(
+                                participate -> {
+                                    UserEntity user = participate.getUser();
+                                    user.addPoint((int) Math.ceil((loseTeamAllBetPoint + winTeamAllBetPoint) * 0.05));
+                                    userJpaRepository.save(user);
+                                });
+            }
 
             return RepeatStatus.FINISHED;
         };
