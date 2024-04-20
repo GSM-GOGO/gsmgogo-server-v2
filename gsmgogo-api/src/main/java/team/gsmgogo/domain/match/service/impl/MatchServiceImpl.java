@@ -132,8 +132,13 @@ public class MatchServiceImpl implements MatchService {
                     .betTeamAScore(betting != null ? betting.getBetScoreA() : null)
                     .betTeamBScore(betting != null ? betting.getBetScoreB() : null)
                         .isParticipateTeamId(isParticipateTeamId)
-                        .participateEarnedPoint(isParticipateTeamId != null
-                                ? (int) Math.ceil((match.getTeamABet() + match.getTeamBBet()) * 0.05)
+                        .participateEarnedPoint(
+                                isParticipateTeamId != null
+                                        // 소속된 팀의 승리 여부
+                                ? isParticipateTeamId.equals(matchResult.getTeamAScore() > matchResult.getTeamBScore()
+                                            ? match.getTeamA().getTeamId() : match.getTeamB().getTeamId())
+                                        // 소속됨 팀의 승리 여부에 따라 ? 얻은 포인트 : 0
+                                    ? (int) Math.ceil((match.getTeamABet() + match.getTeamBBet()) * 0.05) : 0
                                 : null)
                     .build();
             }).toList();
