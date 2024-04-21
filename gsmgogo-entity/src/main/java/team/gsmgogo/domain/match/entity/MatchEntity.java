@@ -23,7 +23,7 @@ public class MatchEntity {
     @Column(name = "match_id")
     private Long matchId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_a")
     private TeamEntity teamA;
 
