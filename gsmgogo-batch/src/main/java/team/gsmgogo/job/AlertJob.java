@@ -51,7 +51,9 @@ public class AlertJob implements Job {
         TeamEntity teamB = match.getTeamB();
 
         List<UserEntity> followAUsers = userQueryDslRepository.findByFollowsTeam(teamA);
-        followAUsers.forEach(user -> {
+        followAUsers.
+            stream().filter(user -> user.getPhoneNumber() != null)
+                .forEach(user -> {
             Message message = new Message();
             message.setFrom(sendNumber);
             message.setTo(user.getPhoneNumber());
@@ -71,7 +73,9 @@ public class AlertJob implements Job {
         });
 
         List<UserEntity> followBUsers = userQueryDslRepository.findByFollowsTeam(teamB);
-        followBUsers.forEach(user -> {
+        followBUsers.
+            stream().filter(user -> user.getPhoneNumber() != null)
+                .forEach(user -> {
             Message message = new Message();
             message.setFrom(sendNumber);
             message.setTo(user.getPhoneNumber());
