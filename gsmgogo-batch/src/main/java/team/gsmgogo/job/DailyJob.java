@@ -20,9 +20,9 @@ public class DailyJob {
     private final PlatformTransactionManager platformTransactionManager;
     private final UserQueryDslRepository userQueryDslRepository;
 
-    @Bean(name = "resetCountJob")
+    @Bean(name = "resetDailyCountJob")
     public Job resetCountJob(){
-        return new JobBuilder("reset-count-Job", jobRepository)
+        return new JobBuilder("reset-daily-count-Job", jobRepository)
             .start(resetCountStep(jobRepository, platformTransactionManager))
             .build();
     }
