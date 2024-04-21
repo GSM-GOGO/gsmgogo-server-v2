@@ -18,7 +18,7 @@ public class BetRequest {
     private Long matchId;
     
     @NotNull
-    private Long betPoint;
+    private Integer betPoint;
 
     @NotNull
     @JsonProperty("team_a_score")

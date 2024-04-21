@@ -57,14 +57,14 @@ public class BetServiceImpl implements BetService {
             throw new ExpectedException("이미 해당 경기에 배팅을 했습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        if (!currentUser.betPoint(betRequest.getBetPoint().intValue())) {
+        if (!currentUser.betPoint(betRequest.getBetPoint())) {
             throw new ExpectedException("보유 포인트 보다 더 많이 배팅할 수 없습니다.", HttpStatus.BAD_REQUEST);
         }
 
         if (betRequest.getTeamAScore() > betRequest.getTeamBScore()) {
-            betMatch.teamABetPoint(betRequest.getBetPoint().intValue());
+            betMatch.teamABetPoint(betRequest.getBetPoint());
         } else {
-            betMatch.teamBBetPoint(betRequest.getBetPoint().intValue());
+            betMatch.teamBBetPoint(betRequest.getBetPoint());
         }
 
         BetEntity bet = BetEntity.builder()
@@ -72,7 +72,7 @@ public class BetServiceImpl implements BetService {
             .team(betTeam)
             .betScoreA(betRequest.getTeamAScore())
             .betScoreB(betRequest.getTeamBScore())
-            .betPoint(betRequest.getBetPoint())
+            .betPoint(Long.valueOf(betRequest.getBetPoint()))
             .user(currentUser)
             .build();
 

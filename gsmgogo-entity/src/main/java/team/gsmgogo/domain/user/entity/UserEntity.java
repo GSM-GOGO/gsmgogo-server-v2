@@ -94,7 +94,7 @@ public class UserEntity {
     }
   
     public boolean betPoint(Integer point) {
-        boolean isBet = this.point - point >= 0;
+        boolean isBet = (this.point - point) >= 0;
 
         if (isBet) {
             this.point -= point;
