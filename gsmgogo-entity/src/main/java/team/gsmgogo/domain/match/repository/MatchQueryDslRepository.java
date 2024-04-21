@@ -16,7 +16,7 @@ import team.gsmgogo.domain.match.entity.QMatchEntity;
 public class MatchQueryDslRepository {
     private final JPAQueryFactory queryFactory;
 
-    public List<MatchEntity> findByMonthDay(int month, int day) {
+    public List<MatchEntity> findByMonthAndDay(int month, int day) {
         QMatchEntity match = QMatchEntity.matchEntity;
         return queryFactory
             .selectFrom(match)
