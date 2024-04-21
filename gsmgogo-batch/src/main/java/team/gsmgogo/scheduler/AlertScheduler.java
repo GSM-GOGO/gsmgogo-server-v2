@@ -16,6 +16,7 @@ import team.gsmgogo.job.AlertJob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -40,7 +41,7 @@ public class AlertScheduler {
                 jobDataMap.put("matchId", match.getMatchId());
 
                 JobDetailImpl detail1 = new JobDetailImpl();
-                detail1.setName("alert-detail");
+                detail1.setName("alert-detail-" + UUID.randomUUID());
                 detail1.setGroup("alert");
                 detail1.setJobClass(AlertJob.class);
                 detail1.setJobDataMap(jobDataMap);
