@@ -44,6 +44,14 @@ public class CoinTossServiceImpl implements CoinTossService {
             throw new ExpectedException("최대 3000 포인트까지만 배팅할 수 있습니다.", HttpStatus.BAD_REQUEST);
         }
 
+        if(coinRequest.getPoint() <= 0){
+            throw new ExpectedException("잘못된 형식의 포인트를 배팅하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!currentUser.betPoint(coinRequest.getPoint())) {
+            throw new ExpectedException("보유 포인트보다 더 많이 배팅할 수 없습니다.", HttpStatus.BAD_REQUEST);
+        }
+
         SecureRandom secureRandom = new SecureRandom();
         CoinStatus result = secureRandom.nextBoolean() ? CoinStatus.TAIL : CoinStatus.HEAD;
 
@@ -54,9 +62,7 @@ public class CoinTossServiceImpl implements CoinTossService {
         gameJpaRepository.save(game);
 
         if (isWin) {
-            currentUser.addPoint(earnedPoint);
-        } else {
-            currentUser.addPoint(coinRequest.getPoint() * -1);
+            currentUser.addPoint(coinRequest.getPoint() + earnedPoint);
         }
 
         userJpaRepository.save(currentUser);
