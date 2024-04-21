@@ -39,6 +39,10 @@ public class BetServiceImpl implements BetService {
             throw new ExpectedException("배팅은 경기 하루 전부터 경기 시작 5분 전 사이에만 가능합니다.", HttpStatus.BAD_REQUEST);
         }
 
+        if (betRequest.getBetPoint() <= 0) {
+            throw new ExpectedException("배팅 포인트는 0보다 작을 수 없습니다.", HttpStatus.BAD_REQUEST);
+        }
+
         TeamEntity betTeam = betRequest.getTeamAScore() > betRequest.getTeamBScore() ? betMatch.getTeamA() : betMatch.getTeamB();
         UserEntity currentUser = userFacade.getCurrentUser();
 
