@@ -1,20 +1,23 @@
 package team.gsmgogo.scheduler;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.CronTriggerImpl;
+import org.springframework.batch.core.JobParameter;
+import org.springframework.batch.core.JobParameters;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import team.gsmgogo.domain.match.entity.MatchEntity;
 import team.gsmgogo.domain.match.repository.MatchQueryDslRepository;
 import team.gsmgogo.job.AlertJob;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AlertScheduler {
@@ -24,7 +27,7 @@ public class AlertScheduler {
     @Scheduled(cron = "0 0 0 * * *")
     public void start(){
         LocalDate today = LocalDate.now();
-        List<MatchEntity> matches = matchQueryDslRepository.findByMonthAndDay(
+        List<MatchEntity> matches = matchQueryDslRepository.findByMonthDay(
             today.getMonthValue(),
             today.getDayOfMonth()
         );
@@ -33,24 +36,26 @@ public class AlertScheduler {
             try {
                 LocalDateTime beforeMatch = match.getStartAt().minusMinutes(10);
 
+                JobDataMap jobDataMap = new JobDataMap();
+                jobDataMap.put("matchId", match.getMatchId());
+
                 JobDetailImpl detail1 = new JobDetailImpl();
                 detail1.setName("alert-detail");
                 detail1.setGroup("alert");
                 detail1.setJobClass(AlertJob.class);
+                detail1.setJobDataMap(jobDataMap);
 
-                CronTriggerImpl trigger1 = new CronTriggerImpl();
-                trigger1.setName("alert-trigger");
-                trigger1.setGroup("alert");
-                trigger1.setCronExpression("0 %d %d %d %d ? %d".formatted(
-                    beforeMatch.getMinute(),
-                    beforeMatch.getHour(),
-                    beforeMatch.getDayOfMonth(),
-                    beforeMatch.getMonthValue(),
-                    beforeMatch.getYear()
-                ));
+                Trigger trigger1 = TriggerBuilder.newTrigger()
+                    .withSchedule(CronScheduleBuilder.cronSchedule("0 %d %d %d %d ? %d".formatted(
+                        beforeMatch.getMinute(),
+                        beforeMatch.getHour(),
+                        beforeMatch.getDayOfMonth(),
+                        beforeMatch.getMonthValue(),
+                        beforeMatch.getYear()
+                    ))).build();
 
                 scheduler.scheduleJob(detail1, trigger1);
-            } catch (SchedulerException | ParseException e) {
+            } catch (SchedulerException e) {
                 throw new RuntimeException(e);
             }
         });
