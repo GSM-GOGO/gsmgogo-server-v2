@@ -28,17 +28,17 @@ public class DailyScheduler {
     private final PlatformTransactionManager platformTransactionManager;
     private final UserQueryDslRepository userQueryDslRepository;
 
-    @Scheduled(cron = "0 5 1 * * *")
-    public void resetLoginCount() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-        Map<String, JobParameter<?>> confMap = new HashMap<>();
-        confMap.put("time", new JobParameter(System.currentTimeMillis(), String.class));
-        JobParameters jobParameters = new JobParameters(confMap);
-
-        jobLauncher.run(
-            new DailyJob(jobRepository, platformTransactionManager, userQueryDslRepository).resetCountJob(),
-            jobParameters
-        );
-    }
+//    @Scheduled(cron = "0 5 1 * * *")
+//    public void resetLoginCount() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+//        Map<String, JobParameter<?>> confMap = new HashMap<>();
+//        confMap.put("time", new JobParameter(System.currentTimeMillis(), String.class));
+//        JobParameters jobParameters = new JobParameters(confMap);
+//
+//        jobLauncher.run(
+//            new DailyJob(jobRepository, platformTransactionManager, userQueryDslRepository).resetCountJob(),
+//            jobParameters
+//        );
+//    }
 
     @Scheduled(cron = "0 0 0 * * *")
     public void registerAlert() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
