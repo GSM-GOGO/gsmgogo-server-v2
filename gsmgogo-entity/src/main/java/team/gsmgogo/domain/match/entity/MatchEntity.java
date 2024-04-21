@@ -27,7 +27,7 @@ public class MatchEntity {
     @JoinColumn(name = "team_a")
     private TeamEntity teamA;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_b")
     private TeamEntity teamB;
 
