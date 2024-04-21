@@ -62,7 +62,7 @@ public class CoinTossServiceImpl implements CoinTossService {
         gameJpaRepository.save(game);
 
         if (isWin) {
-            currentUser.addPoint(earnedPoint);
+            currentUser.addPoint(earnedPoint + coinRequest.getPoint());
         }
 
         userJpaRepository.save(currentUser);
