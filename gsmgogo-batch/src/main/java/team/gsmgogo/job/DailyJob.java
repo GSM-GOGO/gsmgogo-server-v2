@@ -15,7 +15,7 @@ import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class ResetLoginCountJob {
+public class DailyJob {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final UserQueryDslRepository userQueryDslRepository;

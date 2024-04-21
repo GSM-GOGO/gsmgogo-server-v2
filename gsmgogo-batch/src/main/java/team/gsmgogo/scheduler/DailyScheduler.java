@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
-import team.gsmgogo.job.ResetLoginCountJob;
+import team.gsmgogo.job.DailyJob;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class DailyScheduler {
         JobParameters jobParameters = new JobParameters(confMap);
 
         jobLauncher.run(
-            new ResetLoginCountJob(jobRepository, platformTransactionManager, userQueryDslRepository).resetCountJob(),
+            new DailyJob(jobRepository, platformTransactionManager, userQueryDslRepository).resetCountJob(),
             jobParameters
         );
     }
@@ -47,7 +47,7 @@ public class DailyScheduler {
         JobParameters jobParameters = new JobParameters(confMap);
 
         jobLauncher.run(
-            new ResetLoginCountJob(jobRepository, platformTransactionManager, userQueryDslRepository).resetCountJob(),
+            new DailyJob(jobRepository, platformTransactionManager, userQueryDslRepository).resetCountJob(),
             jobParameters
         );
     }
