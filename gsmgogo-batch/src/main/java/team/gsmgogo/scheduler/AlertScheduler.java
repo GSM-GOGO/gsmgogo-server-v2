@@ -25,7 +25,7 @@ public class AlertScheduler {
     private final Scheduler scheduler;
     private final MatchQueryDslRepository matchQueryDslRepository;
 
-    @Scheduled(cron = "50 48 21 * * *")
+    @Scheduled(cron = "50 50 21 * * *")
     public void start(){
         LocalDate today = LocalDate.now();
         List<MatchEntity> matches = matchQueryDslRepository.findByMonthAndDay(
