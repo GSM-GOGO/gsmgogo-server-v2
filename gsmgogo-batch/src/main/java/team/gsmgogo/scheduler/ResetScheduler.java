@@ -12,12 +12,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import team.gsmgogo.domain.game.repository.GameQueryDslRepository;
 import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
 import team.gsmgogo.job.ResetCountJob;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ResetScheduler {
