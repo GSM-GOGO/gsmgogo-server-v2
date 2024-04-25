@@ -22,6 +22,8 @@ import team.gsmgogo.global.feign.dto.UserSchoolRole;
 import team.gsmgogo.global.security.jwt.TokenProvider;
 import team.gsmgogo.global.security.jwt.dto.TokenResponse;
 
+import java.time.Duration;
+
 @Service
 @RequiredArgsConstructor
 public class GauthLoginServiceImpl implements GauthLoginService {
@@ -120,7 +122,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
         RefreshTokenRedisEntity refreshToken = RefreshTokenRedisEntity.builder()
                 .userId(userId)
                 .refreshToken(token.getRefreshToken())
-                .expiredAt(refreshExp).build();
+                .expiredAt(refreshExp / 1000).build();
 
         String savedRefreshToken = refreshTokenJpaRepository.save(refreshToken).getRefreshToken();
 

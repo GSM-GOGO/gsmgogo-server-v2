@@ -1,6 +1,5 @@
 package team.gsmgogo.domain.match.repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -25,6 +24,7 @@ public class MatchQueryDslRepository {
                 .and(match.startAt.dayOfMonth().eq(day))
                 .and(match.isEnd.eq(false))
             )
+            .orderBy(match.startAt.asc())
             .fetch();
     }
 }
