@@ -122,7 +122,7 @@ public class GauthLoginServiceImpl implements GauthLoginService {
         RefreshTokenRedisEntity refreshToken = RefreshTokenRedisEntity.builder()
                 .userId(userId)
                 .refreshToken(token.getRefreshToken())
-                .expiredAt(refreshExp / 1000).build();
+                .expiredAt(refreshExp).build();
 
         String savedRefreshToken = refreshTokenJpaRepository.save(refreshToken).getRefreshToken();
 
