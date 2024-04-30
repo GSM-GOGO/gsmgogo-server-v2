@@ -25,8 +25,9 @@ public class RefreshTokenRedisEntity {
     @Column(name = "expired_at")
     private Long expiredAt;
 
-    public void updateRefreshToken(String refreshToken) {
+    public void updateRefreshToken(String refreshToken, Long refreshExp) {
         this.refreshToken = refreshToken;
+        this.expiredAt = refreshExp;
     }
 
 }

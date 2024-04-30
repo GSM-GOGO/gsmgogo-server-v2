@@ -1,6 +1,7 @@
 package team.gsmgogo.domain.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,9 @@ public class TokenReissueServiceImpl implements TokenReissueService {
     private final UserJpaRepository userJpaRepository;
     private final TokenProvider tokenProvider;
 
+    @Value("${spring.jwt.refreshExp}")
+    public Long refreshExp;
+
     @Override
     @Transactional
     public ReissueTokenDto execute(String refreshToken) {
@@ -42,7 +46,7 @@ public class TokenReissueServiceImpl implements TokenReissueService {
             throw new ExpectedException("리프레시 토큰이 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        currentRefreshToken.updateRefreshToken(newToken.getRefreshToken());
+        currentRefreshToken.updateRefreshToken(newToken.getRefreshToken(), refreshExp);
         refreshTokenJpaRepository.save(currentRefreshToken);
 
         return new ReissueTokenDto(newToken.getAccessToken(), newToken.getRefreshToken());
