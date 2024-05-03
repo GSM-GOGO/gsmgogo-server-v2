@@ -1,15 +1,17 @@
 package team.gsmgogo.job;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.nurigo.sdk.message.model.Message;
-import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
-import net.nurigo.sdk.message.service.DefaultMessageService;
+import java.util.List;
+
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+
+import lombok.RequiredArgsConstructor;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 import team.gsmgogo.domain.match.entity.MatchEntity;
 import team.gsmgogo.domain.match.enums.MatchLevelType;
 import team.gsmgogo.domain.match.repository.MatchJpaRepository;
@@ -17,9 +19,6 @@ import team.gsmgogo.domain.team.entity.TeamEntity;
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
 
-import java.util.List;
-
-@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class AlertJob implements Job {

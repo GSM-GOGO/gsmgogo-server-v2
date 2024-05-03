@@ -1,24 +1,25 @@
 package team.gsmgogo.scheduler;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.quartz.*;
-import org.quartz.impl.JobDetailImpl;
-import org.quartz.impl.triggers.CronTriggerImpl;
-import org.springframework.batch.core.JobParameter;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import team.gsmgogo.domain.match.entity.MatchEntity;
-import team.gsmgogo.domain.match.repository.MatchQueryDslRepository;
-import team.gsmgogo.job.AlertJob;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobDataMap;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.JobDetailImpl;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
+import team.gsmgogo.domain.match.entity.MatchEntity;
+import team.gsmgogo.domain.match.repository.MatchQueryDslRepository;
+import team.gsmgogo.job.AlertJob;
+
 @Component
 @RequiredArgsConstructor
 public class AlertScheduler {
@@ -32,8 +33,6 @@ public class AlertScheduler {
             today.getMonthValue(),
             today.getDayOfMonth()
         );
-
-        log.info(String.valueOf(matches.size()));
 
         matches.forEach(match -> {
             try {

@@ -1,8 +1,7 @@
 package team.gsmgogo.job;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -10,10 +9,11 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import lombok.RequiredArgsConstructor;
 import team.gsmgogo.domain.game.repository.GameQueryDslRepository;
 import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
 
-@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class ResetCountJob {
