@@ -3,11 +3,13 @@ package team.gsmgogo.domain.matchresult.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.querydsl.core.types.SubQueryExpression;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
+import team.gsmgogo.domain.match.entity.MatchEntity;
 import team.gsmgogo.domain.matchresult.entity.MatchResultEntity;
 import team.gsmgogo.domain.matchresult.entity.QMatchResultEntity;
 
@@ -24,18 +26,12 @@ public class MatchResultQueryDslRepository {
             .fetch();
     }
 
-    public Optional<MatchResultEntity> findByMatchId(Long matchId){
+    public List<MatchResultEntity> findByMatchId(List<MatchEntity> matches){
         QMatchResultEntity matchResult = QMatchResultEntity.matchResultEntity;
-        List<MatchResultEntity> matches = queryFactory
+        return queryFactory
             .selectFrom(matchResult)
-            .where(matchResult.match.matchId.eq(matchId))
+            .where(matchResult.match.in(matches))
             .orderBy(matchResult.match.startAt.asc())
             .fetch();
-
-        if(matches.isEmpty()) {
-            return Optional.empty();
-        } else {
-            return Optional.of(matches.get(0));
-        }
     }
 }

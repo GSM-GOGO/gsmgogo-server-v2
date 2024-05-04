@@ -38,16 +38,13 @@ public class QueryUserBetMatchServiceImpl implements QueryUserBetMatchService {
         UserEntity currentUser = userFacade.getCurrentUser();
         List<BetEntity> bets = betJpaRepository.findByUser(currentUser);
 
-        Set<MatchEntity> matches = new LinkedHashSet<>();
-        Set<MatchResultEntity> matchResults = new LinkedHashSet<>();
+        List<MatchEntity> matches = matchQueryDslRepository.findByMatchId(bets.stream().map(
+            betEntity -> betEntity.getMatch()
+        ).toList());
 
-        bets.forEach(betEntity -> {
-            Optional<MatchEntity> addMatch = matchQueryDslRepository.findByMatchId(betEntity.getMatch().getMatchId());
-            Optional<MatchResultEntity> addMatchResult = matchResultQueryDslRepository.findByMatchId(betEntity.getMatch().getMatchId());
-
-            if(addMatchResult.isPresent()) matchResults.add(addMatchResult.get());
-            if(addMatch.isPresent()) matches.add(addMatch.get());
-        });
+        List<MatchResultEntity> matchResults = matchResultQueryDslRepository.findByMatchId(bets.stream().map(
+            betEntity -> betEntity.getMatch()
+        ).toList());
 
         List<BetMatchInfoDto> matchList = matches.stream()
             .map(match -> BetMatchInfoDto.builder()
