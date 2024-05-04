@@ -27,4 +27,16 @@ public class MatchQueryDslRepository {
             .orderBy(match.startAt.asc())
             .fetch();
     }
+
+    public MatchEntity findByMatchId(Long matchId) {
+        QMatchEntity match = QMatchEntity.matchEntity;
+        return queryFactory
+            .selectFrom(match)
+            .where(
+                match.matchId.eq(matchId)
+                .and(match.isEnd.eq(false))
+            )
+            .orderBy(match.startAt.asc())
+            .fetch().get(0);
+    }
 }
