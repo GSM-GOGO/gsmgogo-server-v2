@@ -1,7 +1,9 @@
 package team.gsmgogo.domain.match.repository;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -28,15 +30,21 @@ public class MatchQueryDslRepository {
             .fetch();
     }
 
-    public MatchEntity findByMatchId(Long matchId) {
+    public Optional<MatchEntity> findByMatchId(Long matchId) {
         QMatchEntity match = QMatchEntity.matchEntity;
-        return queryFactory
+        List<MatchEntity> matches = queryFactory
             .selectFrom(match)
             .where(
                 match.matchId.eq(matchId)
                 .and(match.isEnd.eq(false))
             )
             .orderBy(match.startAt.asc())
-            .fetch().get(0);
+            .fetch();
+
+        if(matches.isEmpty()){
+            return Optional.empty();
+        } else {
+            return Optional.of(matches.get(0));
+        }
     }
 }
