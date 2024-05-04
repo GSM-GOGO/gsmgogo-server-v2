@@ -40,36 +40,45 @@ public class MatchServiceImpl implements MatchService {
         List<BetEntity> bettings = betJpaRepository.findByUser(currentUser);
 
         List<MatchInfoDto> matchList = matches.stream()
-            .map(match -> MatchInfoDto.builder()
-                .matchId(match.getMatchId())
-                .matchType(match.getMatchType())
-                .matchLevel(match.getMatchLevel())
-                .teamAId(match.getTeamA() != null ? match.getTeamA().getTeamId() : null)
-                .teamAName(match.getTeamA() != null ? match.getTeamA().getTeamName() : "TBD")
-                .teamAGrade(match.getTeamAGrade())
-                .teamAClassType(match.getTeamAClassType())
-                .teamBId(match.getTeamB() != null ? match.getTeamB().getTeamId() : null)
-                .teamBName(match.getTeamB() != null ? match.getTeamB().getTeamName() : "TBD")
-                .teamBGrade(match.getTeamBGrade())
-                .teamBClassType(match.getTeamBClassType())
-                .badmintonRank(
-                        match.getTeamA() != null && match.getTeamA().getTeamType() == TeamType.BADMINTON ? match.getTeamA().getBadmintonRank() : null)
-                    .badmintonAParticipateNames(
-                            match.getTeamA() != null && match.getTeamA().getTeamType() == TeamType.BADMINTON ?
-                                    match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
-                                    : null
-                    )
-                    .badmintonBParticipateNames(
-                            match.getTeamB() != null && match.getTeamB().getTeamType() == TeamType.BADMINTON ?
-                                    match.getTeamB().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamB().getTeamParticipates().get(1).getUser().getUserName()
-                                    : null
-                    )
-                .matchStartAt(match.getStartAt())
-                .matchEndAt(match.getEndAt())
-                .isVote(bettings.stream().anyMatch(bet -> bet.getMatch() == match))
-                .teamABet(match.getTeamABet())
-                .teamBBet(match.getTeamBBet())
-                .build()).toList();
+            .map(match -> {
+
+                Optional<BetEntity> currentBetting = bettings.stream()
+                        .findFirst().filter(bet -> bet.getMatch() == match);
+
+                return MatchInfoDto.builder()
+                        .matchId(match.getMatchId())
+                        .matchType(match.getMatchType())
+                        .matchLevel(match.getMatchLevel())
+                        .teamAId(match.getTeamA() != null ? match.getTeamA().getTeamId() : null)
+                        .teamAName(match.getTeamA() != null ? match.getTeamA().getTeamName() : "TBD")
+                        .teamAGrade(match.getTeamAGrade())
+                        .teamAClassType(match.getTeamAClassType())
+                        .teamBId(match.getTeamB() != null ? match.getTeamB().getTeamId() : null)
+                        .teamBName(match.getTeamB() != null ? match.getTeamB().getTeamName() : "TBD")
+                        .teamBGrade(match.getTeamBGrade())
+                        .teamBClassType(match.getTeamBClassType())
+                        .badmintonRank(
+                                match.getTeamA() != null && match.getTeamA().getTeamType() == TeamType.BADMINTON ? match.getTeamA().getBadmintonRank() : null)
+                        .badmintonAParticipateNames(
+                                match.getTeamA() != null && match.getTeamA().getTeamType() == TeamType.BADMINTON ?
+                                        match.getTeamA().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamA().getTeamParticipates().get(1).getUser().getUserName()
+                                        : null
+                        )
+                        .badmintonBParticipateNames(
+                                match.getTeamB() != null && match.getTeamB().getTeamType() == TeamType.BADMINTON ?
+                                        match.getTeamB().getTeamParticipates().get(0).getUser().getUserName() + "/" + match.getTeamB().getTeamParticipates().get(1).getUser().getUserName()
+                                        : null
+                        )
+                        .matchStartAt(match.getStartAt())
+                        .matchEndAt(match.getEndAt())
+                        .isVote(currentBetting.isPresent())
+                        .teamABet(match.getTeamABet())
+                        .teamBBet(match.getTeamBBet())
+                        .betTeamAScore(currentBetting.map(entity -> Long.valueOf(entity.getBetScoreA())).orElse(null))
+                        .betTeamBScore(currentBetting.map(betEntity -> Long.valueOf(betEntity.getBetScoreB())).orElse(null))
+                        .betPoint(currentBetting.map(BetEntity::getBetPoint).orElse(null))
+                        .build();
+            }).toList();
 
         List<MatchResultDto> endedMatches = matchResults.stream()
             .map(matchResult -> {
