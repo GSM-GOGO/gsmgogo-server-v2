@@ -22,6 +22,7 @@ public class UserController {
     private final QueryUserFollowTeamService queryUserFollowTeamService;
     private final QueryUserPointService queryUserPointService;
     private final QueryIsLeaderService queryIsLeaderService;
+    private final QueryUserBetMatchService queryUserBetMatchService;
 
 //    @GetMapping("/search")
 //    public ResponseEntity<List<UserInfoResponse>> queryUser(
@@ -56,4 +57,8 @@ public class UserController {
         return ResponseEntity.ok(queryIsLeaderService.queryIsLeader());
     }
 
+    @GetMapping("/match")
+    public ResponseEntity<BetMatchResponse> queryMyBetMatch(){
+        return ResponseEntity.ok(queryUserBetMatchService.execute());
+    }
 }
