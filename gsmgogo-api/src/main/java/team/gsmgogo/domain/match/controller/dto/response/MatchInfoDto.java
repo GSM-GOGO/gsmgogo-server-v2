@@ -75,4 +75,14 @@ public class MatchInfoDto {
 
     @JsonProperty("team_b_bet")
     private Long teamBBet;
+
+    @JsonProperty("bet_team_a_score")
+    private Long betTeamAScore;
+
+    @JsonProperty("bet_team_b_score")
+    private Long betTeamBScore;
+
+    @JsonProperty("bet_point")
+    private Long betPoint;
+
 }
