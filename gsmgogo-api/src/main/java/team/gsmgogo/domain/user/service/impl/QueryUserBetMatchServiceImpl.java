@@ -92,15 +92,16 @@ public class QueryUserBetMatchServiceImpl implements QueryUserBetMatchService {
                 CalculatePointResponse calculatePoint = new CalculatePointResponse();
 
                 if (betting != null){
-                    CalculatePointRequest request = new CalculatePointRequest(
-                        betting.getBetPoint(),
-                        matchResult.getTeamAScore(),
-                        matchResult.getTeamBScore(),
-                        betting.getBetScoreA(),
-                        betting.getBetScoreB(),
-                        match.getTeamABet(),
-                        match.getTeamBBet()
-                    );
+                    CalculatePointRequest request = CalculatePointRequest.builder()
+                        .betPoint(betting.getBetPoint())
+                        .aScore(matchResult.getTeamAScore())
+                        .bScore(matchResult.getTeamBScore())
+                        .betAScore(betting.getBetScoreA())
+                        .betBScore(betting.getBetScoreB())
+                        .allAPoint(match.getTeamABet())
+                        .allBPoint(match.getTeamBBet())
+                        .build();
+
                     calculatePoint = new CalculatePoint().execute(request);
                 }
 
