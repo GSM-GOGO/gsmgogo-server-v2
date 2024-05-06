@@ -80,4 +80,8 @@ public class BetMatchInfoDto {
 
     @JsonProperty("bet_point")
     private Integer betPoint;
+
+    @JsonProperty("is_vote")
+    private boolean isVote;
+
 }

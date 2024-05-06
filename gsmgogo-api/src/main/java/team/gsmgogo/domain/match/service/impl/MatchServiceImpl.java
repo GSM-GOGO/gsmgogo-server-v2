@@ -42,7 +42,7 @@ public class MatchServiceImpl implements MatchService {
             .map(match -> {
 
                 Optional<BetEntity> currentBetting = bettings.stream()
-                        .findFirst().filter(bet -> bet.getMatch() == match);
+                        .findFirst().filter(bet -> bet.getMatch().equals(match));
 
                 return MatchInfoDto.builder()
                         .matchId(match.getMatchId())
@@ -73,7 +73,7 @@ public class MatchServiceImpl implements MatchService {
                         .isVote(currentBetting.isPresent())
                         .teamABet(match.getTeamABet())
                         .teamBBet(match.getTeamBBet())
-                        .betTeamAScore(currentBetting.map(entity -> Long.valueOf(entity.getBetScoreA())).orElse(null))
+                        .betTeamAScore(currentBetting.map(betEntity -> Long.valueOf(betEntity.getBetScoreA())).orElse(null))
                         .betTeamBScore(currentBetting.map(betEntity -> Long.valueOf(betEntity.getBetScoreB())).orElse(null))
                         .betPoint(currentBetting.map(BetEntity::getBetPoint).orElse(null))
                         .build();
