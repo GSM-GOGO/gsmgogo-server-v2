@@ -1,5 +1,6 @@
 package team.gsmgogo.scheduler;
 
+import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -16,6 +17,9 @@ import team.gsmgogo.domain.game.repository.GameQueryDslRepository;
 import team.gsmgogo.domain.user.repository.UserQueryDslRepository;
 import team.gsmgogo.job.ResetCountJob;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 @RequiredArgsConstructor
 public class ResetScheduler {
@@ -25,11 +29,16 @@ public class ResetScheduler {
     private final UserQueryDslRepository userQueryDslRepository;
     private final GameQueryDslRepository gameQueryDslRepository;
 
-    @Scheduled(cron = "0 15 8 * * *")
+    @Scheduled(cron = "0 25 8 * * *")
     public void reset() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+
+        Map<String, JobParameter<?>> jobParametersMap = new HashMap<>();
+        jobParametersMap.put("reset-result-time", new JobParameter(System.currentTimeMillis(), String.class));
+        JobParameters jobParameters = new JobParameters(jobParametersMap);
+
         jobLauncher.run(
             new ResetCountJob(jobRepository, platformTransactionManager, userQueryDslRepository, gameQueryDslRepository).resetJob(),
-            new JobParameters()
+                jobParameters
         );
     }
 }
