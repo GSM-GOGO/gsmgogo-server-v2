@@ -42,7 +42,7 @@ public class MatchServiceImpl implements MatchService {
             .map(match -> {
 
                 Optional<BetEntity> currentBetting = bettings.stream()
-                        .findFirst().filter(bet -> bet.getMatch().equals(match));
+                        .filter(bet -> bet.getMatch().equals(match)).findFirst();
 
                 return MatchInfoDto.builder()
                         .matchId(match.getMatchId())
