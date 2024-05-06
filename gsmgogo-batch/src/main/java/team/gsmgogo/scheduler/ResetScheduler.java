@@ -25,7 +25,7 @@ public class ResetScheduler {
     private final UserQueryDslRepository userQueryDslRepository;
     private final GameQueryDslRepository gameQueryDslRepository;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 20 0 * * *")
     public void reset() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         jobLauncher.run(
             new ResetCountJob(jobRepository, platformTransactionManager, userQueryDslRepository, gameQueryDslRepository).resetJob(),
