@@ -40,8 +40,8 @@ public class CoinTossServiceImpl implements CoinTossService {
             throw new ExpectedException("동전 던지기는 하루에 10번만 할 수 있습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        if(coinRequest.getPoint() > 3000){
-            throw new ExpectedException("최대 3000 포인트까지만 배팅할 수 있습니다.", HttpStatus.BAD_REQUEST);
+        if(coinRequest.getPoint() > 5000){
+            throw new ExpectedException("최대 5000 포인트까지만 배팅할 수 있습니다.", HttpStatus.BAD_REQUEST);
         }
 
         if(coinRequest.getPoint() <= 0){
