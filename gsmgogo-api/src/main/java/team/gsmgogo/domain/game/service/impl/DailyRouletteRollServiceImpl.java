@@ -47,30 +47,32 @@ public class DailyRouletteRollServiceImpl implements DailyRouletteRollService {
 
         switch (randomNumber) {
             case 1: {
-                earnedPoint = 2000;
+                earnedPoint = 20000;
                 game.rollDailyRoulette();
                 break;
             }
             case 2: {
-                earnedPoint = 1000;
+                earnedPoint = 10000;
                 game.rollDailyRoulette();
                 break;
             }
             case 3: {
-                earnedPoint = 500;
+                earnedPoint = 5000;
                 game.rollDailyRoulette();
                 break;
             }
             case 4: {
-                earnedPoint = 100;
+                earnedPoint = 3000;
                 game.rollDailyRoulette();
                 break;
             }
             case 5: {
-                earnedPoint = 500;
+                earnedPoint = 2000;
+                game.rollDailyRoulette();
                 break;
             }
             case 6: {
+                earnedPoint = 1000;
                 game.rollDailyRoulette();
                 break;
             }
