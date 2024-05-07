@@ -24,6 +24,6 @@ public class CoinTossCountServiceImpl implements CoinTossCountService {
         UserEntity currentUser = userFacade.getCurrentUser();
         Optional<GameEntity> game = gameJpaRepository.findByUser(currentUser);
 
-        return game.isPresent() ? game.get().getCoinToss() : 10;
+        return game.map(gameEntity -> (10 - gameEntity.getCoinToss())).orElse(10);
     }
 }
