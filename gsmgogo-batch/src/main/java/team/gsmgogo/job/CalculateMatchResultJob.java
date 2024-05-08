@@ -217,7 +217,7 @@ public class CalculateMatchResultJob {
                         .getTeamParticipates().forEach(
                                 participate -> {
                                     UserEntity user = participate.getUser();
-                                    user.addPoint((int) Math.ceil((loseTeamAllBetPoint + winTeamAllBetPoint) * 0.005));
+                                    user.addPoint((int) Math.ceil((loseTeamAllBetPoint + winTeamAllBetPoint) * 0.025));
                                     userJpaRepository.save(user);
                                 });
             } else {
@@ -225,7 +225,7 @@ public class CalculateMatchResultJob {
                         .getTeamParticipates().forEach(
                                 participate -> {
                                     UserEntity user = participate.getUser();
-                                    user.addPoint((int) Math.ceil((loseTeamAllBetPoint + winTeamAllBetPoint) * 0.005));
+                                    user.addPoint((int) Math.ceil((loseTeamAllBetPoint + winTeamAllBetPoint) * 0.025));
                                     userJpaRepository.save(user);
                                 });
             }

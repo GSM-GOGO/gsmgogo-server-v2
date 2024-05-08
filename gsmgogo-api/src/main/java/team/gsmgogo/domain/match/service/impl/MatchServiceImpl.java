@@ -146,7 +146,7 @@ public class MatchServiceImpl implements MatchService {
                                 ? isParticipateTeamId.equals(matchResult.getTeamAScore() > matchResult.getTeamBScore()
                                             ? match.getTeamA().getTeamId() : match.getTeamB().getTeamId())
                                         // 소속됨 팀의 승리 여부에 따라 ? 얻은 포인트 : 0
-                                    ? (int) Math.ceil((match.getTeamABet() + match.getTeamBBet()) * 0.005) : 0
+                                    ? (int) Math.ceil((match.getTeamABet() + match.getTeamBBet()) * 0.025) : 0
                                 : null)
                     .build();
             }).toList();
