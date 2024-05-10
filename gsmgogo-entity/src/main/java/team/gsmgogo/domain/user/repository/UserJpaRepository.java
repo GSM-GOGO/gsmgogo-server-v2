@@ -17,4 +17,7 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
     List<UserEntity> findTop5ByUserNameContainingAndUserGradeInOrderByUserNameAsc(String userName, List<GradeEnum> userGrade);
     List<UserEntity> findAllByUserGradeInAndUserClassIn(List<GradeEnum> userGrades, List<ClassEnum> userClasses);
     List<UserEntity> findAllByOrderByPointDesc();
+
+    @Query("SELECT SUM(user.point) FROM UserEntity user")
+    Integer sumAllPoints();
 }
