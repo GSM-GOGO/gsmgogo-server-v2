@@ -58,7 +58,7 @@ public class TaxCollectionServiceImpl implements TaxCollectionService {
             taxes.add(taxEntity);
 
             //세금 징수후 유저의 포인트가 음수일 경우 배팅된 게임에서 포인트를 차감하기 위한 로직
-            List<BetEntity> userBets = UserPointUtil.getUserBets(bets);
+            List<BetEntity> userBets = UserPointUtil.filterBetsWhereMatchIsNotEnded(bets);
             if (user.getPoint() < 0){
 
                 //포인트가 음수인 상태니 0으로 초기화

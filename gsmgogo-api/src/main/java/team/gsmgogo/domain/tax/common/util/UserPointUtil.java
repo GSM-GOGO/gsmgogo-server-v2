@@ -20,7 +20,7 @@ public class UserPointUtil {
         int userPoint = user.getPoint();
 
         //정산되지않은 게임에 포인트를 배팅한 유저의 BetEntity를 필터링
-        List<BetEntity> userBets = getUserBets(bets);
+        List<BetEntity> userBets = filterBetsWhereMatchIsNotEnded(bets);
 
         //유저의 배팅 포인트를 유저의 총 포인트에 합산
         for (BetEntity userBet : userBets) {
@@ -35,7 +35,7 @@ public class UserPointUtil {
      * @param bets BetEntity 리스트
      * @return 필터링된 BetEntity 리스트
      */
-    public static List<BetEntity> getUserBets(List<BetEntity> bets) {
+    public static List<BetEntity> filterBetsWhereMatchIsNotEnded(List<BetEntity> bets) {
         return bets.stream()
                 .filter(bet -> !bet.getMatch().getIsEnd())
                 .toList();
