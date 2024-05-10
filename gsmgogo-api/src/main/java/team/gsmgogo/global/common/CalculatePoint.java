@@ -9,7 +9,7 @@ public class CalculatePoint {
 
         // 스코어 예측 성공
         if (req.getAScore() == req.getBetAScore() && req.getBScore() == req.getBetBScore()){
-            Long pointResult = (long) Math.ceil(((req.getBetPoint() * ((double) loseTeamPoint / winTeamPoint)) + req.getBetPoint()) * 1.5);
+            Long pointResult = (long) Math.ceil(((req.getBetPoint() * ((double) loseTeamPoint / winTeamPoint)) * 2) + req.getBetPoint());
             response = new CalculatePointResponse(pointResult, null);
             return response;
         }
