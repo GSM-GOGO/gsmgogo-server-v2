@@ -145,9 +145,9 @@ public class CalculateMatchResultJob {
                 // 스코어 예측 성공
                 if (Objects.equals(Long.valueOf(bet.getBetScoreA()), teamAScore) &&
                         Objects.equals(Long.valueOf(bet.getBetScoreB()), teamBScore)) {
-                    // * 1.5
+                    // * 2
                     user.addPoint(
-                            (int) Math.ceil(((bet.getBetPoint() * ((double) loseTeamAllBetPoint / winTeamAllBetPoint)) + bet.getBetPoint()) * 1.5)
+                            (int) Math.ceil(((bet.getBetPoint() * ((double) loseTeamAllBetPoint / winTeamAllBetPoint)) * 2) + bet.getBetPoint())
                     );
                 } else {
                     // * 1
