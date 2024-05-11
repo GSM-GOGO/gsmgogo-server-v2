@@ -19,11 +19,11 @@ public class ButtonGameParticipate {
     private Long id;
 
     @ManyToOne
-    @Column(name = "button_game_id")
+    @JoinColumn(name = "button_game_id")
     private ButtonGameEntity buttonGame;
 
     @ManyToOne
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @Enumerated(EnumType.STRING)
