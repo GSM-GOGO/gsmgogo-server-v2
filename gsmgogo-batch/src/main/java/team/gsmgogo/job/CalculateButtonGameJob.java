@@ -56,26 +56,35 @@ public class CalculateButtonGameJob {
                             ButtonType winType = buttonGameResultDto.getWinType();
                             List<UserEntity> winUserList = buttonGameResultDto.getWinUserList();
 
-                            Integer ADD_POINT = (int) Math.ceil((double) TOTAL_POINT / winUserList.size());
-                            winUserList.forEach(user -> user.addPoint(ADD_POINT));
-                            userJpaRepository.saveAll(winUserList);
-
-                            buttonGame.setWinType(winType);
-                            buttonGame.endGame();
-
-                            buttonGameRepository.save(buttonGame);
-
-                            buttonGameRepository.save(
-                                    ButtonGameEntity.builder()
-                                            .isActive(true)
-                                            .createDate(LocalDateTime.now())
-                                            .build()
-                            );
+                            addPointWinUser(winUserList);
+                            endGame(buttonGame, winType);
+                            addNewButtonGame();
 
                             return RepeatStatus.FINISHED;
                         },
                         platformTransactionManager)
                 .build();
+    }
+
+    private void addPointWinUser(List<UserEntity> winUserList) {
+        Integer ADD_POINT = (int) Math.ceil((double) TOTAL_POINT / winUserList.size());
+        winUserList.forEach(user -> user.addPoint(ADD_POINT));
+        userJpaRepository.saveAll(winUserList);
+    }
+
+    private void endGame(ButtonGameEntity buttonGame, ButtonType winType) {
+        buttonGame.setWinType(winType);
+        buttonGame.endGame();
+        buttonGameRepository.save(buttonGame);
+    }
+
+    private void addNewButtonGame() {
+        buttonGameRepository.save(
+                ButtonGameEntity.builder()
+                        .isActive(true)
+                        .createDate(LocalDateTime.now())
+                        .build()
+        );
     }
 
 }
