@@ -29,4 +29,12 @@ public class ButtonGameEntity {
     @Column(name = "create_date")
     @CreatedDate
     private LocalDateTime createDate;
+
+    public void setWinType(ButtonType winType) {
+        this.winType = winType;
+    }
+
+    public void endGame() {
+        isActive = false;
+    }
 }
