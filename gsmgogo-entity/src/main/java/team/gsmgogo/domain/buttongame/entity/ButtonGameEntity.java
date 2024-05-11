@@ -2,7 +2,10 @@ package team.gsmgogo.domain.buttongame.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import team.gsmgogo.domain.buttongame.enums.ButtonType;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "button_game")
@@ -22,4 +25,8 @@ public class ButtonGameEntity {
     @Column(name = "win_type")
     @Enumerated(EnumType.STRING)
     private ButtonType winType;
+
+    @Column(name = "create_date")
+    @CreatedDate
+    private LocalDateTime createDate;
 }
