@@ -12,7 +12,8 @@ import team.gsmgogo.domain.buttongame.enums.ButtonType;
 @Getter
 @ToString
 public class ButtonGameEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "is_active")
