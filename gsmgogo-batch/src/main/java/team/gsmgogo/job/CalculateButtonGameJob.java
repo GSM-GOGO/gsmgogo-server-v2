@@ -19,6 +19,7 @@ import team.gsmgogo.domain.buttongameparticipate.repository.dto.ButtonGameResult
 import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.domain.user.repository.UserJpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class CalculateButtonGameJob {
 
     private final Integer TOTAL_POINT = 2000000;
 
-    @Bean(name = "calculateButtonGameJob")
+    @Bean(name = "buttonGameCalculateJob")
     public Job calculateButtonGameJob(){
         return new JobBuilder("calculate-button-game-job", jobRepository)
                 .start(calculateButtonGameStep(jobRepository, platformTransactionManager))
@@ -62,9 +63,12 @@ public class CalculateButtonGameJob {
                             buttonGame.setWinType(winType);
                             buttonGame.endGame();
 
+                            buttonGameRepository.save(buttonGame);
+
                             buttonGameRepository.save(
                                     ButtonGameEntity.builder()
                                             .isActive(true)
+                                            .createDate(LocalDateTime.now())
                                             .build()
                             );
 
