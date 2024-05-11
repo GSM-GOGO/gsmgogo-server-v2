@@ -42,8 +42,8 @@ public class ButtonGameParticipateQueryDslRepository {
         return queryFactory
                 .select(buttonGameParticipate.user)
                 .from(buttonGameParticipate)
-                .where(buttonGameParticipate.buttonGame.eq(buttonGame).and(
-                        buttonGameParticipate.buttonType.eq(winType))
+                .where(buttonGameParticipate.buttonGame.eq(buttonGame)
+                        .and(buttonGameParticipate.buttonType.eq(winType))
                 ).fetch();
     }
 

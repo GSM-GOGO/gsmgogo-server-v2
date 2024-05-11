@@ -1,16 +1,23 @@
 package team.gsmgogo.job;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+import team.gsmgogo.domain.buttongame.repository.ButtonGameRepository;
+import team.gsmgogo.domain.buttongameparticipate.repository.ButtonGameParticipateQueryDslRepository;
 
 @Configuration
 @RequiredArgsConstructor
-public class ButtonGameJob {
+public class CalculateButtonGameJob {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
+    private final ButtonGameRepository buttonGameRepository;
+    private final ButtonGameParticipateQueryDslRepository buttonGameParticipateQueryDslRepository;
 
     // 현재 진행중인 버튼 게임 조회
     // 해당 버튼 게임의 참여자들의 수를 타입 별로 조회
@@ -23,6 +30,10 @@ public class ButtonGameJob {
     // 버튼 게임읠 Is_active를 false로 변경
     // 새로운 버튼게임을 등록
 
-
+    @Bean(name = "calculateButtonGameJob")
+    public Job calculateButtonGameJob(){
+        return new JobBuilder("calculate-button-game-job", jobRepository)
+                .build();
+    }
 
 }
