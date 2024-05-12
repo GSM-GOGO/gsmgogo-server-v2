@@ -82,7 +82,7 @@ public class CalculateButtonGameJob {
         buttonGameRepository.save(
                 ButtonGameEntity.builder()
                         .isActive(true)
-                        .createDate(LocalDateTime.now())
+                        .createDate(LocalDateTime.now().plusDays(1L))
                         .build()
         );
     }

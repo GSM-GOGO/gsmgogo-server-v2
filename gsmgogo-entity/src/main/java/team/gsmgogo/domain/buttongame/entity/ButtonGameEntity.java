@@ -1,11 +1,14 @@
 package team.gsmgogo.domain.buttongame.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import team.gsmgogo.domain.buttongame.enums.ButtonType;
+import team.gsmgogo.domain.buttongameparticipate.entity.ButtonGameParticipate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "button_game")
@@ -20,6 +23,7 @@ public class ButtonGameEntity {
     private Long id;
 
     @Column(name = "is_active")
+    @Nullable
     private Boolean isActive;
 
     @Column(name = "win_type")
@@ -29,6 +33,9 @@ public class ButtonGameEntity {
     @Column(name = "create_date")
     @CreatedDate
     private LocalDateTime createDate;
+
+    @OneToMany(mappedBy = "buttonGame", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ButtonGameParticipate> participates;
 
     public void setWinType(ButtonType winType) {
         this.winType = winType;
