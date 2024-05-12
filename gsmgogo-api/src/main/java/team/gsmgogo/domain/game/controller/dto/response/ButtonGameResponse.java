@@ -13,6 +13,7 @@ import team.gsmgogo.domain.buttongame.enums.ButtonType;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @NoArgsConstructor
@@ -25,7 +26,8 @@ public class ButtonGameResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime date;
     private Boolean isActive;
-    private List<Integer> results;
+    @Enumerated(EnumType.STRING)
+    private Map<ButtonType, Integer> results;
     private Boolean isWin;
     @Enumerated(EnumType.STRING)
     private ButtonType winType;

@@ -16,6 +16,7 @@ import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -58,15 +59,12 @@ public class ButtonGameStateServiceImpl implements ButtonGameStateService {
                 ButtonType.FIVE, 0
         );
 
-        List<Integer> results = new ArrayList<>();
-
         Map<ButtonType, Integer> updatedTypeMap = new HashMap<>(typeMap);
         typeMap.forEach((type, value) -> {
-            Integer typeParticipateSize = findButtonGame.getParticipates().stream()
+            Integer typeParticipateSize = (int) findButtonGame.getParticipates().stream()
                     .filter(p -> p.getButtonType().equals(type)
-                    ).toList().size();
+                    ).count();
 
-                    results.add(typeParticipateSize);
                     updatedTypeMap.put(type, typeParticipateSize);
                 }
         );
@@ -77,7 +75,7 @@ public class ButtonGameStateServiceImpl implements ButtonGameStateService {
                 .buttonType(myButtonGameParticipate.getButtonType())
                 .date(findButtonGame.getCreateDate())
                 .isActive(findButtonGame.getIsActive())
-                .results(results)
+                .results(!findButtonGame.getIsActive() ? updatedTypeMap : null)
                 .winType(findButtonGame.getWinType())
                 .isWin(findButtonGame.getWinType() == null ? null : isWin)
                 .earnedPoint(isWin ?

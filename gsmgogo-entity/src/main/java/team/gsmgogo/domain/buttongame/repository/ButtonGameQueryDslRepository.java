@@ -21,11 +21,8 @@ public class ButtonGameQueryDslRepository {
                 .select(buttonGameEntity)
                 .from(buttonGameEntity)
                 .join(buttonGameEntity.participates, buttonGameParticipate).fetchJoin()
-                .where(
-                        buttonGameEntity.createDate.month().eq(month)
-                                .and(buttonGameEntity.createDate.dayOfMonth().eq(day))
-                                .and(buttonGameEntity.isActive.eq(true))
-                )
+                .where(buttonGameEntity.createDate.month().eq(month)
+                                .and(buttonGameEntity.createDate.dayOfMonth().eq(day)))
                 .fetchOne());
     }
 }
