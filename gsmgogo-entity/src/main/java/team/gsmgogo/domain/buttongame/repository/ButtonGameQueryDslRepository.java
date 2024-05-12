@@ -7,6 +7,8 @@ import static team.gsmgogo.domain.buttongame.entity.QButtonGameEntity.buttonGame
 
 import team.gsmgogo.domain.buttongame.entity.ButtonGameEntity;
 
+import java.util.Optional;
+
 import static team.gsmgogo.domain.buttongameparticipate.entity.QButtonGameParticipate.buttonGameParticipate;
 
 @Repository
@@ -14,14 +16,14 @@ import static team.gsmgogo.domain.buttongameparticipate.entity.QButtonGamePartic
 public class ButtonGameQueryDslRepository {
     private final JPAQueryFactory queryFactory;
 
-    public ButtonGameEntity findByMonthAndDay(int month, int day) {
-        return queryFactory
+    public Optional<ButtonGameEntity> findByMonthAndDay(int month, int day) {
+        return Optional.ofNullable(queryFactory
                 .selectFrom(buttonGameEntity)
                 .join(buttonGameEntity.participates, buttonGameParticipate).fetchJoin()
                 .where(
                         buttonGameEntity.createDate.month().eq(month)
-                        .and(buttonGameEntity.createDate.dayOfMonth().eq(day))
+                                .and(buttonGameEntity.createDate.dayOfMonth().eq(day))
                 )
-                .fetchOne();
+                .fetchOne());
     }
 }
