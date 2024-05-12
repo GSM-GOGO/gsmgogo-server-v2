@@ -9,8 +9,6 @@ import team.gsmgogo.domain.buttongame.entity.ButtonGameEntity;
 
 import java.util.Optional;
 
-import static team.gsmgogo.domain.buttongameparticipate.entity.QButtonGameParticipate.buttonGameParticipate;
-
 @Repository
 @RequiredArgsConstructor
 public class ButtonGameQueryDslRepository {
@@ -20,7 +18,6 @@ public class ButtonGameQueryDslRepository {
         return Optional.ofNullable(queryFactory
                 .select(buttonGameEntity)
                 .from(buttonGameEntity)
-                .join(buttonGameEntity.participates, buttonGameParticipate).fetchJoin()
                 .where(buttonGameEntity.createDate.month().eq(month)
                                 .and(buttonGameEntity.createDate.dayOfMonth().eq(day)))
                 .fetchOne());

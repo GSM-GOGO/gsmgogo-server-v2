@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 import team.gsmgogo.domain.buttongame.entity.ButtonGameEntity;
 import team.gsmgogo.domain.buttongame.enums.ButtonType;
 import team.gsmgogo.domain.buttongame.repository.ButtonGameQueryDslRepository;
-import team.gsmgogo.domain.buttongame.repository.ButtonGameRepository;
 import team.gsmgogo.domain.buttongameparticipate.entity.ButtonGameParticipate;
-import team.gsmgogo.domain.buttongameparticipate.repository.ButtonGameParticipateRepository;
 import team.gsmgogo.domain.game.controller.dto.response.ButtonGameResponse;
 import team.gsmgogo.domain.game.service.ButtonGameStateService;
 import team.gsmgogo.domain.user.entity.UserEntity;
@@ -16,7 +14,6 @@ import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
