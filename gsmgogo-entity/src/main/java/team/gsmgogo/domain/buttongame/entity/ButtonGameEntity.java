@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import team.gsmgogo.domain.buttongame.enums.ButtonType;
+import team.gsmgogo.domain.buttongameparticipate.entity.ButtonGameParticipate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "button_game")
@@ -29,6 +31,9 @@ public class ButtonGameEntity {
     @Column(name = "create_date")
     @CreatedDate
     private LocalDateTime createDate;
+
+    @OneToMany(mappedBy = "buttonType")
+    private List<ButtonGameParticipate> participates;
 
     public void setWinType(ButtonType winType) {
         this.winType = winType;
