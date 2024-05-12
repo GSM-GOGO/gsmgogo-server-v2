@@ -31,22 +31,22 @@ public class ButtonGameCalculateScheduler {
     private final UserJpaRepository userJpaRepository;
     private final ButtonGameParticipateQueryDslRepository buttonGameParticipateQueryDslRepository;
 
-//    @Scheduled(cron = "0 0 23 * * *")
-//    public void start() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-//
-//        Map<String, JobParameter<?>> jobParametersMap = new HashMap<>();
-//        jobParametersMap.put("button-game-time", new JobParameter(System.currentTimeMillis(), String.class));
-//        JobParameters jobParameters = new JobParameters(jobParametersMap);
-//
-//        jobLauncher.run(
-//                new CalculateButtonGameJob(
-//                        jobRepository,
-//                        platformTransactionManager,
-//                        buttonGameRepository,
-//                        userJpaRepository,
-//                        buttonGameParticipateQueryDslRepository).calculateButtonGameJob(),
-//                jobParameters
-//        );
-//    }
+    @Scheduled(cron = "0 54 8 * * *")
+    public void start() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+
+        Map<String, JobParameter<?>> jobParametersMap = new HashMap<>();
+        jobParametersMap.put("button-game-time", new JobParameter(System.currentTimeMillis(), String.class));
+        JobParameters jobParameters = new JobParameters(jobParametersMap);
+
+        jobLauncher.run(
+                new CalculateButtonGameJob(
+                        jobRepository,
+                        platformTransactionManager,
+                        buttonGameRepository,
+                        userJpaRepository,
+                        buttonGameParticipateQueryDslRepository).calculateButtonGameJob(),
+                jobParameters
+        );
+    }
 
 }
