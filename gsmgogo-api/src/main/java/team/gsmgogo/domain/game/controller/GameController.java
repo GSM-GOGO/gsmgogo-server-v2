@@ -6,13 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.gsmgogo.domain.game.controller.dto.request.ButtonGameRequest;
 import team.gsmgogo.domain.game.controller.dto.request.CoinRequest;
+import team.gsmgogo.domain.game.controller.dto.response.ButtonGameResponse;
 import team.gsmgogo.domain.game.controller.dto.response.CoinCountResponse;
 import team.gsmgogo.domain.game.controller.dto.response.CoinResponse;
 import team.gsmgogo.domain.game.controller.dto.response.DailyRouletteResponse;
-import team.gsmgogo.domain.game.service.ButtonGameService;
-import team.gsmgogo.domain.game.service.CoinTossCountService;
-import team.gsmgogo.domain.game.service.CoinTossService;
-import team.gsmgogo.domain.game.service.DailyRouletteRollService;
+import team.gsmgogo.domain.game.service.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +21,7 @@ public class GameController {
     private final DailyRouletteRollService dailyRouletteRollService;
     private final CoinTossCountService coinTossCountService;
     private final ButtonGameService buttonGameService;
+    private final ButtonGameStateService buttonGameStateService;
 
     @PostMapping("/roulette")
     public ResponseEntity<DailyRouletteResponse> dailyRouletteRoll() {
@@ -45,4 +44,8 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/button")
+    public ResponseEntity<ButtonGameResponse> stateButton() {
+        return ResponseEntity.ok(buttonGameStateService.execute());
+    }
 }
