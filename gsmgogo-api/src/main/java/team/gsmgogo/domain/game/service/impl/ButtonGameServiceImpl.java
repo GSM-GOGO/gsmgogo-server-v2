@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.gsmgogo.domain.bet.entity.BetEntity;
 import team.gsmgogo.domain.bet.repository.BetJpaRepository;
 import team.gsmgogo.domain.buttongame.entity.ButtonGameEntity;
+import team.gsmgogo.domain.buttongame.enums.ButtonType;
 import team.gsmgogo.domain.buttongame.repository.ButtonGameRepository;
 import team.gsmgogo.domain.buttongameparticipate.entity.ButtonGameParticipate;
 import team.gsmgogo.domain.buttongameparticipate.repository.ButtonGameParticipateRepository;
@@ -42,6 +43,16 @@ public class ButtonGameServiceImpl implements ButtonGameService {
 
         if (buttonGameParticipateRepository.existsByButtonGameAndUser(buttonGame, currentUser))
             throw new ExpectedException("이미 버튼을 눌렀습니다.", HttpStatus.BAD_REQUEST);
+
+        List<ButtonType> typeList = List.of(
+                ButtonType.ONE,
+                ButtonType.TWO,
+                ButtonType.THREE,
+                ButtonType.FOUR,
+                ButtonType.FIVE);
+
+        if (request.getButtonType() == null || !typeList.stream().anyMatch(type -> type.equals(request.getButtonType())))
+            throw new ExpectedException("올바른 버튼 종류를 입력해주세요.", HttpStatus.BAD_REQUEST);
 
         AtomicInteger betPoint = new AtomicInteger();
         buttonGameParticipate.findByUser(currentUser)

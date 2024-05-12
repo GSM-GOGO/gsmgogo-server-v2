@@ -16,6 +16,5 @@ import team.gsmgogo.domain.buttongame.enums.ButtonType;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ButtonGameRequest {
     @NotNull
-    @Enumerated(EnumType.STRING)
     private ButtonType buttonType;
 }

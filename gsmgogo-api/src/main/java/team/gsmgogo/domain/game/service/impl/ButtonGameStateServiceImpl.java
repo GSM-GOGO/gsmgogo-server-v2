@@ -37,17 +37,6 @@ public class ButtonGameStateServiceImpl implements ButtonGameStateService {
                 .filter(p -> p.getUser().getUserId().equals(currentUser.getUserId()))
                 .findAny().orElse(null);
 
-        if (myButtonGameParticipate == null)
-            return ButtonGameResponse.builder()
-                    .buttonType(null)
-                    .date(findButtonGame.getCreateDate())
-                    .isActive(findButtonGame.getIsActive())
-                    .results(null)
-                    .isWin(null)
-                    .winType(null)
-                    .earnedPoint(null)
-                    .build();
-
         Map<ButtonType, Integer> typeMap = Map.of(
                 ButtonType.ONE, 0,
                 ButtonType.TWO, 0,
@@ -66,17 +55,18 @@ public class ButtonGameStateServiceImpl implements ButtonGameStateService {
                 }
         );
 
-        boolean isWin = findButtonGame.getWinType() == myButtonGameParticipate.getButtonType();
+        Boolean isWin = (myButtonGameParticipate == null) ? null :
+                findButtonGame.getWinType() == myButtonGameParticipate.getButtonType();
 
         return ButtonGameResponse.builder()
-                .buttonType(myButtonGameParticipate.getButtonType())
+                .buttonType(myButtonGameParticipate != null ? myButtonGameParticipate.getButtonType() : null)
                 .date(findButtonGame.getCreateDate())
                 .isActive(findButtonGame.getIsActive())
                 .results(!findButtonGame.getIsActive() ? updatedTypeMap : null)
-                .winType(findButtonGame.getWinType())
-                .isWin(findButtonGame.getWinType() == null ? null : isWin)
-                .earnedPoint(isWin ?
-                            (int) Math.ceil((double) 2_000_000 / updatedTypeMap.get(findButtonGame.getWinType())) : null
+                .winType(findButtonGame.getWinType() != null ? findButtonGame.getWinType() : null)
+                .isWin(isWin)
+                .earnedPoint(isWin != null ? (isWin ?
+                            (int) Math.ceil((double) 2_000_000 / updatedTypeMap.get(findButtonGame.getWinType())) : null) : null
                         )
                 .build();
     }
