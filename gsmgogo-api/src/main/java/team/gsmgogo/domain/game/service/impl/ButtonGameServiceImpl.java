@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import team.gsmgogo.domain.bet.entity.BetEntity;
+import team.gsmgogo.domain.bet.repository.BetJpaRepository;
 import team.gsmgogo.domain.buttongame.entity.ButtonGameEntity;
 import team.gsmgogo.domain.buttongame.repository.ButtonGameRepository;
 import team.gsmgogo.domain.buttongameparticipate.entity.ButtonGameParticipate;
@@ -15,6 +17,9 @@ import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Service
 @RequiredArgsConstructor
 public class ButtonGameServiceImpl implements ButtonGameService {
@@ -22,6 +27,9 @@ public class ButtonGameServiceImpl implements ButtonGameService {
     private final UserFacade userFacade;
     private final ButtonGameRepository buttonGameRepository;
     private final ButtonGameParticipateRepository buttonGameParticipateRepository;
+    private final BetJpaRepository buttonGameParticipate;
+
+    private final int LIMIT_POINT = 500_000;
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -34,6 +42,15 @@ public class ButtonGameServiceImpl implements ButtonGameService {
 
         if (buttonGameParticipateRepository.existsByButtonGameAndUser(buttonGame, currentUser))
             throw new ExpectedException("이미 버튼을 눌렀습니다.", HttpStatus.BAD_REQUEST);
+
+        AtomicInteger betPoint = new AtomicInteger();
+        buttonGameParticipate.findByUser(currentUser)
+                .stream()
+                .filter(bet -> !bet.getMatch().getIsEnd()).toList()
+                .forEach(bet -> betPoint.addAndGet(bet.getBetPoint().intValue()));
+
+        if ((currentUser.getPoint() + betPoint.get()) >= LIMIT_POINT)
+            throw new ExpectedException("50만 포인트 이상 보유한 유저는 버튼게임에 참여할 수 없습니다.", HttpStatus.BAD_REQUEST);
 
         ButtonGameParticipate buttonGameParticipate = ButtonGameParticipate.builder()
                 .buttonGame(buttonGame)
