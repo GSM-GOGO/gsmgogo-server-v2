@@ -18,11 +18,13 @@ public class ButtonGameQueryDslRepository {
 
     public Optional<ButtonGameEntity> findByMonthAndDay(int month, int day) {
         return Optional.ofNullable(queryFactory
-                .selectFrom(buttonGameEntity)
+                .select(buttonGameEntity)
+                .from(buttonGameEntity)
                 .join(buttonGameEntity.participates, buttonGameParticipate).fetchJoin()
                 .where(
                         buttonGameEntity.createDate.month().eq(month)
                                 .and(buttonGameEntity.createDate.dayOfMonth().eq(day))
+                                .and(buttonGameEntity.isActive.eq(true))
                 )
                 .fetchOne());
     }

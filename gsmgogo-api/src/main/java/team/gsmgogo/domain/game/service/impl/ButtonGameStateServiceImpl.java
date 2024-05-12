@@ -15,19 +15,13 @@ import team.gsmgogo.domain.user.entity.UserEntity;
 import team.gsmgogo.global.exception.error.ExpectedException;
 import team.gsmgogo.global.facade.UserFacade;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class ButtonGameStateServiceImpl implements ButtonGameStateService {
 
     private final UserFacade userFacade;
-    private final ButtonGameRepository buttonGameRepository;
-    private final ButtonGameParticipateRepository buttonGameParticipateRepository;
     private final ButtonGameQueryDslRepository buttonGameQueryDslRepository;
 
     @Override
@@ -38,11 +32,23 @@ public class ButtonGameStateServiceImpl implements ButtonGameStateService {
         ButtonGameEntity findButtonGame = buttonGameQueryDslRepository.findByMonthAndDay(month, day)
                 .orElseThrow(() -> new ExpectedException("버튼게임을 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
 
-        ButtonGameParticipate myButtonGameParticipate = Objects.requireNonNull(findButtonGame.getParticipates()
-                .stream()
-                .filter(participate -> participate.getUser() == currentUser)
-                .findFirst().orElse(null));
+        System.out.println(findButtonGame.getParticipates().size());
 
+        ButtonGameParticipate myButtonGameParticipate = findButtonGame.getParticipates()
+                .stream()
+                .filter(p -> p.getUser().getUserId().equals(currentUser.getUserId()))
+                .findAny().orElse(null);
+
+        if (myButtonGameParticipate == null)
+            return ButtonGameResponse.builder()
+                    .buttonType(null)
+                    .date(findButtonGame.getCreateDate())
+                    .isActive(findButtonGame.getIsActive())
+                    .results(null)
+                    .isWin(null)
+                    .winType(null)
+                    .earnedPoint(null)
+                    .build();
 
         Map<ButtonType, Integer> typeMap = Map.of(
                 ButtonType.ONE, 0,
@@ -52,15 +58,16 @@ public class ButtonGameStateServiceImpl implements ButtonGameStateService {
                 ButtonType.FIVE, 0
         );
 
-        List<Integer> results = List.of();
-        typeMap.forEach((type, value) -> {
+        List<Integer> results = new ArrayList<>();
 
+        Map<ButtonType, Integer> updatedTypeMap = new HashMap<>(typeMap);
+        typeMap.forEach((type, value) -> {
             Integer typeParticipateSize = findButtonGame.getParticipates().stream()
                     .filter(p -> p.getButtonType().equals(type)
                     ).toList().size();
 
                     results.add(typeParticipateSize);
-                    typeMap.put(type, typeParticipateSize);
+                    updatedTypeMap.put(type, typeParticipateSize);
                 }
         );
 
@@ -72,9 +79,9 @@ public class ButtonGameStateServiceImpl implements ButtonGameStateService {
                 .isActive(findButtonGame.getIsActive())
                 .results(results)
                 .winType(findButtonGame.getWinType())
-                .isWin(isWin)
+                .isWin(findButtonGame.getWinType() == null ? null : isWin)
                 .earnedPoint(isWin ?
-                            (int) Math.ceil((double) 2_000_000 / typeMap.get(findButtonGame.getWinType())) : null
+                            (int) Math.ceil((double) 2_000_000 / updatedTypeMap.get(findButtonGame.getWinType())) : null
                         )
                 .build();
     }

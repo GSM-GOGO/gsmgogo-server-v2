@@ -1,5 +1,6 @@
 package team.gsmgogo.domain.buttongame.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,6 +23,7 @@ public class ButtonGameEntity {
     private Long id;
 
     @Column(name = "is_active")
+    @Nullable
     private Boolean isActive;
 
     @Column(name = "win_type")
@@ -32,7 +34,7 @@ public class ButtonGameEntity {
     @CreatedDate
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "buttonType")
+    @OneToMany(mappedBy = "buttonGame", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ButtonGameParticipate> participates;
 
     public void setWinType(ButtonType winType) {

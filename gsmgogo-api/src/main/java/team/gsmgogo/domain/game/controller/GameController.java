@@ -45,7 +45,8 @@ public class GameController {
     }
 
     @GetMapping("/button")
-    public ResponseEntity<ButtonGameResponse> stateButton() {
-        return ResponseEntity.ok(buttonGameStateService.execute());
+    public ResponseEntity<ButtonGameResponse> stateButton(@RequestParam("m") Integer month,
+                                                          @RequestParam("d") Integer day) {
+        return ResponseEntity.ok(buttonGameStateService.execute(month, day));
     }
 }
