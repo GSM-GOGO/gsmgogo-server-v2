@@ -31,7 +31,7 @@ public class ButtonGameCalculateScheduler {
     private final UserJpaRepository userJpaRepository;
     private final ButtonGameParticipateQueryDslRepository buttonGameParticipateQueryDslRepository;
 
-    @Scheduled(cron = "0 25 11 * * *")
+    @Scheduled(cron = "30 36 11 * * *")
     public void start() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
 
         Map<String, JobParameter<?>> jobParametersMap = new HashMap<>();
