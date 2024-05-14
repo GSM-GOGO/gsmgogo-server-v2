@@ -38,7 +38,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public ResponseEntity<AuthLoginUrlResponse> login(HttpServletResponse response) throws IOException {
-        String loginUrl = "https://gauth-msg.vercel.app/login?" +
+        String loginUrl = "https://gauth.co.kr/login?" +
                 "client_id=" + clientId + "&" +
                 "redirect_uri=" + redirectUri;
 
