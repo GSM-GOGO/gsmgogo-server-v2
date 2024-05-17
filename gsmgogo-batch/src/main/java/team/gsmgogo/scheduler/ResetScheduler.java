@@ -29,16 +29,16 @@ public class ResetScheduler {
     private final UserQueryDslRepository userQueryDslRepository;
     private final GameQueryDslRepository gameQueryDslRepository;
 
-    @Scheduled(cron = "0 0 0 * * *")
-    public void reset() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-
-        Map<String, JobParameter<?>> jobParametersMap = new HashMap<>();
-        jobParametersMap.put("reset-result-time", new JobParameter(System.currentTimeMillis(), String.class));
-        JobParameters jobParameters = new JobParameters(jobParametersMap);
-
-        jobLauncher.run(
-            new ResetCountJob(jobRepository, platformTransactionManager, userQueryDslRepository, gameQueryDslRepository).resetJob(),
-                jobParameters
-        );
-    }
+//    @Scheduled(cron = "0 0 0 * * *")
+//    public void reset() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+//
+//        Map<String, JobParameter<?>> jobParametersMap = new HashMap<>();
+//        jobParametersMap.put("reset-result-time", new JobParameter(System.currentTimeMillis(), String.class));
+//        JobParameters jobParameters = new JobParameters(jobParametersMap);
+//
+//        jobLauncher.run(
+//            new ResetCountJob(jobRepository, platformTransactionManager, userQueryDslRepository, gameQueryDslRepository).resetJob(),
+//                jobParameters
+//        );
+//    }
 }

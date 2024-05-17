@@ -26,40 +26,40 @@ public class AlertScheduler {
     private final Scheduler scheduler;
     private final MatchQueryDslRepository matchQueryDslRepository;
 
-    @Scheduled(cron = "0 30 12 * * *")
-    public void start(){
-        LocalDate today = LocalDate.now();
-        List<MatchEntity> matches = matchQueryDslRepository.findByMonthAndDay(
-            today.getMonthValue(),
-            today.getDayOfMonth()
-        );
-
-        matches.forEach(match -> {
-            try {
-                LocalDateTime beforeMatch = match.getStartAt().minusMinutes(10);
-
-                JobDataMap jobDataMap = new JobDataMap();
-                jobDataMap.put("matchId", match.getMatchId());
-
-                JobDetailImpl detail1 = new JobDetailImpl();
-                detail1.setName("alert-detail-" + UUID.randomUUID());
-                detail1.setGroup("alert");
-                detail1.setJobClass(AlertJob.class);
-                detail1.setJobDataMap(jobDataMap);
-
-                Trigger trigger1 = TriggerBuilder.newTrigger()
-                    .withSchedule(CronScheduleBuilder.cronSchedule("0 %d %d %d %d ? %d".formatted(
-                        beforeMatch.getMinute(),
-                        beforeMatch.getHour(),
-                        beforeMatch.getDayOfMonth(),
-                        beforeMatch.getMonthValue(),
-                        beforeMatch.getYear()
-                    ))).build();
-
-                scheduler.scheduleJob(detail1, trigger1);
-            } catch (SchedulerException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
+//    @Scheduled(cron = "0 30 12 * * *")
+//    public void start(){
+//        LocalDate today = LocalDate.now();
+//        List<MatchEntity> matches = matchQueryDslRepository.findByMonthAndDay(
+//            today.getMonthValue(),
+//            today.getDayOfMonth()
+//        );
+//
+//        matches.forEach(match -> {
+//            try {
+//                LocalDateTime beforeMatch = match.getStartAt().minusMinutes(10);
+//
+//                JobDataMap jobDataMap = new JobDataMap();
+//                jobDataMap.put("matchId", match.getMatchId());
+//
+//                JobDetailImpl detail1 = new JobDetailImpl();
+//                detail1.setName("alert-detail-" + UUID.randomUUID());
+//                detail1.setGroup("alert");
+//                detail1.setJobClass(AlertJob.class);
+//                detail1.setJobDataMap(jobDataMap);
+//
+//                Trigger trigger1 = TriggerBuilder.newTrigger()
+//                    .withSchedule(CronScheduleBuilder.cronSchedule("0 %d %d %d %d ? %d".formatted(
+//                        beforeMatch.getMinute(),
+//                        beforeMatch.getHour(),
+//                        beforeMatch.getDayOfMonth(),
+//                        beforeMatch.getMonthValue(),
+//                        beforeMatch.getYear()
+//                    ))).build();
+//
+//                scheduler.scheduleJob(detail1, trigger1);
+//            } catch (SchedulerException e) {
+//                throw new RuntimeException(e);
+//            }
+//        });
+//    }
 }
