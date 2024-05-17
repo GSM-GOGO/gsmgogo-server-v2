@@ -23,26 +23,26 @@ public class GameController {
     private final ButtonGameService buttonGameService;
     private final ButtonGameStateService buttonGameStateService;
 
-    @PostMapping("/roulette")
-    public ResponseEntity<DailyRouletteResponse> dailyRouletteRoll() {
-        return ResponseEntity.ok(dailyRouletteRollService.roll());
-    }
+//    @PostMapping("/roulette")
+//    public ResponseEntity<DailyRouletteResponse> dailyRouletteRoll() {
+//        return ResponseEntity.ok(dailyRouletteRollService.roll());
+//    }
 
-    @PostMapping("/coin")
-    public ResponseEntity<CoinResponse> coinToss(@RequestBody @Valid CoinRequest coinRequest) {
-        return ResponseEntity.ok(coinTossService.execute(coinRequest));
-    }
+//    @PostMapping("/coin")
+//    public ResponseEntity<CoinResponse> coinToss(@RequestBody @Valid CoinRequest coinRequest) {
+//        return ResponseEntity.ok(coinTossService.execute(coinRequest));
+//    }
 
     @GetMapping("/coin")
     public ResponseEntity<CoinCountResponse> coinCount() {
         return ResponseEntity.ok(new CoinCountResponse(coinTossCountService.coinTossCount()));
     }
 
-    @PostMapping("/button")
-    public ResponseEntity<Void> clickButton(@RequestBody ButtonGameRequest buttonGameRequest) {
-        buttonGameService.execute(buttonGameRequest);
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/button")
+//    public ResponseEntity<Void> clickButton(@RequestBody ButtonGameRequest buttonGameRequest) {
+//        buttonGameService.execute(buttonGameRequest);
+//        return ResponseEntity.ok().build();
+//    }
 
     @GetMapping("/button")
     public ResponseEntity<ButtonGameResponse> stateButton(@RequestParam("m") Integer month,
