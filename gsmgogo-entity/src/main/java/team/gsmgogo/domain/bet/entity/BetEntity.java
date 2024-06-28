@@ -39,4 +39,8 @@ public class BetEntity {
 
     @Column(name = "bet_score_b")
     private Integer betScoreB;
+
+    public void minusBetPointByTax(Integer point){
+        this.betPoint -= point.longValue();
+    }
 }

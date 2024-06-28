@@ -2,6 +2,7 @@ package team.gsmgogo.domain.user.entity;
 
 import team.gsmgogo.domain.follow.entity.FollowEntity;
 import team.gsmgogo.domain.normalteamparticipate.entity.NormalTeamParticipateEntity;
+import team.gsmgogo.domain.tax.entity.TaxEntity;
 import team.gsmgogo.domain.teamparticipate.entity.TeamParticipateEntity;
 import team.gsmgogo.domain.user.enums.*;
 import jakarta.persistence.*;
@@ -102,5 +103,9 @@ public class UserEntity {
         } else {
             return false;
         }
+    }
+
+    public void minusPointByTax(Integer point) {
+        this.point -= point;
     }
 }
